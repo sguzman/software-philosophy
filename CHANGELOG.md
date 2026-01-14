@@ -1,6 +1,9 @@
 # Changelog
 ## [Unreleased]
 
+### 🚀 Features
+- Stub docs ([b0fd268](https://github.com/sguzman/software-philosophy/commit/b0fd26895d134ccca4bc899f4742922bb95a71be))## [0.1.1] - 2026-01-14
+
 ### ⚙️ Miscellaneous
 - License ([23ff71d](https://github.com/sguzman/software-philosophy/commit/23ff71d76632a867b97b50978501c9daf3759502))
 - Initial readme ([143a0e4](https://github.com/sguzman/software-philosophy/commit/143a0e4af7e833412bb1eb655cbc7ff785b5c3fe))
