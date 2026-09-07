@@ -18,7 +18,7 @@ The repository documentation is the system of record.
 
 - Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, and integration.
 - Implementation worker: owns bounded implementation attempts, directly related repair passes, validation, durable reporting, and completion-observer startup/re-arm when available.
-- Human maintainer: owns local operation and real-machine observations when requested. The human is not the normal communication courier, completion poller, or goal-renumbering mechanism.
+- Human maintainer: owns local operation and real-machine observations when requested. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, or payload installer.
 
 ## Goal identity vs worker session
 
@@ -61,6 +61,15 @@ Do not require the human to launch/reset the observer.
 
 Do not treat notification delivery as evidence or director acceptance.
 
+## Repo-native human operations
+
+- Do not instruct the principal to download/unpack/run generated CI or agent payloads for ordinary development/manual QA.
+- Keep dependency declarations and bootstrap/check machinery in the repository.
+- Use the repository's current platform dependency policy; on the principal's Windows profile, ordinary CLI dependencies use Scoop/Scoopfile.
+- If dependencies changed, the director tells the principal when bootstrap needs to run/rerun.
+- Latent options such as Nix/mise do not authorize implementation.
+
 ## Handoff
+
 
 Commit and push enough durable evidence that the director can review without chat history. Preserve prior attempt history on correction continuations.

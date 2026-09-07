@@ -16,7 +16,10 @@ Does not normally own:
 - merging worker branches;
 - polling long-running worker status;
 - manually starting/resetting a completion watcher;
-- deciding that a new worker session implies a new repository goal number.
+- deciding that a new worker session implies a new repository goal number;
+- downloading/unpacking generated execution payloads for ordinary QA;
+- inferring hidden dependency changes or manually reconstructing the development environment.
+
 
 ## Director / architect / integrator
 
@@ -29,7 +32,10 @@ Owns:
 - macro-goal identity;
 - semantic review and correction contracts;
 - integration;
-- evidence-backed current-state updates.
+- evidence-backed current-state updates;
+- human execution policy;
+- dependency-materialization policy and telling the principal when refresh is required.
+
 
 ## Implementation worker
 
@@ -41,7 +47,16 @@ Owns:
 - pushing the candidate branch;
 - completion-observer startup/re-arm when available.
 
+## Repo-native human execution
+
+Normal local development/QA remains inside the checkout.
+
+The repository should declare dependencies, provide a bootstrap/check entrypoint, expose a stable QA/build command, and retain logs under repo-owned paths.
+
+Do not use generated CI/agent payload downloads as the principal's development/testing handoff.
+
 ## Completion observer
+
 
 The completion observer is infrastructure, not an authority role.
 
