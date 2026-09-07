@@ -46,7 +46,7 @@ This repository is not primarily about Rust, TOML, Docker, Codex, ChatGPT, Power
 
 The human is deliberately neither the courier between agents nor the polling loop around them.
 
-## v1.2 doctrine
+## v1.3 doctrine
 
 1. **Persist cognition that matters.** Important project knowledge belongs in the repository, not only in chat.
 2. **Separate authority from execution.** The agent best suited to architecture should not spend its attention babysitting file edits; the filesystem-capable worker should not invent the project.

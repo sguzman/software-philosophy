@@ -80,6 +80,16 @@ An **external payload handoff** occurs when ordinary development or human QA req
 
 For the principal's normal development/testing workflow, external payload handoff is prohibited.
 
+## Ceremony tax
+
+**Ceremony tax** is mechanical human work imposed by the development system that does not require human judgment.
+
+Examples include downloading generated bundles, extracting them, navigating to alternate execution directories, manually reconstructing dependency setup, remembering hidden bootstrap order, or cleaning up temporary handoff artifacts.
+
+Prompt tax wastes human attention by requiring repeated forward coordination. Vigilance tax wastes it by requiring status polling. Ceremony tax wastes it by exporting mechanical setup/handoff work.
+
+A mature repository should drive all three toward zero.
+
 ## Dependency declaration
 
 A **dependency declaration** is a committed, machine-readable statement of tools/environment requirements, such as `Scoopfile.json`, `rust-toolchain.toml`, package manifests, or narrowly scoped platform workload declarations.
