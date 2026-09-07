@@ -1,6 +1,6 @@
 # Documentation Architecture
 
-This repository dogfoods the v1.0 philosophy: durable doctrine lives in Git, authority is explicit, historical state is separated from current authority, and reusable execution contracts are repository-native.
+This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authority is explicit, historical state is separated from current authority, and reusable execution contracts are repository-native.
 
 ## Canonical layers
 
@@ -12,7 +12,7 @@ This repository dogfoods the v1.0 philosophy: durable doctrine lives in Git, aut
 
 ### Doctrine
 
-docs/00-manifesto.md through docs/10-lineage.md are the canonical v1.0 theory.
+docs/00-manifesto.md through docs/11-completion-observability.md are the canonical v1.1 theory.
 
 They define:
 - ontology;
@@ -25,7 +25,8 @@ They define:
 - review;
 - workflow;
 - adoption;
-- lineage.
+- lineage;
+- completion observability and the terminal return channel.
 
 ### Reusable protocol
 
@@ -44,13 +45,16 @@ Historical material is context, not current authority.
 When material conflicts:
 
 1. explicit human-principal direction for the current decision;
-2. current v1.0 doctrine;
+2. current v1 doctrine;
 3. repository-specific canonical architecture and project docs;
 4. current goal/review contracts within their delegated scope;
 5. current-state evidence;
-6. historical docs and examples.
+6. workflow notification state;
+7. historical docs and examples.
 
 A lower layer cannot silently overrule a higher layer.
+
+A completion signal is deliberately below evidence in this ordering. It can route attention but cannot establish truth.
 
 ## Change policy
 
@@ -62,6 +66,6 @@ Implementation examples may evolve without changing doctrine when they preserve 
 
 ## Hidden-state prohibition
 
-No issue, chat, prompt, or agent scratchpad should be the only location of a decision required to understand current doctrine.
+No issue, chat, prompt, agent scratchpad, or transient notification should be the only location of a decision required to understand current doctrine.
 
 If it matters after the conversation ends, externalize it into the repository.

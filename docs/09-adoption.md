@@ -1,4 +1,4 @@
-# Adopting v1.0 in a Repository
+# Adopting v1.1 in a Repository
 
 The philosophy is technology-independent. Use only the structure your project earns.
 
@@ -30,6 +30,7 @@ The philosophy is technology-independent. Use only the structure your project ea
 
     scripts/
       check
+      goal-completion-observer   # recommended for long-running local goals
 
 ## Step 1 — write the constitution
 
@@ -39,14 +40,7 @@ Do not begin with a giant encyclopedia. Begin with decisions that change impleme
 
 ## Step 2 — write current state from evidence
 
-Inventory:
-- what compiles;
-- what runs;
-- what is only historical;
-- known defects;
-- known platform limitations;
-- stale migration artifacts;
-- major architecture debt.
+Inventory what compiles, what runs, what is only historical, known defects, platform limitations, stale migration artifacts, and major architecture debt.
 
 Do not trust old completion marks without verification.
 
@@ -54,10 +48,7 @@ Do not trust old completion marks without verification.
 
 Order work by gates and dependencies.
 
-The roadmap should answer:
-- what must be true before the next layer becomes worth building?
-- what evidence closes each gate?
-- what historical work is context rather than authority?
+The roadmap should answer what must be true before the next layer becomes worth building, what evidence closes each gate, and what historical work is context rather than authority.
 
 ## Step 4 — create the work protocol
 
@@ -69,11 +60,11 @@ Adopt a small state machine:
 
 Reports and reviews live beside that lifecycle.
 
+Define `done` as worker-terminal/review-ready, not director-accepted.
+
 ## Step 5 — write the first macro-goal
 
-Make it large enough to eliminate predictable prompt loops.
-
-Make it bounded enough that architectural ambiguity is explicit.
+Make it large enough to eliminate predictable prompt loops and bounded enough that architectural ambiguity is explicit.
 
 ## Step 6 — shorten the prompts
 
@@ -85,11 +76,34 @@ Director review invocation should become:
 
 > Review the pushed branch for goal N against the repository contract and integrate it if acceptable.
 
-## Step 7 — evolve from observed friction
+## Step 7 — add completion observability
+
+For long-running workstation goals, add a repository-owned bounded observer.
+
+On Windows, a typical adapter is:
+
+    scripts/codex-goal-notify.ps1
+
+Required semantics:
+- worker launches it automatically;
+- one explicit goal identity per observer instance;
+- detached lifetime;
+- durable `done`/`blocked` observation;
+- exactly-once terminal notification;
+- no notification for intermediate turns;
+- safe behavior across checkout restoration;
+- deterministic test/no-toast mode;
+- notification delivery failure is non-fatal to product correctness.
+
+Do not make the human remember a second command. If that is required, vigilance tax has merely moved rather than disappeared.
+
+## Step 8 — evolve from observed friction
 
 The repo protocol itself is software.
 
 If the human keeps becoming a courier, fix the protocol.
+
+If the human keeps polling, improve completion observability.
 
 If the worker keeps escalating trivial failures, enlarge goal authorization.
 
@@ -108,19 +122,13 @@ As the workflow stabilizes, automate deterministic steps:
 - validation;
 - report scaffolding;
 - CI;
-- candidate artifact builds.
+- candidate artifact builds;
+- terminal completion signaling.
 
 Automation should support the authority model, not erase it.
 
 ## What not to standardize globally
 
-v1.0 does not require:
-- Rust;
-- TOML;
-- Docker;
-- a particular CI provider;
-- a particular AI vendor;
-- a particular GUI framework;
-- a particular branching model.
+v1.1 does not require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, or a specific desktop-notification API.
 
 The doctrine standardizes **coordination semantics**, not technology taste.

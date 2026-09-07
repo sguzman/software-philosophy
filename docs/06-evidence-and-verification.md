@@ -1,62 +1,55 @@
 # Evidence and Verification
 
-Agentic systems fail when they collapse “the agent says it worked” into “it is true.”
+Agentic systems fail when they collapse `the agent says it worked` into `it is true`.
 
-v1.0 treats evidence as typed, scoped, and revisable.
+The v1 doctrine treats evidence as typed, scoped, and revisable.
 
 ## Evidence classes
 
 ### E0 — static repository evidence
 
-Examples:
-- file exists;
-- function has a particular signature;
-- dependency is configured;
-- branch contains a change.
+Examples: file exists, function has a particular signature, dependency is configured, branch contains a change.
 
 Useful for structural claims.
 
 ### E1 — deterministic checks
 
-Examples:
-- formatting;
-- linting;
-- type checking;
-- compilation;
-- unit tests;
-- deterministic integration tests.
+Examples: formatting, linting, type checking, compilation, unit tests, deterministic integration tests.
 
 Useful for mechanical correctness.
 
 ### E2 — hosted platform evidence
 
-Examples:
-- Windows CI compile;
-- Linux CI tests;
-- platform API enumeration in a hosted runner.
+Examples: Windows CI compile, Linux CI tests, platform API enumeration in a hosted runner.
 
 Useful only for capabilities actually present in that environment.
 
 ### E3 — runtime environment evidence
 
-Examples:
-- program launches on a real desktop;
-- GPU renderer initializes;
-- audio device works;
-- filesystem integration behaves correctly.
+Examples: program launches on a real desktop, GPU renderer initializes, audio device works, filesystem integration behaves correctly.
 
 This may require a specific machine.
 
 ### E4 — human experiential evidence
 
-Examples:
-- UI feels responsive;
-- layout is comfortable;
-- highlight movement looks correct;
-- audio transition sounds wrong;
-- the implementation technically works but solves the wrong problem.
+Examples: UI feels responsive, layout is comfortable, highlight movement looks correct, audio transition sounds wrong, or the implementation technically works but solves the wrong problem.
 
 This evidence cannot always be replaced by automation.
+
+## Notifications are not evidence
+
+A completion notification is **not** an evidence class.
+
+It may be caused by a durable repository transition, but the signal itself proves only that the observer attempted to route attention.
+
+Invalid claims:
+- `I saw a toast -> tests passed`;
+- `Codex notified me -> goal acceptance gates were satisfied`;
+- `Completed notification -> director accepted the branch`.
+
+The correct interpretation is:
+
+> `A terminal signal arrived -> inspect the durable goal state, report, candidate, and evidence.`
 
 ## No evidence laundering
 
@@ -67,34 +60,22 @@ Invalid promotion:
 - hosted Windows build -> real GPU launch;
 - generated mock screenshot -> actual UI state;
 - passing unit tests -> acceptable product semantics;
-- roadmap completion mark -> verified current implementation.
+- roadmap completion mark -> verified current implementation;
+- completion notification -> accepted implementation.
 
 ## Current-state language
 
-Use explicit status labels such as:
-- VERIFIED;
-- VERIFIED IN HOSTED CI;
-- VERIFIED ON REAL WINDOWS MACHINE;
-- IMPLEMENTED BUT RUNTIME UNVERIFIED;
-- PARTIAL;
-- BLOCKED;
-- HISTORICAL;
-- OBSOLETE;
-- UNKNOWN.
+Use explicit status labels such as VERIFIED, VERIFIED IN HOSTED CI, VERIFIED ON REAL WINDOWS MACHINE, IMPLEMENTED BUT RUNTIME UNVERIFIED, PARTIAL, BLOCKED, HISTORICAL, OBSOLETE, and UNKNOWN.
 
 The exact vocabulary may vary. The principle is that uncertainty is represented, not erased.
 
 ## Reports and evidence
 
-Worker reports should include:
-- exact commands;
-- exact result summary;
-- environment;
-- known limitations;
-- failures;
-- unverified claims.
+Worker reports should include exact commands, exact result summary, environment, known limitations, failures, and unverified claims.
 
-Never write “works on Windows” when the evidence is only “cargo check succeeded on windows-latest.”
+When completion-observer behavior is material, reports may also record whether observer startup succeeded or failed. That record is workflow diagnostics, not product evidence.
+
+Never write `works on Windows` when the evidence is only `cargo check succeeded on windows-latest`.
 
 ## Director responsibility
 
