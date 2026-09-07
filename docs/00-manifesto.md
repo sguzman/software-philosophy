@@ -1,65 +1,71 @@
 # Manifesto
 
-This is a philosophy for building software that stays readable, operable, and shippable.
+Software development with AI should not be organized as a conversation that happens to emit code.
 
-## First principles
+It should be organized as a governed system of durable state transitions.
 
-### 1) Direction beats speed
-Shipping fast is only good if you can keep shipping. I optimize for a compounding workflow:
-- clear intent
-- reproducible builds
-- automated checks
-- predictable releases
+The failure mode is easy to recognize: one capable agent reasons about architecture, another agent can edit the filesystem, and a human spends the day copying prompts, diffs, errors, and status messages between them. The code may advance quickly while the human becomes a low-bandwidth message bus.
 
-### 2) Declarative beats imperative for "product intent"
-Imperative code is powerful, but configuration is where product intent should live.
-If a value is a "product decision" (not an algorithm), it belongs in declarative config.
+That is not automation. It is coordination debt.
 
-### 3) Constraints are a feature
-Tools, formats, and conventions are constraints that:
-- reduce decision fatigue
-- increase mechanical sympathy
-- enable automation and AI assistance
+## The doctrine
 
-### 4) Automation should be boring
-CI and release automation should be unsurprising:
-- deterministic
-- explainable
-- reversible when possible
-- logs-first
+**The repository is the shared institutional mind.**
 
-### 5) AI is an operator, not an authority
-AI edits files, proposes patches, and follows documented rules.
-The human sets direction and approves outcomes.
+Chat is useful for exploration. Agent context windows are useful for local reasoning. Neither is authoritative memory. Anything required for future work must be committed in a form another agent can recover without reconstructing a lost conversation.
 
-## The stack I choose
+**Authority is asymmetric.**
 
-- Rust: correctness, performance, explicitness, robust tooling culture
-- TOML: human-editable configuration that supports structure
-- AI-in-editor: fast iteration, but constrained by rules + user intent
-- Docs-for-AI: contracts the AI must follow
-- Docker: reproducible runtime and deployable units
+The human principal owns desired ends and retains veto power.
 
-## What "good" looks like
+The director owns interpretation of intent, architecture, prioritization, decomposition, goal definition, semantic review, and integration.
 
-A good repo has:
+The implementation worker owns bounded execution: inspect, edit, compile, test, diagnose, and repair inside an authorized goal.
 
-- A single "map" document (README) and a small set of deep docs
-- A standardized quality gate set (format/lint/validate/test)
-- A release pipeline that:
-  - knows what changed
-  - updates changelog
-  - bumps version intentionally
-  - tags and publishes predictably
-- A configuration surface that:
-  - is consistent
-  - is validated
-  - makes "how to change behavior" obvious
+**Autonomy is bounded by architecture, not by prompt count.**
 
-## Anti-goals
+A worker should not need a new prompt after every compiler error or directly related defect. A good goal authorizes a coherent region of problem solving. The worker continues until the acceptance gates pass or a true escalation boundary is reached.
 
-- Cleverness as a default
-- Hidden build steps
-- Implicit version bumps
-- "Just trust the AI"
-- Unreviewable diff spam
+**Git is more than version control.**
+
+Git is:
+- the transaction log;
+- the transport protocol between agents;
+- the rollback mechanism;
+- the identity of a project state;
+- the boundary between accepted and candidate reality.
+
+**Tests are evidence, not sovereignty.**
+
+A green suite can prove specific mechanical claims. It cannot decide whether the product should exist in that form, whether architecture remains coherent, whether a UI feels right, or whether a behavior violates intent.
+
+**The human should operate the system, not carry it.**
+
+The target human loop is short:
+- express intent;
+- pull accepted state;
+- invoke the ready goal;
+- perform real-machine observation when required;
+- report taste or runtime facts;
+- veto when necessary.
+
+The human should not routinely ferry large prompts from director to worker or patches from worker to director.
+
+## The optimization target
+
+The goal is not maximum agent activity.
+
+The goal is maximum **useful autonomous progress per unit of human coordination** while preserving semantic control.
+
+That requires:
+- richer repository context;
+- clearer authority;
+- larger but architecturally closed goals;
+- typed evidence;
+- explicit escalation;
+- direct agent review through Git;
+- durable current-state knowledge.
+
+The philosophy can be summarized in one sentence:
+
+> Humans define ends, directors govern meaning, repositories preserve state, workers perform bounded transformations, evidence constrains belief, and Git makes every accepted change explicit and reversible.

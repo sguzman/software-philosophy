@@ -1,59 +1,75 @@
-# Software Philosophy: Tooling + Direction
+# Software Philosophy v1.0
 
-This repository is my opinionated software philosophy: a practical workflow for building reliable systems fast, with a specific blend of tools and constraints.
+A repository-mediated operating system for agentic software development.
 
-The central idea:
+The core idea:
 
-- The developer becomes the **creative director**.
-- The codebase becomes a **directable system**: declarative where possible, automated where safe, and explicit about quality gates.
-- AI becomes an **in-editor operator** that edits files and follows documented rules, driven by user intent and user review.
+> The repository is the durable shared mind. The human supplies intent and taste. The director converts intent into doctrine, architecture, roadmaps, goals, and review. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state.
 
-## The productive combination (my stack)
+This repository is not primarily about Rust, TOML, Docker, Codex, or ChatGPT. Those can be useful tools, but they are contingent. v1.0 is about how to organize authority, knowledge, work, evidence, and communication when software is built by a human principal plus multiple AI agents with different capabilities.
 
-- **Rust** for general programming and long-term maintainability
-- **TOML** for properties-based declarative configuration ("TOML as UI")
-- **In-editor AI** that can manipulate files and follow directions
-- **Docs for AI to follow** that lean heavily on user input and explicit constraints
-- **Docker** for deployment and reproducibility
+## Operating topology
 
-## Toolchain (quality + release)
+    HUMAN PRINCIPAL
+      intent / taste / veto
+            |
+            v
+    DIRECTOR / ARCHITECT / INTEGRATOR
+      philosophy / product scope / architecture
+      priorities / roadmaps / macro-goals
+      semantic review / integration
+            |
+            v
+    REPOSITORY
+      canonical shared context
+      current state / work queue / reports / reviews
+            |
+            v
+    IMPLEMENTATION WORKER
+      inspect / edit / compile / test / diagnose / repair
+            |
+            v
+    CANDIDATE BRANCH + REPORT + EVIDENCE
+            |
+            v
+    DIRECTOR REVIEW
+      accept / reject / revise / integrate
 
-These are the kinds of tools I like to standardize across projects:
+The human is deliberately not the courier between agents.
 
-- **lychee**: link checking (docs stay alive)
-- **taplo**: TOML formatting/linting/validation
-- **biome**: JS/TS formatting/linting (when relevant)
-- **semver**: version meaning and release intent
-- **git-cliff**: changelog generation from commit history
-- A **generalized release runner** (cross-language "cargo-release vibe"):
-  - produces a version bump
-  - generates/updates changelog
-  - tags/releases
-  - optionally builds artifacts and publishes
+## v1.0 doctrine
 
-I do not assume every repo is Rust-only. I want a release process that works for Rust, JS, Python, Docker images, and mixed repos.
-
-## What this repo contains
-
-- `docs/` holds the philosophy in depth:
-  - The manifesto and constraints
-  - A concrete workflow
-  - How AI is used (and bounded)
-  - How configuration is structured (TOML as UI)
-  - How deployment works (Docker)
-  - How releases and changelogs work
-  - What quality gates should exist in CI
-
-- `examples/` holds small reference templates that embody the philosophy.
+1. **Persist cognition that matters.** Important project knowledge belongs in the repository, not only in chat.
+2. **Separate authority from execution.** The agent best suited to architecture should not spend its attention babysitting file edits; the filesystem-capable worker should not invent the project.
+3. **Delegate bounded autonomy.** A worker gets enough latitude to finish a coherent goal, including directly related repair loops, but not enough authority to silently redefine architecture.
+4. **Make prompts thin.** A prompt should usually point at a committed goal, not restate the project.
+5. **Treat implementation as a transaction.** There is a known base state, an authorized transformation, a candidate result, evidence, and an explicit integration decision.
+6. **Type the evidence.** Compile success, deterministic tests, hosted runtime probes, real-device behavior, and human judgment are different evidence classes.
+7. **Prefer truthful incompleteness over fake certainty.** Current-state docs distinguish verified, inferred, historical, blocked, and unverified claims.
+8. **Spend intelligence on uncertainty.** Expensive reasoning belongs at architecture, ambiguity, prioritization, failure interpretation, and review boundaries.
+9. **Reduce prompt tax.** Coordination overhead is real engineering cost. Macro-goals collapse unnecessary human-agent round trips.
+10. **Preserve the principal veto.** No automation removes the human's authority to say: this is not what I want.
 
 ## Reading order
 
-1. `docs/00-manifesto.md` - the core principles
-2. `docs/02-workflow.md` - the end-to-end workflow
-3. `docs/03-ai-as-creative-director.md` - how AI actually fits
-4. `docs/04-toml-as-ui.md` - declarative "properties" design
-5. `docs/06-releases-changelogs.md` - the "general cargo-release" concept
+1. docs/00-manifesto.md
+2. docs/01-ontology.md
+3. docs/02-authority-and-roles.md
+4. docs/03-repository-as-shared-mind.md
+5. docs/04-transactional-development.md
+6. docs/05-macro-goals.md
+7. docs/06-evidence-and-verification.md
+8. docs/07-escalation-and-review.md
+9. docs/08-workflow.md
+10. docs/09-adoption.md
+11. docs/10-lineage.md
 
-## License
+Reusable repo templates live under templates/. Invocation prompts live under prompts/.
 
-CC0-1.0 (public domain dedication). See `LICENSE`.
+The pre-v1 stack-centric philosophy is preserved under archive/v0.5/.
+
+## Version
+
+Current doctrine: **1.0.0**.
+
+v1.0 is the first version where the repository itself is treated as the persistent coordination substrate between a human principal, a director agent, and implementation agents.
