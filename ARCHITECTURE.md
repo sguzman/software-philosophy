@@ -12,7 +12,7 @@ This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authori
 
 ### Doctrine
 
-docs/00-manifesto.md through docs/12-correction-continuations.md are the canonical v1.2 theory.
+docs/00-manifesto.md through docs/16-latent-options.md are the canonical v1.3 theory.
 
 They define:
 - ontology;
@@ -27,13 +27,23 @@ They define:
 - adoption;
 - lineage;
 - completion observability and the terminal return channel;
-- correction continuations and the separation between logical goal identity and worker-session identity.
+- correction continuations and the separation between logical goal identity and worker-session identity;
+- doctrinal modalities: prohibitions, current conventions, and latent options;
+- repo-native human execution and the external-payload prohibition;
+- dependency declaration/materialization and the Windows Scoop profile;
+- future-option preservation without work authorization.
 
 ### Reusable protocol
 
 templates/ contains files intended to be copied or adapted into other repositories.
 
 prompts/ contains deliberately thin invocation prompts. They point agents at repository contracts rather than carrying project knowledge themselves.
+
+### Latent option register
+
+`options/` records deliberately non-urgent future possibilities.
+
+An option file is not a roadmap item, not a queued macro-goal, and not an architectural commitment. It preserves optionality until the director or principal explicitly promotes it.
 
 ### Historical material
 
@@ -46,12 +56,14 @@ Historical material is context, not current authority.
 When material conflicts:
 
 1. explicit human-principal direction for the current decision;
-2. current v1 doctrine;
-3. repository-specific canonical architecture and project docs;
-4. current goal/review contracts within their delegated scope;
-5. current-state evidence;
-6. workflow notification state;
-7. historical docs and examples.
+2. current v1 doctrine, including hard prohibitions;
+3. current principal/platform conventions;
+4. repository-specific canonical architecture and project docs;
+5. current goal/review contracts within their delegated scope;
+6. current-state evidence;
+7. latent options;
+8. workflow notification state;
+9. historical docs and examples.
 
 A lower layer cannot silently overrule a higher layer.
 
@@ -72,3 +84,5 @@ Implementation examples may evolve without changing doctrine when they preserve 
 No issue, chat, prompt, agent scratchpad, worker UI session, or transient notification should be the only location of a decision required to understand current doctrine.
 
 If it matters after the conversation ends, externalize it into the repository.
+
+The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, and logs belong to the repo contract rather than an ephemeral download side channel.

@@ -1,4 +1,4 @@
-# Adopting v1.2 in a Repository
+# Adopting v1.3 in a Repository
 
 The philosophy is technology-independent. Use only the structure your project earns.
 
@@ -14,9 +14,13 @@ The philosophy is technology-independent. Use only the structure your project ea
         priorities.md
         current-status.md
         roles-and-workflow.md
+        negative-doctrine.md
 
       roadmaps/
         master-roadmap.md
+
+      options/
+        README.md
 
       work/
         README.md
@@ -30,6 +34,8 @@ The philosophy is technology-independent. Use only the structure your project ea
 
     scripts/
       check
+      deps
+      qa
       goal-completion-observer   # recommended for long-running local goals
 
 ## Step 1 — write the constitution
@@ -116,7 +122,32 @@ The work-state machine is therefore cyclic:
 
 Do not make tool-session lifecycle determine repository goal numbering.
 
-## Step 9 — evolve from observed friction
+## Step 9 — define the human execution surface
+
+Keep normal development and QA inside the checkout.
+
+At minimum:
+- declare external tools in committed machine-readable form;
+- provide an idempotent dependency bootstrap/check command;
+- provide a stable local QA/build entrypoint;
+- keep generated fixtures/logs under repo-owned ignored paths;
+- make the director say when dependency refresh is needed.
+
+Hard prohibition:
+
+> Do not make the principal download, extract, and execute a generated CI/agent payload to test ordinary repository state.
+
+For the principal's current Windows profile, prefer `Scoopfile.json` plus Scoop for ordinary CLI tools. Preserve language-native toolchain declarations and explicit native-platform exceptions where those systems are the correct owner.
+
+## Step 10 — add an option register
+
+Create a place for **latent options**: future technologies worth remembering but not worth scheduling.
+
+A latent option should record the possible technology/direction, why it may become attractive, the current convention it could replace or augment, promotion triggers, and an explicit statement that it is not queued/authorized work.
+
+Do not put latent options directly into the active roadmap merely so they are not forgotten.
+
+## Step 11 — evolve from observed friction
 
 The repo protocol itself is software.
 
@@ -148,6 +179,6 @@ Automation should support the authority model, not erase it.
 
 ## What not to standardize globally
 
-v1.2 does not require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, or a particular worker-session UI.
+v1.3 does not universally require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, or a particular worker-session UI.
 
-The doctrine standardizes **coordination semantics**, not technology taste.
+The core doctrine standardizes coordination semantics. Principal/platform profiles may additionally standardize current technology choices, such as Scoop for the principal's Windows CLI dependency materialization. Those choices remain conventions rather than eternal axioms.

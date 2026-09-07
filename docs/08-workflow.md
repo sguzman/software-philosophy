@@ -106,9 +106,24 @@ Then update current status, roadmap gate, relevant architecture notes, and next 
 
 The repository now represents a new accepted state.
 
-## Phase 8 — human verification when necessary
+## Phase 8 — prepare repo-native human verification
 
-Only evidence unavailable remotely should routinely return to the human.
+Before asking the human to test, the director verifies that the repository owns the local execution path.
+
+The request should identify:
+- the accepted commit/main state to pull;
+- whether dependencies changed;
+- whether `deps.ps1`, `scoop import`, or an equivalent repo bootstrap must be run/rerun;
+- the single repo-owned QA/build command;
+- the observation needed from the human.
+
+Do **not** ask the principal to download, unpack, or run a generated CI/agent payload for ordinary development or manual QA.
+
+If the environment is not ready, repair the repository bootstrap path rather than exporting setup ceremony to the human.
+
+## Phase 9 — human verification when necessary
+
+Only evidence unavailable remotely should routinely return to the human, and it should be collected through the repo-native execution surface.
 
 Examples include real GPU launch, audio quality, device integration, subjective UI judgment, or `this is not what I wanted`.
 
@@ -141,7 +156,10 @@ The director incorporates the observation into durable repo state.
         pull same goal correction
         start fresh worker session
         continue same goal ID
-    optionally perform requested real-machine check
+    if real-machine check requested:
+        director tells you whether deps need refresh
+        run repo-owned QA command
+        report observation
 
 The goal is not zero human involvement.
 

@@ -49,7 +49,13 @@ A mature agentic repo should separate at least these layers:
         reviews/
 
     scripts/
+      check
+      deps-bootstrap
+      qa
       goal-completion-observer
+
+    options/
+      ...
 
 Not every project needs exactly these filenames. The separation of concerns matters more than spelling.
 
@@ -83,6 +89,20 @@ The director and worker do not need an ongoing live conversation.
 
 The repository carries the message.
 
+## Repository as human workspace
+
+The same principle extends to the principal's local interaction.
+
+The checkout should contain enough durable machinery that routine human testing does not require an alternate package assembled elsewhere.
+
+    pull accepted main
+      -> materialize declared dependencies if required
+      -> invoke repo-owned QA/build entrypoint
+      -> observe product
+      -> logs/evidence remain under repo-owned paths
+
+An externally downloaded QA bundle is a competing execution channel. Even if technically convenient for CI, it weakens state identity for the human workflow and should not be used as the principal's development/QA interface.
+
 ## Durable state as observation surface
 
 Once work state is represented durably, other local automation can observe it without entering the worker's private process or conversational context.
@@ -115,3 +135,9 @@ Ask:
 > Could a capable new agent inspect only the repository at a known commit and understand what the project is, what is authoritative, what is currently true, what work is authorized next, what terminal states mean, how completion is surfaced, and what would require escalation?
 
 If not, the repository is missing institutional memory.
+
+Also ask:
+
+> Can the principal perform the requested local test from this checkout, with repository-declared dependencies and a repository-owned command, without fetching an ad hoc runnable payload?
+
+If not, the repository is missing an operational interface.

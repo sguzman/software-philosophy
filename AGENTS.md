@@ -27,11 +27,14 @@ Implementation agents may not silently:
 - renumber a correction continuation merely because a worker session terminated;
 - replace repository-mediated coordination with chat-only state;
 - grant implementation workers open-ended architectural authority;
+- instruct the human principal to download/unpack/run generated CI or agent-produced payloads for ordinary development or manual QA;
+- treat a latent option as authorized work, roadmap priority, or current architecture;
+- silently replace the repository's declared dependency/materialization policy;
 - rewrite the v0.5 archive.
 
 ## Canonical reading order
 
-Read README.md and docs/00-manifesto.md through docs/12-correction-continuations.md before making doctrinal changes.
+Read README.md and docs/00-manifesto.md through docs/16-latent-options.md before making doctrinal changes.
 
 ## Archive rule
 
@@ -47,4 +50,23 @@ A doctrinal change should state:
 
 Major changes to the authority model, repository ontology, or transaction protocol require a new major doctrine version.
 
-Completion-observability adapters may vary by platform while preserving v1.2 semantics: worker-owned startup, attempt-safe re-arming, durable terminal-state observation, exactly-once signaling per execution attempt, and strict separation between notification and correctness.
+Completion-observability adapters may vary by platform while preserving v1.3 semantics: worker-owned startup, attempt-safe re-arming, durable terminal-state observation, exactly-once signaling per execution attempt, and strict separation between notification and correctness.
+
+
+## Human execution rule
+
+Normal development and human QA must use repository-owned declarations and entrypoints.
+
+Do not create a second execution/coordination channel by asking the principal to fetch a generated archive, CI payload, temporary script, or prebuilt bundle and run it outside the checkout.
+
+If local testing needs dependencies, encode them in the repository, provide an idempotent bootstrap/check path, and have the director tell the principal when dependency refresh is required.
+
+## Policy force
+
+Read doctrinal statements according to their modality:
+
+- **prohibition**: must not be violated;
+- **current convention**: governs present implementations until deliberately changed;
+- **latent option**: preserves future possibility but authorizes no work.
+
+For the principal's current Windows platform profile, Scoop is the canonical manager for ordinary CLI dependencies. Nix/mise are latent options only.

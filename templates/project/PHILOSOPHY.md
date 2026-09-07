@@ -16,6 +16,19 @@ What must not be casually traded away?
 
 What kinds of technically working result would still be unacceptable?
 
+## Negative doctrine
+
+What workflows or design shapes are hard prohibitions because they create unacceptable friction, risk, or architectural damage?
+
+## Current conventions
+
+What mechanisms are authoritative **now**, even though they may be revisable later?
+
+## Latent options
+
+What future possibilities should be remembered without entering the roadmap or work queue?
+
 ## Local philosophy
 
-Which v1.0 principles are especially important in this repository?
+Which current v1 principles are especially important in this repository?
+

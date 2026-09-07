@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.0] - 2026-09-07
+
+### Doctrine
+
+- Added explicit doctrinal modalities: **prohibition**, **current convention**, and **latent option**.
+- Added **ceremony tax** for mechanical human setup/transfer/provenance work that repository automation should own.
+- Made the repository the canonical human development/QA execution surface.
+- Prohibited asking the principal to download/unpack/run generated CI or agent payloads for ordinary development/manual testing.
+- Formalized committed dependency declarations plus idempotent repo-owned materializers/bootstrap.
+- Made the director responsible for telling the principal when dependency refresh is required.
+- Added the principal's current Windows platform profile: Scoop for ordinary CLI dependencies, ecosystem-native language toolchain declarations, and narrow Windows-native workload exceptions.
+- Added a latent-option register so Nix/mise and similar future technologies can be remembered without roadmap pressure or work authorization.
+- Added reusable negative-doctrine, options, Windows dependency, bootstrap, and human-verification templates.
+- Documented the Lantern Leaf QA-bundle failure and its replacement with `Scoopfile.json`, `deps.ps1`, `qa.ps1`, and repo-owned logs.
+
+
 ## [1.2.0] - 2026-09-07
 
 ### Doctrine

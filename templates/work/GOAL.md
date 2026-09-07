@@ -66,6 +66,14 @@ Work-state transitions:
 
 State only observations that truly require the human or local machine.
 
+Repository command:
+Dependency refresh required: yes / no
+Dependency command if required:
+Expected observation:
+
+Do not require the principal to download/unpack/run an external generated payload for ordinary verification.
+
+
 ## Stop / escalation conditions
 
 List exact discoveries that require director judgment.
