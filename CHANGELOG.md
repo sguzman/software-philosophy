@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0] - 2026-09-07
+
+### Doctrine
+
+- Added **vigilance tax**: the human attention cost of polling long-running delegated work for completion.
+- Added the **completion observer** and **completion signal** as first-class workflow concepts.
+- Formalized the distinction between worker terminal states (`done` / `blocked`) and director acceptance.
+- Defined mature delegation as having both a durable forward contract and a best-effort terminal return channel.
+- Made completion-observer startup the implementation worker's responsibility when repository machinery exists.
+- Required completion signaling to be detached, durable-state-driven, exactly once, checkout-restoration-safe, and non-fatal to product correctness.
+- Explicitly classified notifications as attention routing rather than evidence, review, or integration.
+- Added reusable templates for completion-observer behavior and reporting.
+- Documented the Lantern Leaf evolution that motivated terminal Windows notifications.
+
 ## [1.0.0] - 2026-09-07
 
 ### Doctrine

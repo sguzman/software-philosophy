@@ -16,6 +16,15 @@ Include exact commands, environment, and results.
 
 Distinguish static, deterministic, hosted-platform, runtime, and human evidence.
 
+## Completion observability
+
+Observer started:
+Terminal state observed:
+Notification delivery / test mode:
+Material observer failures:
+
+Do not list a completion notification as product evidence.
+
 ## Deviations
 
 Describe any difference from the goal contract.

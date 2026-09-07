@@ -1,6 +1,6 @@
 # Lineage: From Tooling Preferences to Repository-Mediated Agency
 
-v1.0 emerged from real development friction rather than from a hypothetical multi-agent framework.
+The v1 doctrine emerged from real development friction rather than from a hypothetical multi-agent framework.
 
 ## Legacy v0.5 — stack-centric direction
 
@@ -8,26 +8,11 @@ The early philosophy emphasized Rust, TOML as a declarative product surface, Doc
 
 That material remains useful and is preserved under archive/v0.5/.
 
-Its limitation is that it mainly answers:
-- what tools should a repository use?
-- how should changes be made reliably?
-
-It does not fully answer:
-- who has authority in a multi-agent system?
-- where project cognition should live?
-- how two agents should communicate without a human courier?
-- how to distinguish execution autonomy from architectural autonomy?
+Its limitation is that it mainly answers what tools a repository should use and how changes should be made reliably. It does not fully answer authority, durable multi-agent cognition, human-courier removal, or bounded execution autonomy.
 
 ## Caliberate — transactional agent development
 
-Caliberate introduced the stronger pattern:
-- repository documentation as the system of record;
-- AGENTS as an entry point rather than a giant project brain;
-- explicit architect versus implementation-worker roles;
-- bounded work items;
-- branch and report handoff;
-- architecture escalation instead of improvisation;
-- direct GitHub review and integration.
+Caliberate introduced repository documentation as the system of record, AGENTS as an entry point, explicit architect/worker roles, bounded work items, branch/report handoff, architecture escalation, and direct GitHub review/integration.
 
 The key conceptual shift was:
 
@@ -70,9 +55,24 @@ the structure becomes:
 
 One human invocation can produce a much larger coherent unit of progress.
 
+## Lantern Leaf — completion observability
+
+The next friction appeared after macro-goals became large enough to run unattended: the human no longer had to keep pushing the worker forward, but still had to remember to check whether the worker had finished.
+
+Lantern Leaf answered by making detached terminal goal notifications part of the repository workflow.
+
+Codex became responsible for automatically launching a repository-owned Windows watcher. The watcher observes the macro-goal reaching `done` or `blocked`, emits one desktop notification, and exits. The human does not run a second command.
+
+This exposed a second coordination cost:
+
+- **prompt tax**: paying attention to keep work moving;
+- **vigilance tax**: paying attention to discover that work stopped.
+
+The watcher also forced an important epistemic distinction: notification is a return signal, not evidence or acceptance.
+
 ## v1.0 synthesis
 
-The general theory extracted from that evolution is:
+The first general theory extracted from Caliberate and early Lantern Leaf was:
 
 1. The repo is shared institutional memory.
 2. The human is principal, not courier.
@@ -87,8 +87,18 @@ The general theory extracted from that evolution is:
 11. Escalation contains unresolved architecture.
 12. Human taste remains sovereign.
 
+## v1.1 refinement
+
+v1.1 adds:
+
+13. Long-running delegation has a return channel.
+14. The worker owns arming repository completion observation.
+15. Terminal `done`/`blocked` state is distinct from director acceptance.
+16. Completion signals route human attention but do not establish truth.
+17. Agentic systems should minimize both prompt tax and vigilance tax.
+
 Caliberate demonstrated that bounded agent work can be governed through repository contracts.
 
-Lantern Leaf demonstrated that the contracts can be made large enough to remove most conversational babysitting.
+Lantern Leaf demonstrated first that contracts can be made large enough to remove conversational babysitting, and then that terminal observation can remove the need to watch those long-running goals.
 
-v1.0 turns those project-specific practices into a reusable ontology.
+v1.1 turns both project-specific practices into reusable coordination semantics.

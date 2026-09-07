@@ -30,11 +30,21 @@ Explicitly prohibit adjacent work.
 
 ## Acceptance gates
 
-State what must be true before DONE is allowed.
+State what must be true before worker-terminal DONE is allowed.
 
 ## Validation
 
 List exact commands and required evidence classes.
+
+## Completion observability
+
+Observer path / command:
+Goal identity:
+Terminal states: done / blocked
+Checkout-restoration reliability rule:
+Notification failure policy: non-fatal unless this goal explicitly exists to repair the observer itself.
+
+The worker launches the observer automatically when available. Do not require a second human command.
 
 ## Repository handoff
 

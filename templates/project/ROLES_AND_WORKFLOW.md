@@ -13,7 +13,9 @@ Does not normally own:
 - relaying architecture prompts;
 - relaying worker reports;
 - reviewing implementation diffs;
-- merging worker branches.
+- merging worker branches;
+- polling long-running worker status;
+- manually starting a completion watcher.
 
 ## Director / architect / integrator
 
@@ -35,13 +37,25 @@ Owns:
 - directly related diagnosis and repair;
 - tests and validation;
 - durable reporting;
-- pushing the candidate branch.
+- pushing the candidate branch;
+- automatically launching repository-owned completion observation when available.
+
+## Completion observer
+
+The completion observer is infrastructure, not an authority role.
+
+It watches one goal's durable terminal state and emits a best-effort local signal for `done` or `blocked`.
+
+It must not convert notification delivery into a correctness gate.
 
 ## Lifecycle
 
     director commits goal
-      -> human invokes worker
-      -> worker executes and pushes candidate
+      -> human invokes worker once
+      -> worker activates goal + observer
+      -> worker executes autonomously within goal
+      -> worker terminalizes done/blocked + pushes candidate/report
+      -> observer returns attention to human
       -> director reviews directly
       -> accept / reject / revise / block
       -> integrate accepted work
