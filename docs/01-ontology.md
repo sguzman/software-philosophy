@@ -1,17 +1,12 @@
 # Ontology of Agentic Software Development
 
-This document defines the entities that exist in the v1.0 model and the relations between them.
+This document defines the entities in the v1 doctrine and the relations between them.
 
 ## Principal
 
 The **principal** is the human whose software is being built.
 
-The principal is the source of:
-- desired outcomes;
-- taste;
-- utility judgments;
-- acceptable tradeoffs;
-- final veto.
+The principal is the source of desired outcomes, taste, utility judgments, acceptable tradeoffs, and final veto.
 
 The principal may delegate interpretation and implementation, but not authorship of their own preferences.
 
@@ -19,17 +14,7 @@ The principal may delegate interpretation and implementation, but not authorship
 
 The **director** is the high-reasoning agent responsible for converting incomplete human intent into durable project governance.
 
-The director owns:
-- philosophy;
-- product scope;
-- priorities;
-- architecture;
-- invariants;
-- roadmaps;
-- goal boundaries;
-- semantic review;
-- integration decisions;
-- current-state interpretation.
+The director owns philosophy, product scope, priorities, architecture, invariants, roadmaps, goal boundaries, semantic review, integration decisions, and current-state interpretation.
 
 The director is a role, not a vendor or model name.
 
@@ -37,7 +22,7 @@ The director is a role, not a vendor or model name.
 
 The **implementation worker** is an agent with direct repository or filesystem capability.
 
-Its authority is local and delegated. It owns repository inspection needed to execute a goal, file mutation, compilation, deterministic testing, directly related diagnosis and repair, and a durable report of work and evidence.
+Its authority is local and delegated. It owns repository inspection needed to execute a goal, file mutation, compilation, deterministic testing, directly related diagnosis and repair, durable reporting, and execution of repository-owned handoff automation that the goal protocol assigns to it.
 
 It does not own the project merely because it touches the project.
 
@@ -45,21 +30,7 @@ It does not own the project merely because it touches the project.
 
 The **repository** is the canonical persistent project state visible to all roles.
 
-It may contain:
-- product doctrine;
-- architecture;
-- invariants;
-- priorities;
-- current verified status;
-- roadmaps;
-- work contracts;
-- reports;
-- reviews;
-- tests;
-- code;
-- configuration;
-- scripts;
-- history.
+It may contain product doctrine, architecture, invariants, priorities, current verified status, roadmaps, work contracts, reports, reviews, tests, code, configuration, scripts, and history.
 
 The repository is the shared institutional memory and communication substrate.
 
@@ -87,16 +58,7 @@ A roadmap is director-owned because sequence embodies architecture and priority.
 
 A **macro-goal** is a temporary delegation of transformation authority.
 
-It specifies:
-- desired end state;
-- starting evidence;
-- authorized passes;
-- constraints;
-- non-goals;
-- acceptance gates;
-- validation;
-- branch and handoff rules;
-- escalation conditions.
+It specifies desired end state, starting evidence, authorized passes, constraints, non-goals, acceptance gates, validation, branch and handoff rules, escalation conditions, and when relevant the completion-observer contract.
 
 The goal is the contract. The prompt merely invokes it.
 
@@ -105,6 +67,43 @@ The goal is the contract. The prompt merely invokes it.
 A **candidate state** is a worker-produced branch or commit that claims to satisfy a macro-goal.
 
 It is not accepted project reality merely because it compiles, tests pass, or the worker says it is done. Acceptance requires review.
+
+## Terminal work state
+
+A **terminal work state** is the repository-visible end of one worker execution attempt.
+
+Typical terminal states are:
+- `done`: the worker claims the goal contract has been satisfied and has produced a candidate for director review;
+- `blocked`: the worker cannot continue without authority or capability outside the goal.
+
+`done` is not the same as `accepted`. Worker terminalization ends execution; director acceptance changes authoritative project reality.
+
+## Completion observer
+
+A **completion observer** is a bounded, detached mechanism that watches durable work state for one goal and emits a best-effort terminal signal.
+
+It should:
+- be armed automatically by the worker rather than manually by the human;
+- observe a durable repository state or equally durable sentinel;
+- distinguish `done` from `blocked`;
+- notify exactly once per terminalization;
+- survive ordinary worker turn/process changes and checkout restoration;
+- exit after signaling;
+- remain non-fatal to product correctness.
+
+The observer is infrastructure, not a fourth authority role.
+
+## Completion signal
+
+A **completion signal** is an attention-routing event emitted after terminalization.
+
+It says, in effect: **the worker stopped; inspect durable state now.**
+
+It does not say:
+- the implementation is correct;
+- validation evidence is sufficient;
+- the director accepts the candidate;
+- the project is integrated.
 
 ## Evidence
 
@@ -116,7 +115,7 @@ Evidence has scope. A Linux compile does not prove Windows runtime behavior.
 
 ## Report
 
-A **report** is the worker's durable account of what changed, what was tested, what passed, what failed, what remains uncertain, and what deviated from the contract.
+A **report** is the worker's durable account of what changed, what was tested, what passed, what failed, what remains uncertain, what deviated from the contract, and when relevant whether completion-observer startup/signaling encountered a material issue.
 
 A report is a claim about evidence, not a substitute for evidence.
 
@@ -124,11 +123,7 @@ A report is a claim about evidence, not a substitute for evidence.
 
 A **review** is the director's semantic judgment of a candidate state against the goal, doctrine, architecture, invariants, and evidence.
 
-A review yields:
-- accept;
-- reject;
-- revise;
-- block.
+A review yields accept, reject, revise, or block.
 
 ## Transaction
 
@@ -156,17 +151,18 @@ Only acceptance creates:
 
 Implementation is therefore not the same thing as integration.
 
+Terminal signaling is orthogonal to the transaction:
+
+    T(C) -> done | blocked
+    S(T) -> best-effort attention signal
+
+`S(T)` can wake the human, but it cannot create `R_(n+1)`.
+
 ## Escalation
 
 An **escalation** occurs when continued execution would require authority not already delegated.
 
-Typical escalation boundaries:
-- changing architectural ownership;
-- violating an invariant;
-- selecting between materially different system designs;
-- changing product semantics;
-- weakening acceptance criteria;
-- inventing new persistence or dependency policy not authorized by the goal.
+Typical escalation boundaries include changing architectural ownership, violating an invariant, selecting between materially different system designs, changing product semantics, weakening acceptance criteria, or inventing new persistence/dependency policy not authorized by the goal.
 
 Escalation is not failure. It is correct containment of unresolved uncertainty.
 

@@ -1,6 +1,6 @@
-# Macro-Goals and Prompt Tax
+# Macro-Goals, Prompt Tax, and Vigilance Tax
 
-Macro-goals are the main operational improvement of v1.0.
+Macro-goals are a central operational improvement of the v1 doctrine.
 
 They exist because a one-prompt-per-fix workflow can make the human a scheduler and courier even when the agents are individually capable.
 
@@ -8,14 +8,29 @@ They exist because a one-prompt-per-fix workflow can make the human a scheduler 
 
 **Prompt tax** is the coordination cost paid when work is unnecessarily split across many conversational turns.
 
-Symptoms:
-- “compiler failed; ask me what to do next”;
-- “I fixed the first error; send another prompt”;
-- the human copies the same architecture repeatedly;
-- director and worker require dozens of relayed messages;
-- execution stalls at predictable local failures.
+Symptoms include predictable compiler failures causing new prompts, the same architecture being copied repeatedly, or execution stalling at ordinary local repair work.
 
-Prompt tax is not just annoyance. It consumes attention, breaks flow, and reduces practical autonomy.
+Prompt tax consumes attention, breaks flow, and reduces practical autonomy.
+
+## Vigilance tax
+
+**Vigilance tax** is the coordination cost paid when the human must keep checking whether delegated work has stopped.
+
+Symptoms:
+- opening the terminal every few minutes;
+- asking the worker `are you done?`;
+- keeping the task mentally resident because completion has no return channel;
+- forgetting that a goal finished and discovering it much later;
+- running an extra manual watcher command after every invocation.
+
+Macro-goals remove unnecessary **forward** coordination. Completion observers remove unnecessary **return-path** coordination.
+
+A mature delegation therefore has both:
+
+    forward channel: durable goal contract
+    return channel: terminal completion signal
+
+The return channel is best-effort UX. Repository work state remains authoritative.
 
 ## The architecturally closed goal
 
@@ -23,12 +38,7 @@ A macro-goal should be:
 
 > **As large as possible while remaining architecturally closed.**
 
-A goal is architecturally closed when likely decisions during execution are already covered by:
-- existing architecture;
-- explicit constraints;
-- non-goals;
-- delegated low-level latitude;
-- acceptance criteria.
+A goal is architecturally closed when likely decisions during execution are already covered by existing architecture, explicit constraints, non-goals, delegated low-level latitude, and acceptance criteria.
 
 Within such a goal, the worker can diagnose, implement, compile, repair directly related failures, retest, and continue to the next authorized subtrack without asking for a fresh prompt.
 
@@ -63,6 +73,9 @@ What commands or evidence classes are required?
 ### Repository handoff
 Branch, report, work-state transition, and push behavior.
 
+### Completion observability
+If the repository provides a goal observer, how it is armed, what terminal states it observes, and what failures are non-fatal.
+
 ### Human verification
 What, if anything, requires a real local machine or subjective observation?
 
@@ -87,23 +100,13 @@ It is measured in **decision closure**.
 
 ## Macro-goals may have stages
 
-A macro-goal can contain multiple stages when they share one coherent outcome.
-
-For example:
-
-    Stage A: recover green Windows build/test baseline
-    Stage B: extract a backend-neutral synthesis boundary
-    Stage C: implement Windows synthesis
-    Stage D: wire configuration/UI
-    Stage E: validate
-
-This can be one goal if the director has already decided the architecture connecting those stages.
+A macro-goal can contain multiple stages when they share one coherent outcome and the director has already decided the architecture connecting them.
 
 ## One ready goal
 
-A useful default is at most one authorized goal in ready/.
+A useful default is at most one authorized goal in `ready/`.
 
-This keeps priority unambiguous, worker invocation simple, branch ownership obvious, and state transitions visible.
+This keeps priority unambiguous, worker invocation simple, branch ownership obvious, completion observation specific to one goal, and state transitions visible.
 
 Parallel goals are possible, but they require deliberate isolation rather than accidental concurrency.
 
@@ -111,6 +114,6 @@ Parallel goals are possible, but they require deliberate isolation rather than a
 
 When the repo is healthy, the human prompt to the worker can be:
 
-> Read AGENTS.md and execute the single authorized macro-goal in docs/work/ready/. Continue through all authorized passes until acceptance passes or escalation requires stopping.
+> Read AGENTS.md and execute the single authorized macro-goal in docs/work/ready/. Automatically arm the repository completion observer when the protocol provides one, then continue through all authorized passes until acceptance passes or escalation requires stopping.
 
-That is the desired end state: the repository carries the contract.
+That is the desired end state: the repository carries the contract, and the worker carries its own completion return path.
