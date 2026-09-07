@@ -101,4 +101,38 @@ Caliberate demonstrated that bounded agent work can be governed through reposito
 
 Lantern Leaf demonstrated first that contracts can be made large enough to remove conversational babysitting, and then that terminal observation can remove the need to watch those long-running goals.
 
-v1.1 turns both project-specific practices into reusable coordination semantics.
+## Lantern Leaf — correction continuations
+
+Goal 0006 exposed the next lifecycle bug.
+
+The first Codex Goal session terminalized and claimed DONE. Director review then found bounded evidence and behavior gaps. The repository goal was still semantically Goal 0006, but the Codex UI required a fresh Goal session to continue.
+
+This exposed another category distinction:
+
+- repository macro-goal = durable semantic work identity;
+- Codex Goal session = disposable execution container;
+- execution attempt = one review-bounded pass of a session against the goal.
+
+The correct continuation was therefore:
+
+    Goal 0006 / Session A -> DONE claim -> director REVISE
+    Goal 0006 / Session B -> correction attempt -> review again
+
+not:
+
+    Goal 0006 -> rejected -> Goal 0007
+
+The same event also exposed stale completion-sentinel risk when a goal ID is reused for a later attempt, requiring the notification channel to become attempt-aware/re-armable.
+
+## v1.2 refinement
+
+v1.2 adds:
+
+18. Repository macro-goal identity is distinct from worker-session identity.
+19. One macro-goal may span multiple execution attempts and director reviews.
+20. Correctable review reopens the same goal instead of renumbering it.
+21. A fresh worker session is normal when a prior session has terminalized.
+22. Goal branch/report lineage is preserved by default across correction attempts.
+23. Completion observers are exactly-once per attempt and must be safely re-armed for later attempts under the same goal ID.
+
+v1.2 turns the Goal 0006 failure into a general rule: **tool lifecycle must not dictate project ontology.**
