@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.0] - 2026-09-07
+
+### Doctrine
+
+- Separated durable **repository macro-goal identity** from ephemeral **worker-session identity**.
+- Added **execution attempt**, **goal lineage**, and **correction continuation** as first-class concepts.
+- Formalized that worker `done` / `blocked` terminalize an attempt, not necessarily the macro-goal.
+- Added cyclic goal transitions: director `REVISE` or correctable rejection can reopen the same goal `done -> ready` for another attempt.
+- Required a fresh worker/Codex Goal session when the previous execution session has terminated, while preserving the same repository goal ID.
+- Made same-branch/report lineage the correction default, with director authority to require replacement implementation branches when needed.
+- Added current-main governance/review synchronization as a correction-session requirement.
+- Made completion observation **attempt-aware/re-armable** so stale terminal/ack state from an earlier attempt cannot falsely trigger a later continuation.
+- Added reusable correction-review/report/goal templates and a thin correction-continuation prompt.
+- Documented the Lantern Leaf Goal 0006 lifecycle bug that motivated the refinement.
+
 ## [1.1.0] - 2026-09-07
 
 ### Doctrine

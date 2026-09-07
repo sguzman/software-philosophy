@@ -15,7 +15,8 @@ Does not normally own:
 - reviewing implementation diffs;
 - merging worker branches;
 - polling long-running worker status;
-- manually starting a completion watcher.
+- manually starting/resetting a completion watcher;
+- deciding that a new worker session implies a new repository goal number.
 
 ## Director / architect / integrator
 
@@ -25,38 +26,39 @@ Owns:
 - priorities;
 - architecture;
 - roadmap ordering;
-- macro-goals;
-- semantic review;
+- macro-goal identity;
+- semantic review and correction contracts;
 - integration;
 - evidence-backed current-state updates.
 
 ## Implementation worker
 
 Owns:
-- executing the authorized goal;
+- executing the authorized goal attempt;
 - directly related diagnosis and repair;
 - tests and validation;
 - durable reporting;
 - pushing the candidate branch;
-- automatically launching repository-owned completion observation when available.
+- completion-observer startup/re-arm when available.
 
 ## Completion observer
 
 The completion observer is infrastructure, not an authority role.
 
-It watches one goal's durable terminal state and emits a best-effort local signal for `done` or `blocked`.
-
-It must not convert notification delivery into a correctness gate.
+It watches one execution attempt's durable terminal state and emits a best-effort signal.
 
 ## Lifecycle
 
-    director commits goal
-      -> human invokes worker once
-      -> worker activates goal + observer
-      -> worker executes autonomously within goal
-      -> worker terminalizes done/blocked + pushes candidate/report
-      -> observer returns attention to human
-      -> director reviews directly
-      -> accept / reject / revise / block
-      -> integrate accepted work
-      -> update current state / roadmap
+    director commits Goal G
+      -> human starts worker session S1
+      -> worker executes attempt A1
+      -> A1 done/blocked + notification
+      -> director reviews
+          -> ACCEPT: integrate / close G
+          -> REVISE: reopen same G to ready
+               -> human starts fresh session S2 if S1 terminated
+               -> worker continues same branch/report lineage as attempt A2
+               -> re-arm observer
+               -> review again
+
+Worker-session count and repository-goal count are intentionally independent.

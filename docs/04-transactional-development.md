@@ -5,12 +5,13 @@ The v1 doctrine models implementation as a sequence of bounded, reviewable state
 ## The transaction boundary
 
 Every meaningful change should have:
-- a known base state;
+- a known accepted base state;
 - an explicit authorization;
-- a bounded transformation;
-- a candidate result;
+- a durable macro-goal identity;
+- one or more bounded execution attempts;
+- candidate results;
 - evidence;
-- a semantic review;
+- semantic review;
 - an integration decision.
 
 Git naturally supplies stable identities for these states.
@@ -19,19 +20,25 @@ Git naturally supplies stable identities for these states.
 
 The input to a worker is not `the whole project in prose`.
 
-It is a base commit or current main, canonical doctrine, the active macro-goal, and local source relevant to the goal.
+It is a base commit or current accepted main, canonical doctrine, the active/reopened macro-goal, any current director review/correction contract, and local source relevant to the goal.
 
 The worker can inspect the repository as needed. The director should not paste the codebase into the prompt.
 
-## Candidate state
+## Candidate attempts
 
-The worker produces a branch, commits, changed files, tests, a report, and possibly a blocked-state record.
+One macro-goal may produce several candidate states before acceptance.
 
-The candidate is isolated from accepted main until review.
+Example:
+
+    Goal 0006
+      Attempt A1 -> candidate C1 -> director: revise
+      Attempt A2 -> candidate C2 -> director: accept
+
+C1 is historical evidence and implementation lineage. It is not erased merely because C2 supersedes it.
 
 ## Worker terminalization
 
-Before director review, the worker reaches a terminal execution state:
+Each execution attempt reaches a terminal execution state:
 
     active -> done
         or
@@ -41,11 +48,11 @@ Before director review, the worker reaches a terminal execution state:
 
 `blocked` means further execution requires unresolved authority or unavailable capability.
 
-Neither terminal state closes the project transaction.
+Neither state closes the project transaction.
 
-If the repository has completion-observer machinery, this transition is the event that may trigger the best-effort human return signal.
+If the repository has completion-observer machinery, terminalization triggers the best-effort return signal for **that attempt**.
 
-## Review as commit validation
+## Review as transaction control
 
 The director asks:
 
@@ -65,30 +72,55 @@ Passing tests answer only part of this list. A completion notification answers n
 
 Acceptance means the candidate becomes part of authoritative project reality.
 
-After integration, update any stale current-status claims, roadmap gates, priorities, follow-up goals, and architectural notes.
+After integration, update stale current-status claims, roadmap gates, priorities, follow-up goals, and architectural notes.
 
-This closes the transaction.
+This closes the transaction for that macro-goal.
 
-## Rejection and revision
+## Revision and correctable rejection
 
-Rejection should also be durable.
+A terminal worker attempt can be rejected without rejecting the macro-goal itself.
 
-When possible, write a review contract that says what is wrong, whether the architecture remains valid, what correction is authorized, what must not be changed, and what evidence is required next.
+When the desired outcome remains the same, the director should write a durable correction review and **reopen the same goal** rather than incrementing the goal number merely because the worker session ended.
 
-Then the worker can perform a correction pass without the human relaying the review through chat.
+Typical transition:
+
+    G: active(A1)
+      -> done
+      -> director review: revise
+      -> G: ready
+      -> fresh worker session
+      -> active(A2)
+
+The new session reads the current review contract and continues the same branch/report lineage unless the director explicitly requires a clean implementation branch.
+
+## Session termination is not transaction closure
+
+An agent UI may represent one session as permanently completed.
+
+That is a property of the execution container, not of the repository transaction.
+
+Therefore:
+
+    session ended != goal closed
+    new session != new goal
+    worker DONE != director ACCEPT
+
+This separation prevents tool UX from dictating project ontology.
 
 ## Signaling is orthogonal
 
-Transaction correctness and completion signaling must remain independent.
+Transaction correctness and completion signaling remain independent.
 
 A useful worker candidate may be produced even if desktop notifications are unavailable.
 
 A successful notification may occur for a candidate that the director later rejects.
 
+A later correction attempt must re-arm signaling without consuming stale terminal state from an earlier attempt.
+
 Formally:
 
-    terminal_signal != acceptance
-    notification_failure != product_failure
+    terminal_signal_i != acceptance
+    notification_failure_i != product_failure
 
 The return channel changes who is paying attention, not what is true.
 
@@ -96,6 +128,6 @@ The return channel changes who is paying attention, not what is true.
 
 A transaction should be cheap to inspect and cheap to undo.
 
-This favors bounded branches, explicit commits, no hidden mutable state, deterministic migrations where possible, visible generated artifacts, and reviewable diffs.
+This favors bounded branches, explicit commits, preserved attempt history, no hidden mutable state, deterministic migrations where possible, visible generated artifacts, and reviewable diffs.
 
 The point is not tiny commits for their own sake. The point is **recoverable causality**.

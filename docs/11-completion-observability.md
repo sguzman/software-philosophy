@@ -1,16 +1,12 @@
 # Completion Observability and the Return Channel
 
-v1.1 adds a missing half of practical delegation.
-
-Macro-goals solved the problem of keeping a worker moving without repeated human prompts. They did not by themselves solve the problem of the human needing to watch for the worker to stop.
-
-This document defines the **return channel**.
+v1.1 introduced the return channel; v1.2 makes it safe for multi-session correction continuations.
 
 ## The principle
 
-> **A delegated long-running goal should wake the human at terminal state; the human should not have to poll for completion.**
+> **A delegated long-running execution attempt should wake the human at terminal state; the human should not have to poll for completion.**
 
-The implementation worker is responsible for arming the repository-owned observer as part of goal activation.
+The implementation worker is responsible for arming the repository-owned observer as part of each attempt activation.
 
 The human is not responsible for remembering a second watcher command.
 
@@ -18,34 +14,70 @@ The human is not responsible for remembering a second watcher command.
 
 A repository-mediated delegation has two directions:
 
-    human/director -> repository goal -> worker
+    human/director -> repository goal/review -> worker session
                  forward contract
 
-    worker terminal state -> observer -> human
+    worker attempt terminal state -> observer -> human
                  return signal
 
 The forward channel carries authority and intent.
 
 The return channel carries only attention.
 
-Confusing those channels is dangerous. A notification must never become authority, evidence, or acceptance.
+A notification must never become authority, evidence, acceptance, or macro-goal closure.
 
 ## Terminal semantics
 
-The observer should signal only when the worker has reached a real terminal state.
+The observer signals only when the **current execution attempt** reaches a real terminal state.
 
 Typical states:
-- `done`: candidate work and report are ready for director review;
-- `blocked`: execution stopped at a legitimate escalation/capability boundary.
+- `done`: current candidate/report are ready for director review;
+- `blocked`: current attempt stopped at a legitimate escalation/capability boundary.
 
-Do not notify on:
-- intermediate agent turns;
-- compile/test passes;
-- ordinary retries;
-- partial stage completion;
-- transient shell/process exits that do not terminalize the repository goal.
+Do not notify on intermediate agent turns, compile/test passes, ordinary retries, partial stage completion, or transient shell/process exits that do not terminalize the repository attempt.
 
-One goal terminalization should produce at most one terminal notification.
+## Exactly once per attempt, not once per goal lifetime
+
+One macro-goal may contain multiple worker attempts:
+
+    Goal 0006
+      Attempt A1 -> Completed notification
+      director: revise
+      Attempt A2 -> Completed notification
+      director: accept
+
+That is correct.
+
+The exactly-once rule applies to **one observer epoch / one attempt terminalization**.
+
+It does not prohibit later notifications for later attempts under the same goal ID.
+
+## Re-arming after correction
+
+A correction continuation must start a fresh observer epoch.
+
+Old terminal state must not cause the new watcher to immediately announce the previous attempt.
+
+Acceptable designs include:
+- an explicit attempt/epoch ID in signal filenames;
+- a monotonically increasing attempt number;
+- a unique worker-session token;
+- safe clearing/rotation of prior ephemeral terminal+ack state when the repository guarantees only one active attempt for that goal;
+- another deterministic equivalent.
+
+The human should not manage these tokens manually. Re-arming belongs to worker/repository automation.
+
+## Stale-signal safety
+
+Observer implementations must test the correction case:
+
+1. attempt A1 signals `done` and is acknowledged;
+2. director reopens the same goal;
+3. attempt A2 observer starts;
+4. A2 does **not** notify from A1's stale terminal marker;
+5. A2 later signals its own `done` or `blocked` exactly once.
+
+This is now a required semantic property for repositories that support correction continuations.
 
 ## The repository is still truth
 
@@ -55,107 +87,71 @@ Think of it as:
 
 > **an interrupt, not a verdict.**
 
-The signal means: `the worker stopped; inspect the repository`.
+The signal means: `the current worker attempt stopped; inspect the repository`.
 
-It does not mean:
-- the worker's DONE claim is correct;
-- required evidence exists;
-- tests passed;
-- the director accepted the candidate;
-- main changed.
-
-If notification delivery fails, the repository can still contain a perfectly valid done/blocked handoff.
+It does not mean the worker's DONE claim is correct, required evidence exists, tests passed, the director accepted the candidate, the macro-goal is closed, or main changed.
 
 ## Worker ownership
 
 When a repository provides completion-observer machinery, the worker owns:
-1. moving the goal into its active state;
-2. starting the observer automatically for that explicit goal identity;
+1. moving/reopening the goal into its active state for the current attempt;
+2. arming a fresh attempt-safe observer automatically;
 3. starting it detached from the current agent turn/shell lifecycle;
 4. continuing ordinary authorized work;
-5. terminalizing the goal only at real `done` or `blocked` state;
-6. recording material observer startup/failure information in the report when useful.
+5. terminalizing only at real `done` or `blocked` state;
+6. recording material observer startup/signal failures in the report when useful.
 
-The human should not manually launch the observer in the normal workflow.
+The human should not manually launch, reset, rotate, or signal the observer in the normal workflow.
 
 ## Detached lifetime
 
-The observer should not depend on a single Codex turn, shell process, or conversational connection remaining alive.
+The observer should not depend on a single agent turn, shell process, or conversational connection remaining alive.
 
-It should be able to outlive ordinary process turnover long enough to observe terminalization.
-
-This is why a detached local process is appropriate for workstation-driven development.
+It should outlive ordinary process turnover long enough to observe the current attempt terminalization.
 
 ## Observe durable state
 
 The observer should consume durable state rather than private agent state.
 
-Preferred inputs include:
-- repository work-state paths such as `docs/work/done/<goal>` and `docs/work/blocked/<goal>`;
-- a goal-specific durable sentinel;
-- branch-aware Git state when the local checkout may move.
+Preferred inputs include repository work-state paths, goal/attempt-specific durable sentinels, or branch-aware Git state when the local checkout may move.
 
-Do not make correctness depend on scraping agent prose or guessing that a process exit means completion.
+Do not make correctness depend on scraping agent prose or guessing that process exit means completion.
 
 ## Checkout-restoration race
 
-Many workflows restore the shared checkout to `main` after pushing a candidate branch.
+A robust observer must ensure routine checkout restoration cannot erase the terminal event before observation.
 
-A naive polling watcher can miss `done/` if the working tree changes back to main before its next poll.
-
-A robust observer must therefore have a deterministic terminalization handoff, for example:
-- observe/ack terminal state before checkout restoration;
-- inspect the goal branch through Git rather than only the checked-out filesystem;
-- use a goal-specific temporary sentinel/ack;
-- use another equivalent repository-owned mechanism.
-
-The doctrine does not mandate one implementation. It mandates that routine checkout restoration cannot silently erase the event before it is observable.
-
-## Exactly-once behavior
-
-Human attention should not be spammed.
-
-For one observer instance and one goal terminalization:
-- signal once for `done` or once for `blocked`;
-- never signal both unless the repository actually records two distinct terminalization epochs;
-- exit after terminal signaling.
-
-Persistent always-on daemons are not required by the philosophy. A bounded one-goal observer is usually easier to reason about.
+Acceptable strategies include post-push signaling into `.git`/temporary state, branch-aware Git inspection, or an explicit acknowledgment handshake.
 
 ## Failure semantics
 
 Completion notification is workflow UX, not a product correctness gate.
 
-Therefore:
-- notification failure must not convert a correct product goal into BLOCKED or FAILED;
-- an unavailable desktop-notification API should be classified honestly;
-- deterministic observer logic should still be testable without real toast delivery;
-- material observer failures can be recorded in the worker report and repaired as workflow work.
+Notification failure must not convert a correct product goal into BLOCKED or FAILED. An unavailable desktop API should be classified honestly. Observer logic should be deterministically testable without real desktop delivery.
 
-## Testability
-
-A good observer implementation should provide a no-notification or injectable-sink mode.
+## Minimum tests
 
 Test at least:
 - done detection;
 - blocked detection;
-- no notification for active/ready;
-- exactly-once behavior;
+- no signal for active/ready;
+- exactly-once behavior within one attempt;
+- **re-arm of the same goal ID for a second attempt without stale retrigger**;
 - missing/malformed goal handling;
-- survival of the repository's checkout/handoff pattern;
-- non-fatal notification delivery failure.
+- checkout-restoration-safe behavior;
+- notification sink failure remains non-fatal.
 
 ## Windows adapter
 
-In the workflow that motivated v1.1, the repository owns a PowerShell watcher such as:
+A Windows repository may use a PowerShell watcher such as:
 
-    scripts/codex-goal-notify.ps1 -GoalId 0005 -RepoRoot <repo>
+    scripts/codex-goal-notify.ps1 -GoalId 0006 -RepoRoot <repo>
 
-Codex launches it automatically as an independent Windows process. It watches the goal and emits a Windows desktop notification when the goal reaches `done` or `blocked`.
+and a post-push signal helper.
 
-This is an implementation of the doctrine, not the doctrine itself.
+For correction continuations, that adapter must either use an attempt-aware state key or reset/rotate the old goal terminal+ack state safely before starting the new observer epoch.
 
-Other repositories may use a macOS notification, Linux desktop notification, terminal bell, local webhook, or another bounded local return channel as long as the same semantics are preserved.
+This is implementation, not universal doctrine.
 
 ## Attention economics
 
@@ -163,14 +159,16 @@ Prompt tax makes the human repeatedly **push** work forward.
 
 Vigilance tax makes the human repeatedly **pull** status back.
 
-A well-designed agentic repository removes both low-value loops:
+Session/goal conflation creates a third avoidable burden: the human has to reason about tool lifecycle as if it were project lifecycle.
 
-    one intent
-      -> one durable macro-goal
-      -> autonomous bounded execution
-      -> one terminal signal
-      -> director review / high-value human observation
+A well-designed repository removes all three:
 
-The result is not a human-free system.
+    one durable goal identity
+      -> attempt A1 in session S1
+      -> terminal signal
+      -> director correction
+      -> attempt A2 in fresh session S2
+      -> terminal signal
+      -> director acceptance
 
-It is a system in which human attention is reserved for intent, taste, veto, architecture-changing ambiguity, and observations the machine cannot obtain.
+The tool session can be disposable because the repository lineage is not.

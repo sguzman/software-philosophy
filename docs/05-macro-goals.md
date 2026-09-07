@@ -27,8 +27,8 @@ Macro-goals remove unnecessary **forward** coordination. Completion observers re
 
 A mature delegation therefore has both:
 
-    forward channel: durable goal contract
-    return channel: terminal completion signal
+    forward channel: durable goal/review contract
+    return channel: terminal completion signal for the current attempt
 
 The return channel is best-effort UX. Repository work state remains authoritative.
 
@@ -41,6 +41,21 @@ A macro-goal should be:
 A goal is architecturally closed when likely decisions during execution are already covered by existing architecture, explicit constraints, non-goals, delegated low-level latitude, and acceptance criteria.
 
 Within such a goal, the worker can diagnose, implement, compile, repair directly related failures, retest, and continue to the next authorized subtrack without asking for a fresh prompt.
+
+## Goal identity is semantic, not conversational
+
+A macro-goal is not `one prompt`, `one chat`, `one Codex Goal session`, or `one terminal notification`.
+
+It is the durable semantic objective plus its contract and lineage.
+
+Therefore one macro-goal may span:
+- multiple implementation stages;
+- multiple worker sessions;
+- multiple candidate branches/commits inside one branch lineage;
+- multiple director review/correction passes;
+- multiple terminal notifications, one per execution attempt.
+
+The goal number advances because the semantic work unit advances, not because an execution container ended.
 
 ## What a macro-goal contains
 
@@ -65,16 +80,21 @@ Which architecture and compatibility rules apply?
 Which tempting adjacent work is explicitly excluded?
 
 ### Acceptance gates
-What must be true before the worker may declare completion?
+What must be true before the worker may declare attempt-terminal DONE, and what the director ultimately reviews?
 
 ### Validation
 What commands or evidence classes are required?
 
 ### Repository handoff
-Branch, report, work-state transition, and push behavior.
+Goal ID, branch/report lineage, work-state transition, and push behavior.
+
+### Correction continuation policy
+What should be reused if director review requests another pass?
+
+Default: same goal ID, same semantic objective, same branch/report lineage; fresh worker session if the previous session terminated.
 
 ### Completion observability
-If the repository provides a goal observer, how it is armed, what terminal states it observes, and what failures are non-fatal.
+How the observer is armed for each execution attempt, what terminal states it observes, and how stale prior-attempt state is prevented from retriggering.
 
 ### Human verification
 What, if anything, requires a real local machine or subjective observation?
@@ -94,26 +114,36 @@ Too large:
 - unrelated work accumulates;
 - failures become hard to review.
 
-The correct size is not measured in files, commits, or tokens.
+The correct size is not measured in files, commits, tokens, prompts, or worker sessions.
 
 It is measured in **decision closure**.
 
-## Macro-goals may have stages
+## Macro-goals may have stages and attempts
 
 A macro-goal can contain multiple stages when they share one coherent outcome and the director has already decided the architecture connecting them.
+
+A macro-goal can also contain multiple attempts when director review finds a correctable gap after an earlier worker session has terminalized.
+
+Stages are planned subdivisions inside execution.
+
+Attempts are review-separated executions in the same goal lineage.
 
 ## One ready goal
 
 A useful default is at most one authorized goal in `ready/`.
 
-This keeps priority unambiguous, worker invocation simple, branch ownership obvious, completion observation specific to one goal, and state transitions visible.
+A correction continuation reopens the same goal back to `ready/`; it does not create a second simultaneously authorized goal.
 
-Parallel goals are possible, but they require deliberate isolation rather than accidental concurrency.
+This keeps priority unambiguous, worker invocation simple, branch ownership obvious, and state transitions visible.
 
 ## Thin invocation
 
-When the repo is healthy, the human prompt to the worker can be:
+Initial execution:
 
-> Read AGENTS.md and execute the single authorized macro-goal in docs/work/ready/. Automatically arm the repository completion observer when the protocol provides one, then continue through all authorized passes until acceptance passes or escalation requires stopping.
+> Read AGENTS.md and execute the single authorized macro-goal in docs/work/ready/. Arm the completion observer when provided and continue through all authorized passes until the current attempt terminalizes.
 
-That is the desired end state: the repository carries the contract, and the worker carries its own completion return path.
+Correction continuation after a terminated session:
+
+> This is a director correction continuation of the same repository goal, not a new macro-goal. Read AGENTS.md, the reopened ready goal, and its director review. Continue the existing branch/report lineage in a fresh worker session and re-arm completion observation for this attempt.
+
+The repository carries the contract and the correction delta.

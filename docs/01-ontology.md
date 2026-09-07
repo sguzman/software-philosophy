@@ -22,7 +22,7 @@ The director is a role, not a vendor or model name.
 
 The **implementation worker** is an agent with direct repository or filesystem capability.
 
-Its authority is local and delegated. It owns repository inspection needed to execute a goal, file mutation, compilation, deterministic testing, directly related diagnosis and repair, durable reporting, and execution of repository-owned handoff automation that the goal protocol assigns to it.
+Its authority is local and delegated. It owns repository inspection needed to execute a goal, file mutation, compilation, deterministic testing, directly related diagnosis and repair, durable reporting, and repository-owned handoff automation assigned by the goal protocol.
 
 It does not own the project merely because it touches the project.
 
@@ -54,56 +54,111 @@ A **roadmap** is an ordered theory of change. It expresses sequencing, dependenc
 
 A roadmap is director-owned because sequence embodies architecture and priority.
 
-## Macro-goal
+## Repository macro-goal
 
-A **macro-goal** is a temporary delegation of transformation authority.
+A **repository macro-goal** is a durable semantic unit of delegated work.
 
-It specifies desired end state, starting evidence, authorized passes, constraints, non-goals, acceptance gates, validation, branch and handoff rules, escalation conditions, and when relevant the completion-observer contract.
+It specifies desired end state, starting evidence, authorized passes, constraints, non-goals, acceptance gates, validation, branch/report lineage, handoff rules, escalation conditions, and when relevant completion-observer behavior.
 
-The goal is the contract. The prompt merely invokes it.
+Its identity is the goal's semantic objective and durable contract, usually represented by a stable goal ID such as `0006`.
+
+A macro-goal may survive multiple worker sessions, multiple candidate attempts, and multiple director reviews.
+
+The goal is the contract. A worker session merely executes against it.
+
+## Worker session
+
+A **worker session** is an ephemeral execution container: for example, one Codex Goal UI session, agent process, terminal lifecycle, or equivalent bounded runtime.
+
+A worker session can terminate even though the repository macro-goal remains unresolved.
+
+Session identity is operational, not semantic.
+
+Therefore:
+
+    repository goal identity != worker session identity
+
+Starting a fresh worker session does not imply a new macro-goal.
+
+## Execution attempt
+
+An **execution attempt** is one bounded pass of a worker session against a repository macro-goal, ending in a candidate terminal state.
+
+A single goal can have:
+
+    G0006
+      A1 / Session S1
+      A2 / Session S2
+      A3 / Session S3
+
+Attempts belong to one goal lineage until the director accepts, abandons, or supersedes the goal.
 
 ## Candidate state
 
-A **candidate state** is a worker-produced branch or commit that claims to satisfy a macro-goal.
+A **candidate state** is a worker-produced branch/commit state that claims to satisfy the current goal contract or correction contract.
 
-It is not accepted project reality merely because it compiles, tests pass, or the worker says it is done. Acceptance requires review.
+It is not accepted project reality merely because it compiles, tests pass, or the worker says it is done. Acceptance requires director review.
 
 ## Terminal work state
 
-A **terminal work state** is the repository-visible end of one worker execution attempt.
+A **terminal work state** is the repository-visible end of one execution attempt.
 
 Typical terminal states are:
-- `done`: the worker claims the goal contract has been satisfied and has produced a candidate for director review;
-- `blocked`: the worker cannot continue without authority or capability outside the goal.
+- `done`: the worker claims the current attempt satisfies the goal and is ready for director review;
+- `blocked`: the current attempt cannot continue without authority or capability outside the goal.
 
-`done` is not the same as `accepted`. Worker terminalization ends execution; director acceptance changes authoritative project reality.
+`done` is not the same as `accepted`.
+
+Critically, `done` is not an absorbing state for the macro-goal. A director correction may reopen the same goal:
+
+    ready -> active(A1) -> done -> review: revise -> ready -> active(A2)
+
+## Correction continuation
+
+A **correction continuation** is a director-authored review delta that keeps the same repository macro-goal identity while authorizing another execution attempt.
+
+It normally preserves:
+- goal ID;
+- semantic outcome;
+- original constraints/non-goals unless explicitly amended;
+- implementation branch lineage;
+- report/review history.
+
+If the previous worker session has terminated, the continuation runs in a **fresh worker session**.
+
+The correction review, not the old session, carries the authority forward.
+
+## Goal lineage
+
+A **goal lineage** is the durable history of one macro-goal across attempts.
+
+It includes the goal contract, candidate branch history, reports, director reviews, correction deltas, evidence, and final disposition.
+
+Goal lineage should make it possible to answer: what was attempted, why it was rejected/revised, what changed next, and what was finally accepted?
 
 ## Completion observer
 
-A **completion observer** is a bounded, detached mechanism that watches durable work state for one goal and emits a best-effort terminal signal.
+A **completion observer** is a bounded, detached mechanism that watches durable terminal state for one execution attempt and emits a best-effort terminal signal.
 
 It should:
 - be armed automatically by the worker rather than manually by the human;
-- observe a durable repository state or equally durable sentinel;
+- observe durable repository state or an equally durable attempt signal;
 - distinguish `done` from `blocked`;
-- notify exactly once per terminalization;
+- notify exactly once per execution attempt terminalization;
+- be re-armable for a later correction attempt under the same goal ID;
 - survive ordinary worker turn/process changes and checkout restoration;
 - exit after signaling;
 - remain non-fatal to product correctness.
 
-The observer is infrastructure, not a fourth authority role.
+The observer is infrastructure, not an authority role.
 
 ## Completion signal
 
-A **completion signal** is an attention-routing event emitted after terminalization.
+A **completion signal** is an attention-routing event emitted after an execution attempt terminalizes.
 
-It says, in effect: **the worker stopped; inspect durable state now.**
+It says: **the current worker attempt stopped; inspect durable state now.**
 
-It does not say:
-- the implementation is correct;
-- validation evidence is sufficient;
-- the director accepts the candidate;
-- the project is integrated.
+It does not say the implementation is correct, validation is sufficient, the director accepts the candidate, the macro-goal is closed, or the project is integrated.
 
 ## Evidence
 
@@ -115,15 +170,19 @@ Evidence has scope. A Linux compile does not prove Windows runtime behavior.
 
 ## Report
 
-A **report** is the worker's durable account of what changed, what was tested, what passed, what failed, what remains uncertain, what deviated from the contract, and when relevant whether completion-observer startup/signaling encountered a material issue.
+A **report** is the worker's durable account of what changed, what was tested, what passed, what failed, what remains uncertain, what deviated from the contract, and which execution attempt produced those claims.
+
+Correction continuations should append or otherwise preserve attempt history rather than erasing the first pass.
 
 A report is a claim about evidence, not a substitute for evidence.
 
 ## Review
 
-A **review** is the director's semantic judgment of a candidate state against the goal, doctrine, architecture, invariants, and evidence.
+A **review** is the director's semantic judgment of a candidate attempt against the goal, doctrine, architecture, invariants, and evidence.
 
 A review yields accept, reject, revise, or block.
+
+Reject/revise can either reopen the same macro-goal or, if the semantic objective itself is abandoned/superseded, close it without acceptance.
 
 ## Transaction
 
@@ -132,31 +191,29 @@ A **transaction** is the complete movement from one accepted project state to an
 Let:
 
     R_n = accepted repository state
-    G   = authorized macro-goal
-    W   = worker transformation
-    C   = candidate state
-    E   = evidence
-    V   = director review
+    G   = durable repository macro-goal
+    A_i = execution attempt i under G
+    C_i = candidate state from A_i
+    E_i = evidence for C_i
+    V_i = director review of C_i
 
 Then:
 
-    C = W(R_n, G)
+    C_i = A_i(R_n, G, review_delta_i)
 
-    V(R_n, G, C, E)
+    V_i(R_n, G, C_i, E_i)
       -> accept | reject | revise | block
+
+If `revise` or a correctable `reject`:
+
+    G remains G
+    next attempt A_(i+1) may run in a fresh worker session
 
 Only acceptance creates:
 
     R_(n+1)
 
-Implementation is therefore not the same thing as integration.
-
-Terminal signaling is orthogonal to the transaction:
-
-    T(C) -> done | blocked
-    S(T) -> best-effort attention signal
-
-`S(T)` can wake the human, but it cannot create `R_(n+1)`.
+Implementation, worker-session termination, and integration are therefore three different events.
 
 ## Escalation
 
@@ -170,8 +227,12 @@ Escalation is not failure. It is correct containment of unresolved uncertainty.
 
 A **prompt** is an invocation surface, not project memory.
 
-A mature repository should make many prompts extremely small:
+Initial execution can often be invoked with:
 
 > Read AGENTS.md and execute the single authorized goal in docs/work/ready/.
 
-If a prompt must repeatedly restate architecture, the repository is under-specified.
+A correction continuation can often be invoked with:
+
+> This is a director correction continuation of repository Goal 0006, not a new macro-goal. Read AGENTS.md, the ready goal, and its director review; continue the existing goal lineage.
+
+If prompts must repeatedly restate architecture or correction details already committed, the repository is under-specified.

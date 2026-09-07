@@ -1,4 +1,4 @@
-# Adopting v1.1 in a Repository
+# Adopting v1.2 in a Repository
 
 The philosophy is technology-independent. Use only the structure your project earns.
 
@@ -97,7 +97,26 @@ Required semantics:
 
 Do not make the human remember a second command. If that is required, vigilance tax has merely moved rather than disappeared.
 
-## Step 8 — evolve from observed friction
+## Step 8 — support correction continuations
+
+Document the distinction between repository macro-goals and worker sessions.
+
+When director review requests bounded correction after a worker session terminalizes:
+
+- keep the same goal ID if the semantic objective is unchanged;
+- reopen the same goal to `ready/`;
+- start a fresh worker session;
+- continue the branch/report lineage unless the review explicitly replaces it;
+- read the current director review before editing;
+- re-arm completion observation so stale prior-attempt state cannot retrigger.
+
+The work-state machine is therefore cyclic:
+
+    ready -> active(A1) -> done -> review: revise -> ready -> active(A2)
+
+Do not make tool-session lifecycle determine repository goal numbering.
+
+## Step 9 — evolve from observed friction
 
 The repo protocol itself is software.
 
@@ -129,6 +148,6 @@ Automation should support the authority model, not erase it.
 
 ## What not to standardize globally
 
-v1.1 does not require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, or a specific desktop-notification API.
+v1.2 does not require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, or a particular worker-session UI.
 
 The doctrine standardizes **coordination semantics**, not technology taste.
