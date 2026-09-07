@@ -136,3 +136,52 @@ v1.2 adds:
 23. Completion observers are exactly-once per attempt and must be safely re-armed for later attempts under the same goal ID.
 
 v1.2 turns the Goal 0006 failure into a general rule: **tool lifecycle must not dictate project ontology.**
+
+
+## Lantern Leaf — the QA payload failure
+
+After automated non-PDF parity was accepted, Lantern Leaf briefly moved human desktop verification into a precompiled GitHub Actions QA bundle.
+
+Mechanically, the bundle was attractive: it could include an executable, Pandoc, fixtures, a one-command launcher, and logs without requiring the principal's machine to have a build environment.
+
+Operationally, it violated the deeper repository model.
+
+The principal would have had to download a large generated archive, depend on network quality for the handoff, extract it into a second execution location, trust/run material assembled outside the checkout, and keep track of the relationship between that payload and repository state.
+
+The automation had reduced machine setup by increasing human ceremony.
+
+The corrected model became:
+
+    repo is workspace
+      -> repo declares dependencies
+      -> repo materializes dependencies
+      -> repo builds itself
+      -> repo launches QA
+      -> repo keeps logs
+
+Lantern Leaf first implemented this with a custom Windows dependency declaration/bootstrap and then refined the policy to use Scoop's own dependency representation for ordinary CLI tools.
+
+Current concrete shape:
+
+    Scoopfile.json
+    rust-toolchain.toml
+    deps.ps1
+    qa.ps1
+
+This exposed another coordination cost: **ceremony tax** — mechanical setup, transfer, extraction, environment reconstruction, or provenance bookkeeping imposed on the human that repository machinery could own.
+
+## v1.3 refinement
+
+v1.3 adds:
+
+24. Doctrine has explicit modalities: prohibitions, current conventions, and latent options.
+25. External payload handoff is prohibited for the principal's ordinary development/manual-QA workflow.
+26. The repository is the human execution surface as well as the agent communication substrate.
+27. Dependency requirements are durable repository state and should be machine-readable where practical.
+28. Repo-owned bootstrap/check machinery materializes the local environment and should be idempotent.
+29. The director owns telling the human when dependency refresh is required; the human should not infer hidden environment drift.
+30. Scoop is the current Windows policy for ordinary CLI dependencies.
+31. Language-native toolchain declarations and unavoidable platform-native installer exceptions remain valid when they are the natural owner of that dependency class.
+32. Latent options preserve future technologies such as Nix or mise without creating roadmap pressure or authorization.
+
+v1.3 turns the QA bundle mistake into a general rule: **automation must not reduce agent friction by exporting ceremony to the principal.**

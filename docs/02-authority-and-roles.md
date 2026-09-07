@@ -18,7 +18,7 @@ The principal may be unable or unwilling to specify every technical consequence.
 
 The director has delegated semantic authority.
 
-Owns resolving ambiguous intent, architecture, product boundaries, invariants, roadmap ordering, work decomposition, macro-goal definitions, interpretation of evidence, acceptance and rejection, and integration into accepted state.
+Owns resolving ambiguous intent, architecture, product boundaries, invariants, roadmap ordering, work decomposition, macro-goal definitions, human execution policy, dependency-materialization policy, interpretation of evidence, acceptance and rejection, and integration into accepted state.
 
 The director may edit governance and architecture documents directly.
 
@@ -44,13 +44,17 @@ The worker must not silently redefine architecture, alter product scope, reorder
 
 The principal may also act as the **human maintainer** who operates the local environment.
 
-The maintainer can own pulling accepted main, invoking the worker, real-machine GUI/audio/device tests, and observations that remote agents cannot obtain.
+The maintainer can own pulling accepted main, invoking the worker, running director-specified repository bootstrap/QA entrypoints, real-machine GUI/audio/device tests, and observations that remote agents cannot obtain.
 
 The maintainer should not be the normal communication courier **or the normal completion monitor**.
 
 A design that repeatedly requires the human to copy long architecture prompts, worker reports, compiler logs, or branch state between agents has failed to use the repository as shared context.
 
 A design that requires the human to keep asking whether a long-running goal is finished has failed to externalize completion observability.
+
+A design that requires the human to download, unpack, and execute a generated testing payload has failed to keep the repository as the execution surface.
+
+A design that makes the human infer which dependencies must be installed or refreshed has failed to externalize environment knowledge. The director owns deciding when dependency bootstrap needs to run or rerun; repository scripts own the mechanics.
 
 ## The principal veto
 
@@ -68,6 +72,7 @@ Authority should flow downward only as far as uncertainty has already been resol
 - Low uncertainty but high mutation volume: delegate to worker.
 - Mechanical verification: delegate to tools.
 - Terminal attention routing: delegate to repository-owned observer machinery.
+- Dependency/environment materialization: delegate to repository-owned declarations/scripts and platform managers.
 - Irreducibly subjective observation: return to human.
 
 The economic principle is:

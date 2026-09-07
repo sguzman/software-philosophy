@@ -8,7 +8,9 @@ The failure mode is easy to recognize: one capable agent reasons about architect
 
 A second failure mode appears after delegation improves: the worker can run for a long time, but the human still has to keep checking whether it is finished.
 
-That is not full delegation. It is coordination debt.
+A third failure mode appears when the agents automate themselves but export ceremony back onto the human: download this CI archive, extract it somewhere, trust the generated executable, remember which copy is authoritative, and run a script from outside the repository.
+
+That is not full delegation either. It is coordination debt displaced onto the principal.
 
 ## The doctrine
 
@@ -47,7 +49,27 @@ Git is:
 
 A green suite can prove specific mechanical claims. It cannot decide whether the product should exist in that form, whether architecture remains coherent, whether a UI feels right, or whether a behavior violates intent.
 
-**The human should operate the system, not carry or watch it.**
+**The human should operate the system, not carry, watch, or assemble it.**
+
+The repository should be the human execution surface as well as the agent communication surface.
+
+For ordinary development and manual QA:
+
+    repository checkout
+      -> declared dependencies
+      -> repo-owned bootstrap
+      -> repo-owned build/QA command
+      -> repo-owned logs/evidence
+
+Do not replace this with:
+
+    chat/CI
+      -> generated payload
+      -> human download
+      -> human extraction
+      -> ambiguous external execution directory
+
+The latter adds mental load, bandwidth dependence, provenance ambiguity, and another trust boundary while weakening the repository's role as the shared state.
 
 The target human loop is short:
 - express intent;
@@ -75,8 +97,12 @@ That requires:
 - explicit escalation;
 - direct agent review through Git;
 - durable current-state knowledge;
-- terminal completion observability.
+- terminal completion observability;
+- repo-native human execution;
+- explicit dependency materialization;
+- negative doctrine for known-bad workflow shapes;
+- latent options that preserve future possibilities without creating work pressure.
 
 The philosophy can be summarized in one sentence:
 
-> Humans define ends, directors govern meaning, repositories preserve state, workers perform bounded transformations, evidence constrains belief, completion signals route attention, and Git makes every accepted change explicit and reversible.
+> Humans define ends, directors govern meaning, repositories preserve state and execution contracts, workers perform bounded transformations, evidence constrains belief, completion signals route attention, dependencies are materialized from the repo, and Git makes every accepted change explicit and reversible.

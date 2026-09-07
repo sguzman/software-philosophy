@@ -40,6 +40,68 @@ The repository is the shared institutional memory and communication substrate.
 
 Doctrine answers: **what ought to be true?**
 
+## Doctrinal modality
+
+A **doctrinal modality** states how much normative force a durable statement carries.
+
+v1.3 distinguishes three primary modalities:
+
+### Prohibition
+
+A **prohibition** is negative doctrine: a workflow or design shape the system must not use.
+
+Example: do not ask the principal to download and run generated development/QA payloads outside the repository.
+
+A prohibition is stronger than a preference and broader than a goal-scoped non-goal.
+
+### Current convention
+
+A **current convention** is positive doctrine for the present operating environment.
+
+It answers: given the current constraints, what mechanism should we use now?
+
+Example: Scoop is the principal's current Windows manager for ordinary CLI dependencies.
+
+### Latent option
+
+A **latent option** is a durable future possibility with deliberately weak force.
+
+It preserves memory and option value without creating roadmap priority, a queued task, implementation authorization, a deadline, or an implication that the current convention is defective.
+
+## Human execution surface
+
+The **human execution surface** is the smallest repository-owned interface through which the principal performs necessary local work.
+
+Examples include `./qa.ps1`, `./deps.ps1`, or `./scripts/check`.
+
+## External payload handoff
+
+An **external payload handoff** occurs when ordinary development or human QA requires the principal to obtain generated runnable material outside the repository workflow, such as a CI ZIP, agent-produced archive, temporary executable bundle, or one-off downloaded script.
+
+For the principal's normal development/testing workflow, external payload handoff is prohibited.
+
+## Dependency declaration
+
+A **dependency declaration** is a committed, machine-readable statement of tools/environment requirements, such as `Scoopfile.json`, `rust-toolchain.toml`, package manifests, or narrowly scoped platform workload declarations.
+
+## Dependency materializer
+
+A **dependency materializer** is repo-owned machinery that turns declarations into an available local environment.
+
+It should be idempotent, inspectable, safe to rerun, and hidden behind a stable repo-owned command where practical.
+
+## Platform profile
+
+A **platform profile** is principal-specific operational policy layered below universal coordination doctrine.
+
+Current Windows profile: ordinary CLI dependencies use Scoop/Scoopfile; language toolchains retain conventional native declarations where appropriate; unavoidable Microsoft compiler/workload installation may use an explicit Windows-native bootstrap exception; human QA uses a repo-owned command.
+
+## Option promotion
+
+**Option promotion** is the explicit act that converts a latent option into evaluated or authorized work.
+
+Until promotion, agents must not spend implementation effort merely because the option exists.
+
 ## State
 
 **State** is durable descriptive knowledge about what is true now.
