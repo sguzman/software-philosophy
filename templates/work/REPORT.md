@@ -4,6 +4,12 @@
 
 DONE / BLOCKED / PARTIAL
 
+## Attempt
+
+Goal ID:
+Attempt / correction pass:
+Worker session: fresh / continued / unknown
+
 ## Summary
 
 ## Files changed
@@ -16,9 +22,14 @@ Include exact commands, environment, and results.
 
 Distinguish static, deterministic, hosted-platform, runtime, and human evidence.
 
+## Director correction pass
+
+If this is a continuation, preserve prior report history and map each review finding to its closing evidence.
+
 ## Completion observability
 
-Observer started:
+Observer re-armed for this attempt:
+Stale prior-attempt state handled:
 Terminal state observed:
 Notification delivery / test mode:
 Material observer failures:
@@ -27,7 +38,7 @@ Do not list a completion notification as product evidence.
 
 ## Deviations
 
-Describe any difference from the goal contract.
+Describe any difference from the goal/review contract.
 
 ## Risks / unverified behavior
 
@@ -36,6 +47,8 @@ Describe any difference from the goal contract.
 If blocked, state the exact decision required.
 
 ## Recommended next goal
+
+Do not recommend incrementing the goal number merely because this worker session terminates.
 
 ## Git
 

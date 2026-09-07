@@ -1,6 +1,6 @@
 # End-to-End Workflow
 
-This is the canonical v1.1 operating loop.
+This is the canonical v1.2 operating loop.
 
 ## Phase 0 — establish governance
 
@@ -26,57 +26,77 @@ The input may be vague. It does not need to be an implementation plan.
 
 ## Phase 2 — director synthesis
 
-The director:
-- inspects current repository state;
-- resolves what the intent implies;
-- updates doctrine if needed;
-- updates architecture if needed;
-- determines priority;
-- defines the next architecturally closed macro-goal;
-- commits that shared context.
+The director inspects current repository state, resolves implications, updates doctrine/architecture if needed, determines priority, defines the next architecturally closed macro-goal, and commits that shared context.
 
-The director spends reasoning on uncertainty before delegating mutation.
+## Phase 3 — initial worker session
 
-## Phase 3 — thin worker invocation
+The human pulls accepted main and starts one worker/Codex Goal session with a thin instruction pointing at AGENTS and the ready goal.
 
-The human pulls accepted main and invokes the worker with a short instruction pointing at AGENTS and the ready goal.
+No giant prompt ferry is required. No separate watcher command should be required when the repository provides completion-observer machinery.
 
-No giant prompt ferry is required. No separate watcher command should be required when the repository already provides completion-observer machinery.
-
-## Phase 4 — worker activation
+## Phase 4 — worker activation and attempt
 
 The worker:
 1. synchronizes from accepted main;
-2. creates the goal branch;
-3. marks the goal active;
-4. automatically launches the repository completion observer for that explicit goal when available;
-5. verifies observer startup sufficiently to continue without human intervention.
+2. creates the goal branch or enters the branch named by the goal;
+3. moves the goal `ready -> active`;
+4. arms a fresh completion-observer epoch for this execution attempt;
+5. executes all authorized passes;
+6. validates;
+7. writes/updates the durable report;
+8. moves the goal to `done` or `blocked` only at the real terminal state;
+9. commits and pushes;
+10. signals terminal state and restores the shared checkout as required.
 
-Observer startup failure is workflow degradation, not automatically a product-goal failure.
+The completion observer emits one best-effort terminal notification for this attempt and exits.
 
-## Phase 5 — worker transaction
+## Phase 5 — director review
+
+The human only needs to tell the director that the worker attempt terminalized. The director inspects Git directly.
+
+The director chooses:
+
+### Accept
+Integrate the candidate, update project state, and close the macro-goal transaction.
+
+### Revise / correctable reject
+Keep the same repository macro-goal identity.
+
+The director:
+1. writes a durable review/correction contract on accepted main;
+2. preserves the goal ID;
+3. normally preserves the implementation branch and report lineage;
+4. moves/reopens the same goal back to `ready/`;
+5. records whether the next attempt should keep or replace the implementation approach.
+
+### Block
+Record the unresolved decision. Once resolved, reopen the same goal if its semantic objective remains unchanged.
+
+### Abandon / supersede
+Close the old goal without acceptance. Create a new goal ID only when the semantic work unit itself changes.
+
+## Phase 6 — correction continuation in a fresh worker session
+
+If the prior worker/Codex Goal session already terminated, **start a new worker session**.
+
+Do not create a new repository macro-goal merely because the UI session ended.
+
+The human:
+1. pulls the director's correction on main;
+2. starts/resets a fresh worker session;
+3. gives the thin correction-continuation prompt.
 
 The worker:
-1. inspects relevant code;
-2. implements;
-3. diagnoses and repairs directly related failures;
-4. runs validation;
-5. writes a report;
-6. marks the goal `done` or `blocked` only at the real terminal state;
-7. commits and pushes;
-8. restores the shared checkout to main if the local workflow requires it.
+1. reads AGENTS, the reopened ready goal, and the director review from current main before mutating;
+2. fetches/switches to the existing goal branch unless the review explicitly requires a replacement branch;
+3. brings the current director-owned correction/governance state into the working branch using the repository's safe Git policy;
+4. moves the same goal `ready -> active` for the new attempt;
+5. re-arms completion observation so stale prior-attempt terminal state cannot retrigger;
+6. executes the correction contract;
+7. appends/preserves report history;
+8. terminalizes and pushes again.
 
-The completion observer emits one best-effort terminal notification and exits. The observer must be designed so routine checkout restoration cannot silently erase the terminal event before it is observable.
-
-## Phase 6 — human return / director review
-
-The terminal signal returns attention to the human.
-
-The human need only tell the director that the goal finished or blocked; the director should inspect the repository directly rather than requiring pasted reports.
-
-The director inspects candidate branch, diff, report, tests/evidence, canonical doctrine, and terminal state.
-
-The director accepts, rejects, writes a correction review, or escalates to the human.
+Then return to Phase 5.
 
 ## Phase 7 — integration
 
@@ -94,18 +114,35 @@ Examples include real GPU launch, audio quality, device integration, subjective 
 
 The director incorporates the observation into durable repo state.
 
+## The cyclic goal state machine
+
+    queued -> ready -> active(A1) -> done
+                                  |
+                                  -> blocked
+
+    done -> director review -> accept -> integrated/closed
+                           |
+                           -> revise/correctable reject -> ready -> active(A2) -> ...
+
+    blocked -> decision resolved -> ready -> active(A2) -> ...
+
+`done` is terminal for an **attempt**, not necessarily for the macro-goal.
+
 ## The steady-state human loop
 
     tell director what you want
     pull main
-    invoke ready goal
+    start worker session
     disengage
-    receive done/blocked notification
-    tell director the goal terminalized
+    receive attempt done/blocked notification
+    tell director
+    if accepted: move to next goal
+    if correction required:
+        pull same goal correction
+        start fresh worker session
+        continue same goal ID
     optionally perform requested real-machine check
-    report taste/runtime observation
-    repeat
 
 The goal is not zero human involvement.
 
-The goal is to remove low-value human relay **and low-value human vigilance** while preserving high-value human authorship.
+The goal is to remove low-value relay, vigilance, and accidental work renumbering while preserving high-value human authorship.

@@ -12,7 +12,7 @@ This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authori
 
 ### Doctrine
 
-docs/00-manifesto.md through docs/11-completion-observability.md are the canonical v1.1 theory.
+docs/00-manifesto.md through docs/12-correction-continuations.md are the canonical v1.2 theory.
 
 They define:
 - ontology;
@@ -26,7 +26,8 @@ They define:
 - workflow;
 - adoption;
 - lineage;
-- completion observability and the terminal return channel.
+- completion observability and the terminal return channel;
+- correction continuations and the separation between logical goal identity and worker-session identity.
 
 ### Reusable protocol
 
@@ -56,6 +57,8 @@ A lower layer cannot silently overrule a higher layer.
 
 A completion signal is deliberately below evidence in this ordering. It can route attention but cannot establish truth.
 
+A worker session is deliberately below the repository goal in identity. Ending or resetting a session does not by itself create, close, or renumber durable work.
+
 ## Change policy
 
 Changes to terminology should update all current doctrine and templates that depend on the term.
@@ -66,6 +69,6 @@ Implementation examples may evolve without changing doctrine when they preserve 
 
 ## Hidden-state prohibition
 
-No issue, chat, prompt, agent scratchpad, or transient notification should be the only location of a decision required to understand current doctrine.
+No issue, chat, prompt, agent scratchpad, worker UI session, or transient notification should be the only location of a decision required to understand current doctrine.
 
 If it matters after the conversation ends, externalize it into the repository.

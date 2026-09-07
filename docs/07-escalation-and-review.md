@@ -1,6 +1,6 @@
 # Escalation, Review, and Integration
 
-Bounded autonomy works only when the worker knows when to stop.
+Bounded autonomy works only when the worker knows when to stop, and durable review works only when the system knows whether a correction is a new goal or another attempt at the same goal.
 
 ## Escalation is an authority boundary
 
@@ -55,16 +55,45 @@ Is this actually the desired behavior? Does it preserve taste and priority?
 ## Review outcomes
 
 ### Accept
-Candidate is suitable for integration.
-
-### Reject
-Candidate violates doctrine or goal strongly enough that correction should start from a different approach.
+Candidate is suitable for integration. Integrate and close the macro-goal transaction.
 
 ### Revise
-Architecture is basically sound; write a bounded correction contract.
+The macro-goal remains valid, but the current attempt is insufficient.
+
+Write a bounded correction contract, preserve the same goal ID, move/reopen the goal to `ready/`, and authorize another attempt.
+
+If the previous worker session has already terminated, the human starts a **fresh worker session**. That session continues the same repository goal lineage.
+
+### Reject
+The current candidate or approach is not acceptable.
+
+Two cases must be distinguished:
+
+1. **Correctable rejection, same objective.** The goal's desired outcome remains valid. Preserve the goal ID, write a correction/replacement approach contract, and start another attempt; use a fresh worker session if required.
+2. **Goal abandonment or supersession.** The semantic objective itself is no longer desired or has changed enough to be a different work unit. Close/supersede the old goal and create a new goal ID if more work is authorized.
+
+Do not use a new goal number merely to represent a new agent session.
 
 ### Block
 New director or human decision is required before implementation should continue.
+
+Once the blocking decision is resolved, the same goal may be reopened to `ready/` for another attempt.
+
+## Correction review contract
+
+A correction review should state:
+- decision;
+- whether the repository macro-goal identity is preserved;
+- why the candidate was insufficient;
+- accepted work that should be kept;
+- required corrections;
+- correction non-goals;
+- same/new branch decision;
+- report history rule;
+- work-state transition back to `ready/` when applicable;
+- whether a fresh worker session is required because the prior session terminated;
+- completion-observer re-arm requirements;
+- validation and evidence required for the next review.
 
 ## Integration authority
 
@@ -72,22 +101,13 @@ The worker should normally not merge its own candidate into accepted main.
 
 This preserves a clean separation:
 
-    worker: “Here is the candidate and evidence.”
-    director: “This becomes project reality.”
+    worker: `Here is the candidate and evidence.`
+    director: `This becomes project reality.`
 
 For trivial repositories, the roles may be collapsed physically into one agent. The conceptual distinction should remain.
 
 ## Review artifacts
 
-A durable review can include:
-- Result;
-- acceptance decision;
-- architectural findings;
-- contract misses;
-- evidence findings;
-- required corrections;
-- correction non-goals;
-- integration notes;
-- next-goal recommendation.
+A durable review can include Result, goal identity, attempt disposition, architectural findings, contract misses, evidence findings, required corrections, correction non-goals, branch/report continuation instructions, session-lifecycle instructions, integration notes, and next-goal recommendation.
 
 This allows correction work to proceed repo-to-repo instead of chat-to-chat.
