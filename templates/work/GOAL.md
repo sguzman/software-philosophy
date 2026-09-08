@@ -20,7 +20,17 @@ Point to canonical docs and pre-decided architecture.
 
 List diagnosis, implementation, repair, test, and cleanup work that can proceed without another prompt.
 
+## Architecture doctrine impact
+
+Interactive/UI thread affected: yes / no
+Heavy or blocking work introduced: yes / no
+Worker boundary / queue required:
+Rust-first deviation, if any:
+
+If this goal touches a GUI path, explicitly state how heavy work remains off the latency-critical interactive thread.
+
 ## Constraints
+
 
 List invariants, compatibility rules, ownership boundaries, and implementation constraints.
 

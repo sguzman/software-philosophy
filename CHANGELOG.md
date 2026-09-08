@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0] - 2026-09-08
+
+### Doctrine
+
+- Added a separate **software architecture doctrine** layer distinct from agent-development governance.
+- Added **Interactive Thread Isolation** as the first hard architecture invariant: latency-critical GUI/UI threads may orchestrate but must not perform heavy, blocking, unbounded, or externally paced work.
+- Clarified legitimate UI-thread work: input handling, lightweight state transitions, frame construction, enqueueing, non-blocking result polling, small result application, and repaint scheduling.
+- Added a classification rule based on latency boundedness rather than whether code appears small.
+- Added the **Work Queue Boundary** as the current default pattern for expensive UI-triggered work, including cancellation, backpressure, stale-result protection, progress events, and non-blocking result delivery.
+- Explicitly documented that Rust `async` does not imply background execution.
+- Added a **Rust-first principal implementation profile**: product logic defaults to Rust; configuration, shell/platform bootstrap, package/build metadata, and required integration glue remain normal non-Rust exceptions.
+- Added project templates and review checks for architecture principles and language-profile compliance.
+
+
 ## [1.3.0] - 2026-09-07
 
 ### Doctrine

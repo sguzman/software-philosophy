@@ -14,7 +14,9 @@ Examples:
 - do not make the principal a courier;
 - do not make the principal poll long-running work;
 - do not conflate worker sessions with macro-goals;
-- do not ask the principal to download/run generated development or QA payloads outside the checkout.
+- do not ask the principal to download/run generated development or QA payloads outside the checkout;
+- do not put heavy/blocking/unbounded work on a latency-critical interactive thread.
+
 
 Prohibitions should be explicit, durable, accompanied by enough rationale that future directors do not casually optimize back into the failure, and treated as review criteria.
 
@@ -27,7 +29,10 @@ A current convention says what mechanism the system should use **now**.
 Examples:
 - repository macro-goals are the durable work identity;
 - human QA uses repo-owned entrypoints;
-- ordinary Windows CLI dependencies use Scoop.
+- ordinary Windows CLI dependencies use Scoop;
+- product implementation is Rust-first;
+- a work queue/worker boundary is the default shape for expensive UI-triggered work.
+
 
 A convention is binding for current implementation, but revisable.
 

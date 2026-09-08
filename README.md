@@ -1,4 +1,4 @@
-# Software Philosophy v1.3
+# Software Philosophy v1.4
 
 A repository-mediated operating system for agentic software development.
 
@@ -6,7 +6,14 @@ The core idea:
 
 > The repository is the durable shared mind. The human supplies intent and taste. The director converts intent into doctrine, architecture, roadmaps, goals, and review. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native: the repository declares and materializes its environment, exposes stable local entrypoints, and does not outsource routine testing to downloaded payloads.
 
-This repository is not primarily about Rust, TOML, Docker, Codex, ChatGPT, PowerShell, or Windows notifications. Those are contingent tools. The doctrine is about how to organize authority, knowledge, work, evidence, communication, execution lifecycles, and human attention when software is built by a human principal plus multiple AI agents with different capabilities.
+The repository now has three related but distinct layers:
+
+1. **Development governance doctrine** — how the human, director, worker, repository, evidence, and work lifecycle relate.
+2. **Software architecture doctrine** — how the software itself should be structured: runtime responsibilities, concurrency, state, boundaries, responsiveness, and other empirically earned architectural rules.
+3. **Principal implementation profiles** — strong current defaults such as Rust-first and Windows/Scoop policy.
+
+The core governance doctrine is not tied to a particular programming language. The principal profiles are intentionally not language-neutral: in practice, product implementation is Rust by default.
+
 
 ## Operating topology
 
@@ -69,8 +76,17 @@ The human is deliberately neither the courier between agents nor the polling loo
 19. **Materialize dependencies from repo declarations.** The repository declares the tools it needs and owns idempotent bootstrap/check machinery.
 20. **Use Scoop as the current Windows CLI dependency policy.** Ordinary Windows command-line dependencies are declared through Scoop/Scoopfile where appropriate; language toolchains and unavoidable platform-native workloads may retain their native managers.
 21. **Preserve future options without scheduling them.** Nix, mise, or other environment systems may be recorded as latent options without creating roadmap priority, work authorization, or dissatisfaction with the current Scoop policy.
+22. **Separate development governance from software architecture.** Agent workflow rules and runtime/software-structure rules are related but should live in distinct doctrine layers.
+23. **Protect latency-critical interactive threads.** GUI/UI threads may orchestrate lightweight interaction but must not perform heavy, blocking, unbounded, or externally paced work.
+24. **Move labor behind an execution boundary.** Expensive UI-triggered work should normally cross a typed work-queue/worker boundary and return results asynchronously.
+25. **Do not mistake `async` for background execution.** CPU-heavy work still blocks if it is polled on the interactive thread.
+26. **Use Rust first.** Product implementation defaults to Rust; non-Rust product runtimes require a concrete justification, while configuration/shell/package-manager/platform glue remain normal exceptions.
 
-## Reading order
+
+## Reading tracks
+
+### Development governance doctrine
+
 
 1. docs/00-manifesto.md
 2. docs/01-ontology.md
@@ -90,12 +106,24 @@ The human is deliberately neither the courier between agents nor the polling loo
 16. docs/15-dependency-materialization.md
 17. docs/16-latent-options.md
 
+### Software architecture doctrine
+
+1. architecture/README.md
+2. architecture/principles/0001-interactive-thread-isolation.md
+3. architecture/patterns/work-queue-boundary.md
+
+### Principal implementation profiles
+
+1. profiles/README.md
+2. profiles/rust-first.md
+
+
 Reusable repo templates live under templates/. Invocation prompts live under prompts/.
 
 The pre-v1 stack-centric philosophy is preserved under archive/v0.5/.
 
 ## Version
 
-Current doctrine: **1.3.0**.
+Current doctrine: **1.4.0**.
 
-v1.3 adds doctrinal modalities, repo-native human execution, Windows dependency materialization through Scoop, a hard prohibition against downloaded testing payloads, and latent options that preserve future technologies without turning them into work.
+v1.4 establishes a separate software-architecture doctrine, makes interactive-thread isolation its first hard structural rule, adds the work-queue boundary as the default pattern, and records Rust-first as the principal's current implementation-language profile.

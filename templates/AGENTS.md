@@ -10,9 +10,12 @@ The repository documentation is the system of record.
 4. ARCHITECTURE.md
 5. docs/project/current-status.md
 6. docs/project/roles-and-workflow.md
-7. the active roadmap
-8. the single authorized goal under docs/work/ready/ or docs/work/active/
-9. any director review/correction contract for that goal
+7. docs/project/architecture-principles.md
+8. docs/project/language-profile.md
+
+9. the active roadmap
+10. the single authorized goal under docs/work/ready/ or docs/work/active/
+11. any director review/correction contract for that goal
 
 ## Roles
 
@@ -20,7 +23,21 @@ The repository documentation is the system of record.
 - Implementation worker: owns bounded implementation attempts, directly related repair passes, validation, durable reporting, and completion-observer startup/re-arm when available.
 - Human maintainer: owns local operation and real-machine observations when requested. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, or payload installer.
 
+## Software architecture invariants
+
+- A latency-critical interactive/UI thread may orchestrate but must not perform heavy, blocking, unbounded, or externally paced work.
+- GUI-triggered expensive work should cross a worker/work-queue boundary and return typed results asynchronously.
+- Do not use `async` syntax as proof that CPU-heavy work left the UI thread.
+- Prefer message passing to a UI thread waiting on background-held locks.
+
+## Language profile
+
+Product implementation is Rust-first unless `docs/project/language-profile.md` records a concrete exception.
+
+Configuration, shell/platform bootstrap, package-manager/build metadata, and required platform glue are normal non-Rust surfaces.
+
 ## Goal identity vs worker session
+
 
 A repository macro-goal may span multiple worker/Codex Goal sessions.
 

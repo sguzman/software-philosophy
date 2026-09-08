@@ -33,7 +33,26 @@ They define:
 - dependency declaration/materialization and the Windows Scoop profile;
 - future-option preservation without work authorization.
 
+### Software architecture doctrine
+
+`architecture/` is a separate canonical doctrine layer for the structure of software produced under this philosophy.
+
+Current contents:
+- `architecture/principles/` — durable invariants and prohibitions;
+- `architecture/patterns/` — reusable structural patterns that satisfy those invariants.
+
+Project-specific `ARCHITECTURE.md` files should specialize these rules, not casually contradict hard architecture prohibitions.
+
+### Principal implementation profiles
+
+`profiles/` records strong current implementation defaults for the principal.
+
+`profiles/rust-first.md` makes Rust the default product implementation language while preserving normal non-Rust configuration/shell/tooling exceptions.
+
+Profiles are current conventions, not universal metaphysical claims.
+
 ### Reusable protocol
+
 
 templates/ contains files intended to be copied or adapted into other repositories.
 
@@ -57,13 +76,15 @@ When material conflicts:
 
 1. explicit human-principal direction for the current decision;
 2. current v1 doctrine, including hard prohibitions;
-3. current principal/platform conventions;
-4. repository-specific canonical architecture and project docs;
-5. current goal/review contracts within their delegated scope;
-6. current-state evidence;
-7. latent options;
-8. workflow notification state;
-9. historical docs and examples.
+3. software architecture hard invariants;
+4. current principal/platform/language profiles;
+
+5. repository-specific canonical architecture and project docs;
+6. current goal/review contracts within their delegated scope;
+7. current-state evidence;
+8. latent options;
+9. workflow notification state;
+10. historical docs and examples.
 
 A lower layer cannot silently overrule a higher layer.
 
@@ -77,7 +98,7 @@ Changes to terminology should update all current doctrine and templates that dep
 
 Changes to role authority, transaction semantics, or the principal veto are major-version changes.
 
-Implementation examples may evolve without changing doctrine when they preserve the same coordination semantics.
+Implementation examples may evolve without changing doctrine when they preserve the same coordination and architecture semantics.
 
 ## Hidden-state prohibition
 
