@@ -185,3 +185,69 @@ v1.3 adds:
 32. Latent options preserve future technologies such as Nix or mise without creating roadmap pressure or authorization.
 
 v1.3 turns the QA bundle mistake into a general rule: **automation must not reduce agent friction by exporting ceremony to the principal.**
+
+## Repeated GUI-thread abuse — architecture doctrine emerges
+
+Across Rust + egui work, a recurring implementation failure appeared: expensive parsing, I/O, synthesis, search, or other substantial work was allowed to run in the same latency-critical path responsible for UI update and frame construction.
+
+The code could be functionally correct while the application froze, hitched, or became visibly unresponsive.
+
+The repeated nature of the failure showed that this was not merely a project bug.
+
+It was missing cross-project software architecture doctrine.
+
+The initial instinct was:
+
+> The render thread should only render.
+
+The refined invariant is slightly broader and more accurate:
+
+> **A latency-critical interactive thread may orchestrate; it may not labor.**
+
+Immediate-mode GUI systems such as egui legitimately perform input interpretation, lightweight state changes, widget/layout construction, queue emission, non-blocking result polling, and small result application on the same thread.
+
+The prohibition targets expensive or unpredictable labor:
+- blocking I/O;
+- user-data-scaled parsing/indexing/search;
+- TTS/audio/image processing;
+- network/process waits;
+- heavy CPU work;
+- blocking receives/joins/sleeps;
+- contended locks;
+- CPU-heavy futures that happen to use `async` syntax.
+
+The default correction shape is a typed work boundary:
+
+    UI intent
+      -> enqueue
+      -> worker
+      -> typed result/progress/error
+      -> non-blocking UI apply
+
+## Rust-first becomes explicit
+
+The architecture expansion also exposed another false neutrality in the earlier philosophy.
+
+In practice, the principal overwhelmingly chooses Rust for product implementation and uses other languages mostly where the surrounding environment naturally requires configuration, shell/bootstrap, package-manager/build metadata, or platform glue.
+
+Leaving this unstated forces each new project to rediscover the same language choice and permits accidental polyglot drift.
+
+v1.4 therefore records **Rust-first** as a principal implementation profile rather than pretending every language begins equally likely.
+
+This is a strong current convention, not a claim that Rust is universally optimal.
+
+## v1.4 refinement
+
+v1.4 adds:
+
+33. Development-governance doctrine and software-architecture doctrine are distinct canonical layers.
+34. Empirically repeated structural failures can be promoted into cross-project architecture principles.
+35. A latency-critical interactive thread may orchestrate but must not perform heavy, blocking, unbounded, or externally paced work.
+36. Work classification is based on bounded latency and external dependence, not on whether the source code looks small.
+37. Work queues/worker boundaries are the default pattern for expensive UI-triggered work.
+38. Result delivery to the UI should be non-blocking, typed, stale-aware, cancellable/backpressured where appropriate, and cheap to apply.
+39. `async` does not imply background execution.
+40. Rust-first is the principal's current product-language convention.
+41. Non-Rust product/runtime additions require a concrete justification; configuration, shell/platform bootstrap, package/build metadata, and required glue are normal exceptions.
+
+v1.4 creates a place for future empirically discovered software-structure rules without mixing them into the human/director/worker coordination theory.

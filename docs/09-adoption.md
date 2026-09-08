@@ -1,4 +1,4 @@
-# Adopting v1.3 in a Repository
+# Adopting v1.4 in a Repository
 
 The philosophy is technology-independent. Use only the structure your project earns.
 
@@ -15,6 +15,9 @@ The philosophy is technology-independent. Use only the structure your project ea
         current-status.md
         roles-and-workflow.md
         negative-doctrine.md
+        architecture-principles.md
+        language-profile.md
+
 
       roadmaps/
         master-roadmap.md
@@ -147,7 +150,33 @@ A latent option should record the possible technology/direction, why it may beco
 
 Do not put latent options directly into the active roadmap merely so they are not forgotten.
 
-## Step 11 — evolve from observed friction
+## Step 11 — adopt software architecture doctrine
+
+Separate runtime/software-structure rules from agent workflow rules.
+
+At minimum, audit interactive applications for the current hard invariant:
+
+> A latency-critical interactive thread may orchestrate; it may not labor.
+
+For GUI projects:
+- identify the interactive/UI thread;
+- identify blocking, CPU-heavy, or user-data-scaled work;
+- move that work behind a worker/task boundary;
+- use non-blocking result delivery back to the UI;
+- add stale-result/cancellation/backpressure handling where needed.
+
+Record project-specific architecture principles in `docs/project/architecture-principles.md`.
+
+## Step 12 — adopt the principal language profile
+
+Unless a project has a contrary constraint, product code should start from the Rust-first profile.
+
+Record intentional deviations rather than silently drifting into a polyglot product runtime.
+
+Normal exceptions such as PowerShell bootstrap, TOML/JSON configuration, package-manager metadata, and platform-required glue do not violate Rust-first.
+
+## Step 13 — evolve from observed friction
+
 
 The repo protocol itself is software.
 
@@ -179,6 +208,6 @@ Automation should support the authority model, not erase it.
 
 ## What not to standardize globally
 
-v1.3 does not universally require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, or a particular worker-session UI.
+v1.4 core governance does not universally require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, or a particular worker-session UI.
 
-The core doctrine standardizes coordination semantics. Principal/platform profiles may additionally standardize current technology choices, such as Scoop for the principal's Windows CLI dependency materialization. Those choices remain conventions rather than eternal axioms.
+The core governance doctrine standardizes coordination semantics. Architecture doctrine adds reusable structural invariants. Principal profiles additionally standardize current implementation choices: Rust-first for product code and Scoop for ordinary Windows CLI dependency materialization. These remain explicit current conventions rather than eternal axioms.

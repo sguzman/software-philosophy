@@ -44,7 +44,7 @@ Doctrine answers: **what ought to be true?**
 
 A **doctrinal modality** states how much normative force a durable statement carries.
 
-v1.3 distinguishes three primary modalities:
+v1.4 distinguishes three primary modalities:
 
 ### Prohibition
 
@@ -68,7 +68,64 @@ A **latent option** is a durable future possibility with deliberately weak force
 
 It preserves memory and option value without creating roadmap priority, a queued task, implementation authorization, a deadline, or an implication that the current convention is defective.
 
+## Software architecture doctrine
+
+**Software architecture doctrine** is durable normative knowledge about the structure and runtime behavior of the software itself.
+
+It is distinct from development governance.
+
+Development governance answers questions such as who owns architecture, how work is delegated, and how candidate state becomes accepted state.
+
+Software architecture doctrine answers questions such as which thread may perform which class of work, how concurrency boundaries should be shaped, how state should flow, and what structural failure modes are prohibited.
+
+## Architecture principle
+
+An **architecture principle** is a durable structural invariant or prohibition.
+
+Example:
+
+> A latency-critical interactive thread may orchestrate; it may not labor.
+
+Architecture principles are global defaults across projects unless an explicit principal/director decision records a justified exception.
+
+## Architecture pattern
+
+An **architecture pattern** is a reusable implementation shape that satisfies one or more architecture principles.
+
+Example:
+
+    UI intent -> work queue -> worker -> result queue -> UI apply
+
+A pattern is not necessarily the only valid implementation. It is the current default shape unless project constraints justify another design.
+
+## Principal implementation profile
+
+A **principal implementation profile** records strong current technology defaults for the principal.
+
+Profiles are intentionally more specific than universal governance doctrine.
+
+Example:
+
+> Product implementation is Rust by default.
+
+A profile is a current convention: authoritative now, explicitly revisable later.
+
+## Interactive thread
+
+The **interactive thread** is the latency-critical execution path responsible for receiving user interaction and producing responsive UI/frame state.
+
+It may perform lightweight orchestration and UI construction but must not perform heavy, blocking, unbounded, or externally paced work.
+
+## Work boundary
+
+A **work boundary** separates latency-critical orchestration from background labor.
+
+Typical implementations use typed queues/channels, worker threads, worker pools, or an appropriate async I/O runtime.
+
+The important property is that the interactive thread never waits for the work to finish.
+
 ## Human execution surface
+
 
 The **human execution surface** is the smallest repository-owned interface through which the principal performs necessary local work.
 

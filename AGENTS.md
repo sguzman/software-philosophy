@@ -30,11 +30,14 @@ Implementation agents may not silently:
 - instruct the human principal to download/unpack/run generated CI or agent-produced payloads for ordinary development or manual QA;
 - treat a latent option as authorized work, roadmap priority, or current architecture;
 - silently replace the repository's declared dependency/materialization policy;
+- put heavy, blocking, unbounded, or externally paced work on a latency-critical interactive/UI thread;
+- introduce a non-Rust product/runtime language without a concrete project-level justification;
+
 - rewrite the v0.5 archive.
 
 ## Canonical reading order
 
-Read README.md and docs/00-manifesto.md through docs/16-latent-options.md before making doctrinal changes.
+Read README.md, docs/00-manifesto.md through docs/16-latent-options.md, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
 
 ## Archive rule
 
@@ -70,3 +73,21 @@ Read doctrinal statements according to their modality:
 - **latent option**: preserves future possibility but authorizes no work.
 
 For the principal's current Windows platform profile, Scoop is the canonical manager for ordinary CLI dependencies. Nix/mise are latent options only.
+
+## Software architecture doctrine
+
+`architecture/` governs software structure separately from the agent-development workflow.
+
+Current hard invariant:
+
+> A latency-critical interactive thread may orchestrate; it may not labor.
+
+For GUI code, keep input handling, lightweight UI-state mutation, frame construction, enqueueing, non-blocking result polling, and small result application on the interactive thread. Move blocking I/O, large parsing/search/indexing, TTS/audio processing, image processing, network calls, process waits, heavy CPU work, and potentially contended waits behind a worker boundary.
+
+`async` syntax does not satisfy this rule by itself. If CPU-heavy work is polled on the UI thread, it still violates the architecture.
+
+## Language profile
+
+Product implementation is Rust-first.
+
+Use non-Rust languages normally for configuration, shell/platform bootstrap, package-manager/build/CI metadata, and genuinely native/required integration surfaces. A second product/runtime language needs an explicit reason.

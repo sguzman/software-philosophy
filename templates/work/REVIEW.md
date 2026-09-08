@@ -19,6 +19,20 @@ Next action:
 
 ## Architectural review
 
+### Interactive-thread audit
+
+If GUI/interactive code changed:
+- any blocking I/O on the UI thread?
+- any CPU-heavy or user-data-scaled work on the UI thread?
+- any blocking receive/join/sleep/process wait?
+- any contended lock that can stall interaction?
+- is expensive work moved behind an asynchronous worker boundary?
+- can stale results overwrite newer UI intent?
+
+### Language-profile audit
+
+- product/runtime code remains Rust-first, or deviation is explicitly justified?
+
 ## Evidence review
 
 ## Scope / non-goal review
