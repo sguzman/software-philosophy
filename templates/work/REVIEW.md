@@ -33,7 +33,6 @@ If GUI/interactive code changed:
 
 - product/runtime code remains Rust-first, or deviation is explicitly justified?
 
-
 ## Evidence review
 
 ## Scope / non-goal review

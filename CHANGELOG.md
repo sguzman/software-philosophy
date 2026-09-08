@@ -12,6 +12,8 @@
 - Explicitly documented that Rust `async` does not imply background execution.
 - Added a **Rust-first principal implementation profile**: product logic defaults to Rust; configuration, shell/platform bootstrap, package/build metadata, and required integration glue remain normal non-Rust exceptions.
 - Added project templates and review checks for architecture principles and language-profile compliance.
+- Added first-class ontology for software architecture doctrine, architecture principles/patterns, principal implementation profiles, interactive threads, and work boundaries.
+- Documented the v1.4 lineage from repeated egui responsiveness failures to cross-project architecture doctrine.
 
 
 ## [1.3.0] - 2026-09-07

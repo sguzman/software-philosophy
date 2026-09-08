@@ -12,7 +12,7 @@ This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authori
 
 ### Doctrine
 
-docs/00-manifesto.md through docs/16-latent-options.md are the canonical v1.3 theory.
+docs/00-manifesto.md through docs/16-latent-options.md are the canonical development-governance portion of the v1.4 theory.
 
 They define:
 - ontology;
@@ -78,7 +78,6 @@ When material conflicts:
 2. current v1 doctrine, including hard prohibitions;
 3. software architecture hard invariants;
 4. current principal/platform/language profiles;
-
 5. repository-specific canonical architecture and project docs;
 6. current goal/review contracts within their delegated scope;
 7. current-state evidence;

@@ -12,7 +12,6 @@ The repository documentation is the system of record.
 6. docs/project/roles-and-workflow.md
 7. docs/project/architecture-principles.md
 8. docs/project/language-profile.md
-
 9. the active roadmap
 10. the single authorized goal under docs/work/ready/ or docs/work/active/
 11. any director review/correction contract for that goal
@@ -37,7 +36,6 @@ Product implementation is Rust-first unless `docs/project/language-profile.md` r
 Configuration, shell/platform bootstrap, package-manager/build metadata, and required platform glue are normal non-Rust surfaces.
 
 ## Goal identity vs worker session
-
 
 A repository macro-goal may span multiple worker/Codex Goal sessions.
 
@@ -87,6 +85,5 @@ Do not treat notification delivery as evidence or director acceptance.
 - Latent options such as Nix/mise do not authorize implementation.
 
 ## Handoff
-
 
 Commit and push enough durable evidence that the director can review without chat history. Preserve prior attempt history on correction continuations.

@@ -31,7 +31,6 @@ If this goal touches a GUI path, explicitly state how heavy work remains off the
 
 ## Constraints
 
-
 List invariants, compatibility rules, ownership boundaries, and implementation constraints.
 
 ## Non-goals
@@ -82,7 +81,6 @@ Dependency command if required:
 Expected observation:
 
 Do not require the principal to download/unpack/run an external generated payload for ordinary verification.
-
 
 ## Stop / escalation conditions
 
