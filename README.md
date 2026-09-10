@@ -1,10 +1,10 @@
-# Software Philosophy v1.5
+# Software Philosophy v1.6
 
 A repository-mediated operating system for agentic software development.
 
 The core idea:
 
-> The repository is the durable shared mind. The human supplies intent and taste. The director converts intent into doctrine, architecture, roadmaps, goals, review, and reusable prompt artifacts. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native: the repository declares and materializes its environment, exposes stable local entrypoints, and does not outsource routine testing or canonical prompt storage to transient side channels.
+> The repository is the canonical project state and durable shared mind. Chat is a temporal projection used to inspect, discuss, and transform that state; it is never a required store of project reality. The human supplies intent and taste. The director converts intent into doctrine, architecture, roadmaps, goals, review, and reusable prompt artifacts. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native: the repository declares and materializes its environment, exposes stable local entrypoints, and does not outsource routine testing, canonical prompts, or required project context to transient side channels.
 
 The repository has three related but distinct substantive layers plus a repository-native invocation layer:
 
@@ -21,6 +21,11 @@ The core governance doctrine is not tied to a particular programming language. T
       intent / taste / veto
             |
             v
+    CHAT / AGENT SESSION
+      temporal projection / reasoning
+      proposed state delta
+            |
+            v
     DIRECTOR / ARCHITECT / INTEGRATOR
       philosophy / product scope / architecture
       priorities / roadmaps / macro-goals
@@ -29,7 +34,9 @@ The core governance doctrine is not tied to a particular programming language. T
             |
             v
     REPOSITORY
-      doctrine / goals / reviews / prompts
+      CANONICAL PROJECT STATE
+      doctrine / architecture / goals / reviews
+      evidence / current state / prompts / workflow
             |
             v
     PROMPT INVOCATION
@@ -56,9 +63,9 @@ The core governance doctrine is not tied to a particular programming language. T
     FRESH WORKER SESSION S2
       same goal ID / continuing lineage
 
-The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for prompt wording.
+The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for project state or prompt wording.
 
-## v1.5 doctrine
+## v1.6 doctrine
 
 1. **Persist cognition that matters.** Important project knowledge belongs in the repository, not only in chat.
 2. **Separate authority from execution.** The agent best suited to architecture should not spend its attention babysitting file edits; the filesystem-capable worker should not invent the project.
@@ -88,6 +95,9 @@ The human is deliberately neither the courier between agents nor the polling loo
 26. **Move labor behind an execution boundary.** Expensive UI-triggered work should normally cross a typed work-queue/worker boundary and return results asynchronously.
 27. **Do not mistake `async` for background execution.** CPU-heavy work still blocks if it is polled on the interactive thread.
 28. **Use Rust first.** Product implementation defaults to Rust; non-Rust product runtimes require a concrete justification, while configuration/shell/package-manager/platform glue remain normal exceptions.
+29. **Enforce repository-state closure.** Everything required to understand, continue, execute, review, or coordinate durable project work must exist in the repository or be explicitly declared there as an external prerequisite.
+30. **Treat chat as a temporal projection, not project state.** Conversations may explore or propose the next state, but project reality is the committed repository state.
+31. **Externalize before dependency.** Once a chat-derived fact or decision matters to later work, commit it to the appropriate repository artifact before another human or agent is expected to rely on it.
 
 ## Reading tracks
 
@@ -111,6 +121,7 @@ The human is deliberately neither the courier between agents nor the polling loo
 16. docs/15-dependency-materialization.md
 17. docs/16-latent-options.md
 18. docs/17-prompts-as-repository-artifacts.md
+19. docs/18-repository-state-closure.md
 
 ### Software architecture doctrine
 
@@ -137,6 +148,6 @@ The pre-v1 stack-centric philosophy is preserved under archive/v0.5/.
 
 ## Version
 
-Current doctrine: **1.5.0**.
+Current doctrine: **1.6.0**.
 
-v1.5 makes reusable prompts first-class repository artifacts, separates durable prompt definitions from transient prompt invocations, and explicitly prohibits using chat as the sole canonical prompt store.
+v1.6 makes repository-state closure a hard invariant: the repository is canonical project reality, chat is a temporal projection, and durable chat-derived state must be externalized before later work depends on it.
