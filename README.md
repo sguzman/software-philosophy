@@ -1,19 +1,19 @@
-# Software Philosophy v1.4
+# Software Philosophy v1.5
 
 A repository-mediated operating system for agentic software development.
 
 The core idea:
 
-> The repository is the durable shared mind. The human supplies intent and taste. The director converts intent into doctrine, architecture, roadmaps, goals, and review. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native: the repository declares and materializes its environment, exposes stable local entrypoints, and does not outsource routine testing to downloaded payloads.
+> The repository is the durable shared mind. The human supplies intent and taste. The director converts intent into doctrine, architecture, roadmaps, goals, review, and reusable prompt artifacts. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native: the repository declares and materializes its environment, exposes stable local entrypoints, and does not outsource routine testing or canonical prompt storage to transient side channels.
 
-The repository now has three related but distinct layers:
+The repository has three related but distinct substantive layers plus a repository-native invocation layer:
 
 1. **Development governance doctrine** — how the human, director, worker, repository, evidence, and work lifecycle relate.
 2. **Software architecture doctrine** — how the software itself should be structured: runtime responsibilities, concurrency, state, boundaries, responsiveness, and other empirically earned architectural rules.
 3. **Principal implementation profiles** — strong current defaults such as Rust-first and Windows/Scoop policy.
+4. **Prompt artifacts** — durable, versioned invocation contracts under `prompts/` that point agents into the richer repository state.
 
 The core governance doctrine is not tied to a particular programming language. The principal profiles are intentionally not language-neutral: in practice, product implementation is Rust by default.
-
 
 ## Operating topology
 
@@ -25,10 +25,15 @@ The core governance doctrine is not tied to a particular programming language. T
       philosophy / product scope / architecture
       priorities / roadmaps / macro-goals
       semantic review / integration
+      canonical prompt artifacts
             |
             v
-    REPOSITORY MACRO-GOAL G
-      stable semantic identity / contract / lineage
+    REPOSITORY
+      doctrine / goals / reviews / prompts
+            |
+            v
+    PROMPT INVOCATION
+      thin transient delivery into worker UI
             |
             v
     WORKER SESSION S1
@@ -51,42 +56,42 @@ The core governance doctrine is not tied to a particular programming language. T
     FRESH WORKER SESSION S2
       same goal ID / continuing lineage
 
-The human is deliberately neither the courier between agents nor the polling loop around them.
+The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for prompt wording.
 
-## v1.4 doctrine
+## v1.5 doctrine
 
 1. **Persist cognition that matters.** Important project knowledge belongs in the repository, not only in chat.
 2. **Separate authority from execution.** The agent best suited to architecture should not spend its attention babysitting file edits; the filesystem-capable worker should not invent the project.
 3. **Delegate bounded autonomy.** A worker gets enough latitude to finish a coherent goal, including directly related repair loops, but not enough authority to silently redefine architecture.
-4. **Make prompts thin.** A prompt should usually point at a committed goal or correction review, not restate the project.
-5. **Treat implementation as a transaction.** There is a known accepted state, an authorized transformation, candidate attempts, evidence, review, and an explicit integration decision.
-6. **Type the evidence.** Compile success, deterministic tests, hosted runtime probes, real-device behavior, and human judgment are different evidence classes.
-7. **Prefer truthful incompleteness over fake certainty.** Current-state docs distinguish verified, inferred, historical, blocked, and unverified claims.
-8. **Spend intelligence on uncertainty.** Expensive reasoning belongs at architecture, ambiguity, prioritization, failure interpretation, and review boundaries.
-9. **Reduce prompt tax.** Macro-goals collapse unnecessary human-agent round trips.
-10. **Reduce vigilance tax.** Long-running delegation should notify the human at a real terminal execution state rather than requiring repeated status checks.
-11. **Keep signaling separate from truth.** A notification is a wake-up interrupt, not evidence, acceptance, or integration.
-12. **Separate goal identity from session identity.** One repository macro-goal may require multiple worker sessions and multiple candidate/review attempts.
-13. **Reopen; do not renumber.** A director correction to the same semantic objective normally reuses the goal ID, branch/report lineage, and acceptance contract while starting a fresh worker session if the previous session terminated.
-14. **Re-arm the return channel per attempt.** A correction session must not inherit stale terminal-notification state from a prior attempt.
-15. **Preserve the principal veto.** No automation removes the human's authority to say: this is not what I want.
-16. **Give doctrine explicit force.** Distinguish hard prohibitions, current positive conventions, and latent future options instead of mixing them into one undifferentiated wish list.
-17. **Keep human execution repo-native.** The principal should test from the checked-out repository through repository-owned entrypoints, not through ad hoc downloaded execution payloads.
-18. **Reject external payload handoff for development/QA.** Do not ask the principal to download, unpack, trust, and run a generated CI bundle or other side-channel payload to test current project state.
-19. **Materialize dependencies from repo declarations.** The repository declares the tools it needs and owns idempotent bootstrap/check machinery.
-20. **Use Scoop as the current Windows CLI dependency policy.** Ordinary Windows command-line dependencies are declared through Scoop/Scoopfile where appropriate; language toolchains and unavoidable platform-native workloads may retain their native managers.
-21. **Preserve future options without scheduling them.** Nix, mise, or other environment systems may be recorded as latent options without creating roadmap priority, work authorization, or dissatisfaction with the current Scoop policy.
-22. **Separate development governance from software architecture.** Agent workflow rules and runtime/software-structure rules are related but should live in distinct doctrine layers.
-23. **Protect latency-critical interactive threads.** GUI/UI threads may orchestrate lightweight interaction but must not perform heavy, blocking, unbounded, or externally paced work.
-24. **Move labor behind an execution boundary.** Expensive UI-triggered work should normally cross a typed work-queue/worker boundary and return results asynchronously.
-25. **Do not mistake `async` for background execution.** CPU-heavy work still blocks if it is polled on the interactive thread.
-26. **Use Rust first.** Product implementation defaults to Rust; non-Rust product runtimes require a concrete justification, while configuration/shell/package-manager/platform glue remain normal exceptions.
-
+4. **Make prompts repository-native and thin.** Reusable operational prompts are first-class versioned repository artifacts. Their content should point at committed goals/reviews/doctrine rather than restating the project.
+5. **Separate prompt artifact from prompt invocation.** The file in Git is canonical; pasting/sending it into ChatGPT, Codex, a CLI, or another UI is a transient delivery event.
+6. **Never make chat the only canonical prompt store.** If an invocation is expected to recur across sessions, agents, or time, commit it under `prompts/` or a documented project-equivalent path.
+7. **Treat implementation as a transaction.** There is a known accepted state, an authorized transformation, candidate attempts, evidence, review, and an explicit integration decision.
+8. **Type the evidence.** Compile success, deterministic tests, hosted runtime probes, real-device behavior, and human judgment are different evidence classes.
+9. **Prefer truthful incompleteness over fake certainty.** Current-state docs distinguish verified, inferred, historical, blocked, and unverified claims.
+10. **Spend intelligence on uncertainty.** Expensive reasoning belongs at architecture, ambiguity, prioritization, failure interpretation, and review boundaries.
+11. **Reduce prompt tax.** Macro-goals collapse unnecessary human-agent round trips.
+12. **Reduce vigilance tax.** Long-running delegation should notify the human at a real terminal execution state rather than requiring repeated status checks.
+13. **Keep signaling separate from truth.** A notification is a wake-up interrupt, not evidence, acceptance, or integration.
+14. **Separate goal identity from session identity.** One repository macro-goal may require multiple worker sessions and multiple candidate/review attempts.
+15. **Reopen; do not renumber.** A director correction to the same semantic objective normally reuses the goal ID, branch/report lineage, and acceptance contract while starting a fresh worker session if the previous session terminated.
+16. **Re-arm the return channel per attempt.** A correction session must not inherit stale terminal-notification state from a prior attempt.
+17. **Preserve the principal veto.** No automation removes the human's authority to say: this is not what I want.
+18. **Give doctrine explicit force.** Distinguish hard prohibitions, current positive conventions, and latent future options instead of mixing them into one undifferentiated wish list.
+19. **Keep human execution repo-native.** The principal should test from the checked-out repository through repository-owned entrypoints, not through ad hoc downloaded execution payloads.
+20. **Reject external payload handoff for development/QA.** Do not ask the principal to download, unpack, trust, and run a generated CI bundle or other side-channel payload to test current project state.
+21. **Materialize dependencies from repo declarations.** The repository declares the tools it needs and owns idempotent bootstrap/check machinery.
+22. **Use Scoop as the current Windows CLI dependency policy.** Ordinary Windows command-line dependencies are declared through Scoop/Scoopfile where appropriate; language toolchains and unavoidable platform-native workloads may retain their native managers.
+23. **Preserve future options without scheduling them.** Nix, mise, or other environment systems may be recorded as latent options without creating roadmap priority, work authorization, or dissatisfaction with the current Scoop policy.
+24. **Separate development governance from software architecture.** Agent workflow rules and runtime/software-structure rules are related but should live in distinct doctrine layers.
+25. **Protect latency-critical interactive threads.** GUI/UI threads may orchestrate lightweight interaction but must not perform heavy, blocking, unbounded, or externally paced work.
+26. **Move labor behind an execution boundary.** Expensive UI-triggered work should normally cross a typed work-queue/worker boundary and return results asynchronously.
+27. **Do not mistake `async` for background execution.** CPU-heavy work still blocks if it is polled on the interactive thread.
+28. **Use Rust first.** Product implementation defaults to Rust; non-Rust product runtimes require a concrete justification, while configuration/shell/package-manager/platform glue remain normal exceptions.
 
 ## Reading tracks
 
 ### Development governance doctrine
-
 
 1. docs/00-manifesto.md
 2. docs/01-ontology.md
@@ -105,6 +110,7 @@ The human is deliberately neither the courier between agents nor the polling loo
 15. docs/14-repo-native-human-interface.md
 16. docs/15-dependency-materialization.md
 17. docs/16-latent-options.md
+18. docs/17-prompts-as-repository-artifacts.md
 
 ### Software architecture doctrine
 
@@ -117,13 +123,20 @@ The human is deliberately neither the courier between agents nor the polling loo
 1. profiles/README.md
 2. profiles/rust-first.md
 
+### Prompt artifacts
 
-Reusable repo templates live under templates/. Invocation prompts live under prompts/.
+1. prompts/README.md
+2. prompts/execute-ready-goal.md
+3. prompts/continue-corrected-goal.md
+4. prompts/review-pushed-goal.md
+5. prompts/request-human-verification.md
+
+Reusable repo templates live under templates/. Invocation prompt artifacts live under `prompts/`.
 
 The pre-v1 stack-centric philosophy is preserved under archive/v0.5/.
 
 ## Version
 
-Current doctrine: **1.4.0**.
+Current doctrine: **1.5.0**.
 
-v1.4 establishes a separate software-architecture doctrine, makes interactive-thread isolation its first hard structural rule, adds the work-queue boundary as the default pattern, and records Rust-first as the principal's current implementation-language profile.
+v1.5 makes reusable prompts first-class repository artifacts, separates durable prompt definitions from transient prompt invocations, and explicitly prohibits using chat as the sole canonical prompt store.
