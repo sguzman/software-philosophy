@@ -1,6 +1,6 @@
 # Documentation Architecture
 
-This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authority is explicit, historical state is separated from current authority, and reusable execution contracts are repository-native.
+This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authority is explicit, historical state is separated from current authority, reusable execution contracts are repository-native, and project continuation must not depend on vanished conversational state.
 
 ## Canonical layers
 
@@ -12,7 +12,7 @@ This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authori
 
 ### Doctrine
 
-docs/00-manifesto.md through docs/17-prompts-as-repository-artifacts.md are the canonical development-governance portion of the v1.5 theory.
+docs/00-manifesto.md through docs/18-repository-state-closure.md are the canonical development-governance portion of the v1.6 theory.
 
 They define:
 - ontology;
@@ -32,7 +32,8 @@ They define:
 - repo-native human execution and the external-payload prohibition;
 - dependency declaration/materialization and the Windows Scoop profile;
 - future-option preservation without work authorization;
-- prompt artifacts as durable repository protocol distinct from transient prompt invocation.
+- prompt artifacts as durable repository protocol distinct from transient prompt invocation;
+- repository-state closure and chat as a temporal projection of canonical project state.
 
 ### Software architecture doctrine
 
@@ -108,14 +109,28 @@ Changes to role authority, transaction semantics, or the principal veto are majo
 
 Changes to recurring invocation behavior should update the corresponding repository prompt artifact rather than living only as revised prose in chat.
 
+Any conversational decision that later work will depend on must be promoted into the appropriate repository artifact before it becomes a durable dependency.
+
 Implementation examples may evolve without changing doctrine when they preserve the same coordination and architecture semantics.
+
+## Repository-state closure
+
+The repository must be sufficient to reconstruct durable project reality at a known commit.
+
+Chat, model memory, agent scratchpads, worker UI state, issue comments, and other transient interfaces may assist cognition and coordination, but they must not become required hidden state for continuing the project.
+
+The hard test is:
+
+> If the conversations and agent-session state vanished, could a capable new authorized director and worker continue correctly from the repository alone, except for intentionally external credentials and genuinely new human intent?
+
+If not, project state has leaked outside the repository.
 
 ## Hidden-state prohibition
 
-No issue, chat, prompt invocation, agent scratchpad, worker UI session, or transient notification should be the only location of a decision required to understand current doctrine.
+No issue, chat, prompt invocation, agent scratchpad, worker UI session, model memory, or transient notification should be the only location of a decision or fact required to understand or continue the project.
 
 No transient interface should be the only canonical location of a reusable operational prompt.
 
 If it matters after the conversation ends, externalize it into the repository.
 
-The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, logs, and reusable prompt definitions belong to the repo contract rather than ephemeral side channels.
+The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, logs, reusable prompt definitions, accepted decisions, current state, and authorized work belong to the repo contract rather than ephemeral side channels.
