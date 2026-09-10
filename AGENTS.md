@@ -9,6 +9,7 @@ The human principal owns intent, taste, and final veto.
 ChatGPT in the director role owns:
 - the philosophy and ontology;
 - document structure and canonical terminology;
+- canonical reusable operational prompt artifacts;
 - version boundaries;
 - acceptance or rejection of proposed doctrinal changes;
 - integration of accepted doctrine.
@@ -26,18 +27,34 @@ Implementation agents may not silently:
 - conflate repository macro-goal identity with an individual worker-session lifecycle;
 - renumber a correction continuation merely because a worker session terminated;
 - replace repository-mediated coordination with chat-only state;
+- keep a reusable operational prompt only in chat or another transient agent UI;
+- regenerate canonical prompt wording from memory when a repository prompt artifact exists;
 - grant implementation workers open-ended architectural authority;
 - instruct the human principal to download/unpack/run generated CI or agent-produced payloads for ordinary development or manual QA;
 - treat a latent option as authorized work, roadmap priority, or current architecture;
 - silently replace the repository's declared dependency/materialization policy;
 - put heavy, blocking, unbounded, or externally paced work on a latency-critical interactive/UI thread;
 - introduce a non-Rust product/runtime language without a concrete project-level justification;
-
 - rewrite the v0.5 archive.
 
 ## Canonical reading order
 
-Read README.md, docs/00-manifesto.md through docs/16-latent-options.md, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
+Read README.md, docs/00-manifesto.md through docs/17-prompts-as-repository-artifacts.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
+
+## Prompt artifact rule
+
+Reusable operational prompts are first-class repository artifacts.
+
+Canonical prompt definitions live under `prompts/` or an explicitly documented project-equivalent path. They are versioned, reviewed, diffed, and transported with Git like other protocol artifacts.
+
+Distinguish:
+
+- **prompt artifact** — durable repository file containing the canonical reusable invocation contract;
+- **prompt invocation** — transient act of sending, pasting, or triggering that artifact in an external agent interface.
+
+Prompt artifacts should remain thin. They point agents to richer repository contracts rather than duplicating architecture, roadmap, goal, review, evidence, or current-state knowledge.
+
+Do not make chat the only canonical location of a reusable prompt. When recurring invocation behavior changes, update the repository prompt artifact.
 
 ## Archive rule
 
@@ -53,8 +70,7 @@ A doctrinal change should state:
 
 Major changes to the authority model, repository ontology, or transaction protocol require a new major doctrine version.
 
-Completion-observability adapters may vary by platform while preserving v1.3 semantics: worker-owned startup, attempt-safe re-arming, durable terminal-state observation, exactly-once signaling per execution attempt, and strict separation between notification and correctness.
-
+Completion-observability adapters may vary by platform while preserving current v1 semantics: worker-owned startup, attempt-safe re-arming, durable terminal-state observation, exactly-once signaling per execution attempt, and strict separation between notification and correctness.
 
 ## Human execution rule
 
