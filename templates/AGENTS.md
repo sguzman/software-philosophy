@@ -1,6 +1,16 @@
 # Agent Guide
 
-The repository documentation is the system of record.
+The repository is the canonical project state and system of record.
+
+Chat, model memory, agent scratchpads, and worker UI sessions are temporary projection surfaces, not required project state.
+
+## Repository-state closure
+
+A capable new authorized agent at a known commit must be able to understand and continue durable project work without prior conversation history, except for intentionally external credentials and genuinely new human intent.
+
+If a fact, decision, constraint, correction, prompt, dependency, observation, or future-work obligation becomes relevant to later work, externalize it into the appropriate repository artifact before later work depends on it.
+
+Do not use chat history or model memory as a substitute for repository state.
 
 ## Read before changing code
 
@@ -15,12 +25,13 @@ The repository documentation is the system of record.
 9. the active roadmap
 10. the single authorized goal under docs/work/ready/ or docs/work/active/
 11. any director review/correction contract for that goal
+12. the canonical prompt artifact for the current invocation, when applicable
 
 ## Roles
 
-- Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, and integration.
+- Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, repository-state closure, and integration.
 - Implementation worker: owns bounded implementation attempts, directly related repair passes, validation, durable reporting, and completion-observer startup/re-arm when available.
-- Human maintainer: owns local operation and real-machine observations when requested. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, or payload installer.
+- Human maintainer: owns local operation and real-machine observations when requested. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, payload installer, or memory store for project state.
 
 ## Software architecture invariants
 
@@ -55,6 +66,7 @@ Do not create the next numbered goal merely because an execution session ended.
 - Do not silently change architecture, product semantics, persistence contracts, or priority.
 - Do not weaken tests to obtain green.
 - Do not perform opportunistic broad rewrites.
+- Do not make future work depend on an uncommitted chat-only decision.
 
 ## Worker autonomy
 
@@ -86,4 +98,6 @@ Do not treat notification delivery as evidence or director acceptance.
 
 ## Handoff
 
-Commit and push enough durable evidence that the director can review without chat history. Preserve prior attempt history on correction continuations.
+Commit and push enough durable state and evidence that the director can review without chat history. Preserve prior attempt history on correction continuations.
+
+Before terminalizing, ask whether any project-relevant fact discovered during the attempt exists only in the worker's transient context. If so, externalize it.

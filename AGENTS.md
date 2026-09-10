@@ -27,6 +27,8 @@ Implementation agents may not silently:
 - conflate repository macro-goal identity with an individual worker-session lifecycle;
 - renumber a correction continuation merely because a worker session terminated;
 - replace repository-mediated coordination with chat-only state;
+- rely on chat history, model memory, scratchpads, or worker UI state as required project state;
+- continue future work based on a durable chat-derived decision that has not been externalized into the repository;
 - keep a reusable operational prompt only in chat or another transient agent UI;
 - regenerate canonical prompt wording from memory when a repository prompt artifact exists;
 - grant implementation workers open-ended architectural authority;
@@ -39,7 +41,17 @@ Implementation agents may not silently:
 
 ## Canonical reading order
 
-Read README.md, docs/00-manifesto.md through docs/17-prompts-as-repository-artifacts.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
+Read README.md, docs/00-manifesto.md through docs/18-repository-state-closure.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
+
+## Repository-state closure
+
+The repository is the canonical project state. Chat is only a temporal projection used while cognition and coordination are happening.
+
+A capable new director/worker at a known commit must be able to continue the project correctly without access to prior conversations, model memory, private scratchpads, or worker UI sessions, except for intentionally external credentials and irreducible new human intent.
+
+When something discovered or decided in chat becomes relevant to future work, externalize it into the appropriate repository artifact before later work depends on it.
+
+If project continuation requires reconstructing a lost conversation, repository-state closure has failed.
 
 ## Prompt artifact rule
 

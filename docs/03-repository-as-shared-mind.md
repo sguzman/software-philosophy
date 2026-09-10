@@ -4,6 +4,10 @@ The repository is the central coordination technology of the v1 doctrine.
 
 This does not mean source files are literally intelligent. It means the repository is the durable medium in which the distributed development system stores what it knows, what it wants, what it is doing, what it has proven, and how recurring agent interactions are invoked.
 
+More strongly:
+
+> **The repository is the canonical project state. Chat is only a temporal projection of that state while work is being performed.**
+
 ## Why chat cannot be the system of record
 
 Chat has several weaknesses:
@@ -16,6 +20,26 @@ Chat has several weaknesses:
 - reusable invocation wording can fork into incompatible chat variants.
 
 Chat is excellent for thinking. It is poor institutional memory and poor canonical prompt storage.
+
+A conversation can inspect, interpret, dispute, or propose changes to repository state. It does not become canonical project state merely because a human or agent said something there.
+
+## Repository-state closure
+
+A mature project must satisfy **repository-state closure**.
+
+Everything another human or agent needs to understand, continue, execute, review, or coordinate durable project work must exist in the repository or be explicitly declared there as an intentionally external prerequisite.
+
+The project should survive loss of conversational context.
+
+    canonical repository state R_n
+      -> chat / reasoning / discussion
+      -> proposed delta
+      -> repository mutation
+      -> canonical repository state R_(n+1)
+
+Chat is therefore a **temporal projection** of the project during work, not an alternate state store.
+
+When a conversational discovery or decision becomes relevant to future work, the director must externalize it before later work depends on it.
 
 ## Canonical knowledge and protocol layers
 
@@ -159,13 +183,29 @@ This is the **externalized cognition principle**:
 
 > The more project reasoning, workflow state, and recurring protocol can be made durable and explicit, the less intelligence and human vigilance each execution step must purchase again.
 
+Repository-state closure is the hard boundary around that principle:
+
+> **If future work depends on it, externalize it before dependency.**
+
+## External resources are declared, not hidden
+
+Repository-state closure does not require committing secrets, credentials, compiler binaries, giant datasets, or every generated artifact.
+
+It requires the repository to contain the contract for intentionally external prerequisites: names, roles, versions, bootstrap/fetch rules, checksums or identifiers where appropriate, and enough documentation for a new authorized agent to understand what is missing and why.
+
+The payload may be external. The dependency knowledge may not be hidden.
+
 ## Repository health test
 
 Ask:
 
 > Could a capable new agent inspect only the repository at a known commit and understand what the project is, what is authoritative, what is currently true, what work is authorized next, what terminal states mean, how completion is surfaced, what canonical prompt invokes the next interaction, and what would require escalation?
 
-If not, the repository is missing institutional memory or protocol.
+Then ask the stronger question:
+
+> **If every chat transcript, model memory, private scratchpad, and worker UI session disappeared, could a new director and worker continue correctly from the repository alone, except for intentionally external credentials and irreducible new human intent?**
+
+If not, project state has leaked outside the repository.
 
 Also ask:
 

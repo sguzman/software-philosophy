@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0] - 2026-09-10
+
+### Doctrine
+
+- Promoted **repository-state closure** to a hard invariant.
+- Declared the repository the canonical project state rather than merely an important durable memory store.
+- Defined chat as a **temporal projection** used for exploration, reasoning, and proposed state transitions, not as an alternate project-state store.
+- Added the **externalize before dependency** rule: once a chat-derived fact or decision matters to later work, it must be promoted into an appropriate repository artifact before future work relies on it.
+- Prohibited reliance on chat history, model memory, agent scratchpads, worker UI sessions, local-only notes, or other transient interfaces as required durable project state.
+- Added the conversation-loss test: a new authorized director/worker should be able to continue correctly from a known commit without prior conversations, except for intentionally external credentials and irreducible new human intent.
+- Clarified that external secrets, services, binaries, and large payloads need not be committed, but their requirements/materialization contracts must be represented in the repository.
+- Updated the reusable AGENTS template so repository-state closure propagates into adopted projects.
+
 ## [1.5.0] - 2026-09-10
 
 ### Doctrine
@@ -28,7 +41,6 @@
 - Added first-class ontology for software architecture doctrine, architecture principles/patterns, principal implementation profiles, interactive threads, and work boundaries.
 - Documented the v1.4 lineage from repeated egui responsiveness failures to cross-project architecture doctrine.
 
-
 ## [1.3.0] - 2026-09-07
 
 ### Doctrine
@@ -43,7 +55,6 @@
 - Added a latent-option register so Nix/mise and similar future technologies can be remembered without roadmap pressure or work authorization.
 - Added reusable negative-doctrine, options, Windows dependency, bootstrap, and human-verification templates.
 - Documented the Lantern Leaf QA-bundle failure and its replacement with `Scoopfile.json`, `deps.ps1`, `qa.ps1`, and repo-owned logs.
-
 
 ## [1.2.0] - 2026-09-07
 
