@@ -14,7 +14,7 @@ The principal may delegate interpretation and implementation, but not authorship
 
 The **director** is the high-reasoning agent responsible for converting incomplete human intent into durable project governance.
 
-The director owns philosophy, product scope, priorities, architecture, invariants, roadmaps, goal boundaries, semantic review, integration decisions, and current-state interpretation.
+The director owns philosophy, product scope, priorities, architecture, invariants, roadmaps, goal boundaries, semantic review, integration decisions, current-state interpretation, and repository-state closure.
 
 The director is a role, not a vendor or model name.
 
@@ -30,9 +30,53 @@ It does not own the project merely because it touches the project.
 
 The **repository** is the canonical persistent project state visible to all roles.
 
-It may contain product doctrine, architecture, invariants, priorities, current verified status, roadmaps, work contracts, reports, reviews, tests, code, configuration, scripts, and history.
+It may contain product doctrine, architecture, invariants, priorities, current verified status, roadmaps, work contracts, reports, reviews, tests, code, configuration, scripts, prompt artifacts, dependency declarations, and history.
 
-The repository is the shared institutional memory and communication substrate.
+The repository is the shared institutional memory, coordination substrate, and canonical state boundary.
+
+## Repository-state closure
+
+**Repository-state closure** is the invariant that durable project reality must be reconstructible from the repository at a known commit without requiring prior conversational context.
+
+A project is repository-state closed when a capable authorized agent can determine from the repository what the project is, what is authoritative, what is true now, what work is authorized, what constraints govern it, how it is invoked and validated, and how to continue correctly.
+
+Intentionally external credentials, secrets, services, binaries, or large payloads may remain outside Git, but their required contracts and materialization expectations must be represented in the repository.
+
+## Temporal projection
+
+A **temporal projection** is a transient conversational or agent-session view over canonical repository state used while reasoning, exploring, reviewing, or proposing a state transition.
+
+Chat is a temporal projection.
+
+It may produce a proposed project-state delta, but it is not canonical project state itself.
+
+    repository state R_n
+      -> temporal projection
+      -> proposed delta
+      -> durable repository mutation
+      -> repository state R_(n+1)
+
+## State promotion
+
+**State promotion** is the act of externalizing a project-relevant fact or decision discovered in a temporal projection into the appropriate durable repository artifact.
+
+Once later work depends on a conversational discovery, promotion is mandatory.
+
+Examples include promoting a chat-derived architecture decision into architecture docs, a correction into a review contract, a recurring invocation into a prompt artifact, or an observed runtime fact into current-state/evidence records.
+
+## State leakage
+
+**State leakage** occurs when durable project work depends on information that exists only outside canonical repository state.
+
+Examples include relying on:
+- a lost chat decision;
+- model memory;
+- a private agent scratchpad;
+- worker UI/session state;
+- undocumented local-only notes;
+- human recollection of an earlier prompt or architecture decision.
+
+State leakage is a repository-state-closure failure.
 
 ## Doctrine
 
@@ -44,7 +88,7 @@ Doctrine answers: **what ought to be true?**
 
 A **doctrinal modality** states how much normative force a durable statement carries.
 
-v1.4 distinguishes three primary modalities:
+v1.6 distinguishes three primary modalities:
 
 ### Prohibition
 
@@ -125,7 +169,6 @@ Typical implementations use typed queues/channels, worker threads, worker pools,
 The important property is that the interactive thread never waits for the work to finish.
 
 ## Human execution surface
-
 
 The **human execution surface** is the smallest repository-owned interface through which the principal performs necessary local work.
 
@@ -354,7 +397,9 @@ Escalation is not failure. It is correct containment of unresolved uncertainty.
 
 ## Prompt
 
-A **prompt** is an invocation surface, not project memory.
+A **prompt artifact** is a durable repository-native invocation contract. A **prompt invocation** is the transient act of delivering that artifact into a human or agent interface.
+
+Prompt artifacts are protocol, not project memory: they should point into the richer repository state rather than duplicate it.
 
 Initial execution can often be invoked with:
 
