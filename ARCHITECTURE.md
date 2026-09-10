@@ -12,7 +12,7 @@ This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authori
 
 ### Doctrine
 
-docs/00-manifesto.md through docs/16-latent-options.md are the canonical development-governance portion of the v1.4 theory.
+docs/00-manifesto.md through docs/17-prompts-as-repository-artifacts.md are the canonical development-governance portion of the v1.5 theory.
 
 They define:
 - ontology;
@@ -31,7 +31,8 @@ They define:
 - doctrinal modalities: prohibitions, current conventions, and latent options;
 - repo-native human execution and the external-payload prohibition;
 - dependency declaration/materialization and the Windows Scoop profile;
-- future-option preservation without work authorization.
+- future-option preservation without work authorization;
+- prompt artifacts as durable repository protocol distinct from transient prompt invocation.
 
 ### Software architecture doctrine
 
@@ -53,10 +54,15 @@ Profiles are current conventions, not universal metaphysical claims.
 
 ### Reusable protocol
 
+`templates/` contains files intended to be copied or adapted into other repositories.
 
-templates/ contains files intended to be copied or adapted into other repositories.
+`prompts/` contains canonical reusable **prompt artifacts**. These are first-class repository protocol files: durable, versioned, reviewable, and discoverable.
 
-prompts/ contains deliberately thin invocation prompts. They point agents at repository contracts rather than carrying project knowledge themselves.
+The prompt artifact is not the same thing as the prompt invocation. A Codex Goal box, chat message, CLI command, or other interface may transiently deliver the artifact, but that interface is not its canonical home.
+
+Prompt artifacts should remain deliberately thin: they point agents at repository contracts rather than carrying project knowledge themselves.
+
+`prompts/README.md` defines the prompt-artifact contract.
 
 ### Latent option register
 
@@ -81,11 +87,14 @@ When material conflicts:
 5. repository-specific canonical architecture and project docs;
 6. current goal/review contracts within their delegated scope;
 7. current-state evidence;
-8. latent options;
-9. workflow notification state;
-10. historical docs and examples.
+8. canonical prompt artifacts as invocation protocol;
+9. latent options;
+10. workflow notification state;
+11. historical docs and examples.
 
 A lower layer cannot silently overrule a higher layer.
+
+A prompt artifact is protocol, not independent semantic authority. If it conflicts with the goal, review, doctrine, or architecture it points to, correct the prompt artifact.
 
 A completion signal is deliberately below evidence in this ordering. It can route attention but cannot establish truth.
 
@@ -97,12 +106,16 @@ Changes to terminology should update all current doctrine and templates that dep
 
 Changes to role authority, transaction semantics, or the principal veto are major-version changes.
 
+Changes to recurring invocation behavior should update the corresponding repository prompt artifact rather than living only as revised prose in chat.
+
 Implementation examples may evolve without changing doctrine when they preserve the same coordination and architecture semantics.
 
 ## Hidden-state prohibition
 
-No issue, chat, prompt, agent scratchpad, worker UI session, or transient notification should be the only location of a decision required to understand current doctrine.
+No issue, chat, prompt invocation, agent scratchpad, worker UI session, or transient notification should be the only location of a decision required to understand current doctrine.
+
+No transient interface should be the only canonical location of a reusable operational prompt.
 
 If it matters after the conversation ends, externalize it into the repository.
 
-The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, and logs belong to the repo contract rather than an ephemeral download side channel.
+The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, logs, and reusable prompt definitions belong to the repo contract rather than ephemeral side channels.

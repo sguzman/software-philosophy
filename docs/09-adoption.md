@@ -1,4 +1,4 @@
-# Adopting v1.4 in a Repository
+# Adopting v1.5 in a Repository
 
 The philosophy is technology-independent. Use only the structure your project earns.
 
@@ -18,7 +18,6 @@ The philosophy is technology-independent. Use only the structure your project ea
         architecture-principles.md
         language-profile.md
 
-
       roadmaps/
         master-roadmap.md
 
@@ -34,6 +33,13 @@ The philosophy is technology-independent. Use only the structure your project ea
         done/
         reports/
         reviews/
+
+    prompts/
+      README.md
+      execute-ready-goal.md
+      continue-corrected-goal.md
+      review-pushed-goal.md
+      request-human-verification.md
 
     scripts/
       check
@@ -75,17 +81,40 @@ Define `done` as worker-terminal/review-ready, not director-accepted.
 
 Make it large enough to eliminate predictable prompt loops and bounded enough that architectural ambiguity is explicit.
 
-## Step 6 — shorten the prompts
+## Step 6 — create repository prompt artifacts
 
-Once the goal contract is committed, stop restating it in chat.
+Do not leave recurring invocation wording in chat.
 
-Worker invocation should become a pointer.
+Create a `prompts/` directory or an explicitly documented equivalent and commit the reusable prompts that drive the workflow.
 
-Director review invocation should become:
+At minimum, consider artifacts for:
+- executing the ready goal;
+- continuing a director-corrected goal;
+- invoking director review of a pushed candidate;
+- requesting human verification.
 
-> Review the pushed branch for goal N against the repository contract and integrate it if acceptable.
+Prompt artifacts are first-class repository protocol. They are versioned, reviewable, discoverable, and transported with Git.
 
-## Step 7 — add completion observability
+Keep them thin. Once the goal/review/architecture contract is committed, the prompt should point at it rather than duplicate it.
+
+Distinguish:
+
+    prompt artifact = durable file in Git
+    prompt invocation = transient paste/send/trigger in an external UI
+
+The external UI is not the canonical prompt store.
+
+## Step 7 — shorten prompt artifacts
+
+Once the repository contracts are rich enough, remove duplicated project knowledge from prompt artifacts.
+
+A worker prompt should become mostly a pointer, for example:
+
+> Read AGENTS.md and execute the single authorized macro-goal in docs/work/ready/.
+
+The prompt artifact remains durable even though its content is thin.
+
+## Step 8 — add completion observability
 
 For long-running workstation goals, add a repository-owned bounded observer.
 
@@ -106,7 +135,7 @@ Required semantics:
 
 Do not make the human remember a second command. If that is required, vigilance tax has merely moved rather than disappeared.
 
-## Step 8 — support correction continuations
+## Step 9 — support correction continuations
 
 Document the distinction between repository macro-goals and worker sessions.
 
@@ -125,7 +154,7 @@ The work-state machine is therefore cyclic:
 
 Do not make tool-session lifecycle determine repository goal numbering.
 
-## Step 9 — define the human execution surface
+## Step 10 — define the human execution surface
 
 Keep normal development and QA inside the checkout.
 
@@ -142,7 +171,7 @@ Hard prohibition:
 
 For the principal's current Windows profile, prefer `Scoopfile.json` plus Scoop for ordinary CLI tools. Preserve language-native toolchain declarations and explicit native-platform exceptions where those systems are the correct owner.
 
-## Step 10 — add an option register
+## Step 11 — add an option register
 
 Create a place for **latent options**: future technologies worth remembering but not worth scheduling.
 
@@ -150,7 +179,7 @@ A latent option should record the possible technology/direction, why it may beco
 
 Do not put latent options directly into the active roadmap merely so they are not forgotten.
 
-## Step 11 — adopt software architecture doctrine
+## Step 12 — adopt software architecture doctrine
 
 Separate runtime/software-structure rules from agent workflow rules.
 
@@ -167,7 +196,7 @@ For GUI projects:
 
 Record project-specific architecture principles in `docs/project/architecture-principles.md`.
 
-## Step 12 — adopt the principal language profile
+## Step 13 — adopt the principal language profile
 
 Unless a project has a contrary constraint, product code should start from the Rust-first profile.
 
@@ -175,14 +204,17 @@ Record intentional deviations rather than silently drifting into a polyglot prod
 
 Normal exceptions such as PowerShell bootstrap, TOML/JSON configuration, package-manager metadata, and platform-required glue do not violate Rust-first.
 
-## Step 13 — evolve from observed friction
-
+## Step 14 — evolve from observed friction
 
 The repo protocol itself is software.
 
 If the human keeps becoming a courier, fix the protocol.
 
 If the human keeps polling, improve completion observability.
+
+If recurring prompt wording lives in chat, promote it into `prompts/`.
+
+If prompt artifacts keep restating the project, enrich repository contracts and thin the prompts.
 
 If the worker keeps escalating trivial failures, enlarge goal authorization.
 
@@ -202,12 +234,13 @@ As the workflow stabilizes, automate deterministic steps:
 - report scaffolding;
 - CI;
 - candidate artifact builds;
-- terminal completion signaling.
+- terminal completion signaling;
+- prompt rendering/invocation from canonical repository prompt artifacts.
 
 Automation should support the authority model, not erase it.
 
 ## What not to standardize globally
 
-v1.4 core governance does not universally require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, or a particular worker-session UI.
+v1.5 core governance does not universally require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, or a particular worker-session UI.
 
-The core governance doctrine standardizes coordination semantics. Architecture doctrine adds reusable structural invariants. Principal profiles additionally standardize current implementation choices: Rust-first for product code and Scoop for ordinary Windows CLI dependency materialization. These remain explicit current conventions rather than eternal axioms.
+The core governance doctrine standardizes coordination semantics, including the requirement that recurring prompts are durable repository artifacts. Architecture doctrine adds reusable structural invariants. Principal profiles additionally standardize current implementation choices: Rust-first for product code and Scoop for ordinary Windows CLI dependency materialization. These remain explicit current conventions rather than eternal axioms.

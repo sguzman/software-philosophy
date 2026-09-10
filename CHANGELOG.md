@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0] - 2026-09-10
+
+### Doctrine
+
+- Made reusable operational prompts **first-class repository artifacts**.
+- Distinguished durable **prompt artifacts** from transient **prompt invocations**.
+- Added the hard rule that chat or another agent UI must not be the only canonical location of a reusable prompt.
+- Made `prompts/` a canonical repository protocol layer with its own README and discoverability contract.
+- Clarified that prompt artifacts are versioned, reviewable, diffable, reversible, and transported with Git.
+- Preserved prompt thinness: prompts point to doctrine, goals, reviews, evidence, and state rather than duplicating project memory.
+- Made the director responsible for updating canonical prompt artifacts when recurring invocation behavior changes.
+- Added prompt artifacts to repository adoption scaffolding and repository-health tests.
+
 ## [1.4.0] - 2026-09-08
 
 ### Doctrine
