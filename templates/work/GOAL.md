@@ -29,21 +29,43 @@ Rust-first deviation, if any:
 
 If this goal touches a GUI path, explicitly state how heavy work remains off the latency-critical interactive thread.
 
+## Operational criticality / continuity impact
+
+Project/capability criticality: unknown / non-load-bearing / load-bearing
+Load-bearing capability touched: yes / no
+Continuity envelope affected:
+Stable/consumption channel identity:
+Development channel identity:
+Is this goal allowed to mutate the stable/consumption channel: yes / no
+Collision audit required or updated: yes / no
+Shared mutable surfaces implicated:
+Promotion gate if candidate may advance stable:
+
+If criticality is unknown but credible evidence suggests the principal actively consumes the affected capability, surface that ambiguity before invasive work.
+
+For declared load-bearing capabilities, the goal must preserve an immediately available verified runtime path unless the principal explicitly accepts a different continuity contract.
+
 ## Constraints
 
-List invariants, compatibility rules, ownership boundaries, and implementation constraints.
+List invariants, compatibility rules, ownership boundaries, implementation constraints, and continuity requirements.
 
 ## Non-goals
 
 Explicitly prohibit adjacent work.
 
+For load-bearing projects, normally include experimental mutation of the stable/consumption runtime as a non-goal unless this goal is explicitly a stable-promotion/recovery operation.
+
 ## Acceptance gates
 
 State what must be true before the current worker attempt may claim DONE and what the director will review.
 
+DONE on a development goal is not stable promotion. If promotion is in scope, state the separate promotion evidence required.
+
 ## Validation
 
 List exact commands and required evidence classes.
+
+For user-facing load-bearing software, distinguish automated evidence from real-runtime/human experiential evidence.
 
 ## Correction continuation policy
 
@@ -80,8 +102,12 @@ Dependency refresh required: yes / no
 Dependency command if required:
 Expected observation:
 
+For a load-bearing project, human QA should exercise the development candidate without replacing or contaminating the verified stable runtime first.
+
 Do not require the principal to download/unpack/run an external generated payload for ordinary verification.
 
 ## Stop / escalation conditions
 
 List exact discoveries that require director judgment.
+
+Include newly discovered load-bearing dependence, continuity-envelope changes, or shared-state collisions that could endanger the stable channel.
