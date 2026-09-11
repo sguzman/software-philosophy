@@ -38,12 +38,14 @@ Implementation agents may not silently:
 - treat a latent option as authorized work, roadmap priority, or current architecture;
 - silently replace the repository's declared dependency/materialization policy;
 - put heavy, blocking, unbounded, or externally paced work on a latency-critical interactive/UI thread;
+- mutate the only verified runtime for a declared load-bearing capability as an experimental development surface;
+- assume separate branches/worktrees prove runtime isolation without auditing shared mutable collision surfaces;
 - introduce a non-Rust product/runtime language without a concrete project-level justification;
 - rewrite the v0.5 archive.
 
 ## Canonical reading order
 
-Read README.md, docs/00-manifesto.md through docs/19-human-attention-budget.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
+Read README.md, docs/00-manifesto.md through docs/20-load-bearing-software-continuity.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
 
 ## Repository-state closure
 
@@ -73,6 +75,22 @@ Keep context transport, state synchronization, retries, status tracking, depende
 Before asking the principal to do something, ask whether the task genuinely requires human intent, taste, embodied observation, or authority. If not, redesign the workflow so the repository or agents own it.
 
 When human input is required, make the escalation decision-ready: smallest sufficient context, relevant evidence, clear tradeoff, and a durable repository pointer. Externalize the human answer afterward so they are not asked to remember it later.
+
+## Load-bearing software continuity
+
+A project or individual capability may become privately load-bearing once the principal begins relying on it for real activity outside development.
+
+The principal is the primary source for otherwise-hidden facts about private dependence. The director has a secondary discovery duty: when credible evidence suggests active reliance, surface and durably record criticality before authorizing invasive work with a meaningful regression blast radius.
+
+Load-bearing status may attach to a **continuity envelope** rather than the whole project. Preserve the relied-upon capabilities while experimental surfaces evolve separately.
+
+Hard invariant:
+
+> Experimental mutation must not be able to remove the last verified runtime for a declared load-bearing continuity envelope.
+
+Use stable/development runtime separation when necessary. Promotion into the load-bearing channel requires the strongest relevant evidence class; for user-facing software this may include exact-candidate real-runtime QA and explicit principal acceptance.
+
+When stable and dev coexist, audit shared mutable collision surfaces. Separate source trees alone are not proof of isolation.
 
 ## Prompt artifact rule
 
@@ -113,6 +131,8 @@ Do not create a second execution/coordination channel by asking the principal to
 
 If local testing needs dependencies, encode them in the repository, provide an idempotent bootstrap/check path, and have the director tell the principal when dependency refresh is required.
 
+For load-bearing software, human QA of experimental candidates must not require sacrificing the currently verified stable runtime.
+
 ## Policy force
 
 Read doctrinal statements according to their modality:
@@ -127,13 +147,17 @@ For the principal's current Windows platform profile, Scoop is the canonical man
 
 `architecture/` governs software structure separately from the agent-development workflow.
 
-Current hard invariant:
+Current hard invariants include:
 
 > A latency-critical interactive thread may orchestrate; it may not labor.
 
+> Experimental mutation must not remove the last verified runtime for a declared load-bearing continuity envelope.
+
 For GUI code, keep input handling, lightweight UI-state mutation, frame construction, enqueueing, non-blocking result polling, and small result application on the interactive thread. Move blocking I/O, large parsing/search/indexing, TTS/audio processing, image processing, network calls, process waits, heavy CPU work, and potentially contended waits behind a worker boundary.
 
-`async` syntax does not satisfy this rule by itself. If CPU-heavy work is polled on the UI thread, it still violates the architecture.
+For load-bearing runtimes, use stable/development isolation and a collision-surface audit when experimental work could otherwise impair the consumption channel.
+
+`async` syntax does not satisfy interactive-thread isolation by itself. If CPU-heavy work is polled on the UI thread, it still violates the architecture.
 
 ## Language profile
 
