@@ -1,15 +1,15 @@
-# Software Philosophy v1.7
+# Software Philosophy v1.8
 
 A repository-mediated operating system for agentic software development.
 
 The core idea:
 
-> The repository is the canonical project state and durable shared mind. Chat is a temporal projection used to inspect, discuss, and transform that state; it is never a required store of project reality. The human is the semantic control plane: intent, taste, veto, embodied observation, and exceptional authorization. The repository and agents carry state, context, transport, execution, retries, evidence, monitoring, and bookkeeping. Human cognition is the scarce, serial, context-switch-sensitive resource, so the system should minimize avoidable human cognitive load while preserving human semantic control. The director converts intent into doctrine, architecture, roadmaps, goals, review, and reusable prompt artifacts. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native: the repository declares and materializes its environment, exposes stable local entrypoints, and does not outsource routine testing, canonical prompts, required project context, or machine-shaped coordination work to the principal.
+> The repository is the canonical project state and durable shared mind. Chat is a temporal projection used to inspect, discuss, and transform that state; it is never a required store of project reality. The human is the semantic control plane: intent, taste, veto, embodied observation, and exceptional authorization. The repository and agents carry state, context, transport, execution, retries, evidence, monitoring, and bookkeeping. Human cognition is the scarce, serial, context-switch-sensitive resource, so the system should minimize avoidable human cognitive load while preserving human semantic control. When a project or capability becomes load-bearing for the principal's real activity, the repository must also preserve continuity: experimental development may regress, but it must not remove the last verified working runtime for the relied-upon capability. The director converts intent into doctrine, architecture, roadmaps, goals, review, continuity contracts, and reusable prompt artifacts. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native and machine-shaped coordination work stays below the human layer.
 
 The repository has three related but distinct substantive layers plus a repository-native invocation layer:
 
-1. **Development governance doctrine** — how the human, director, worker, repository, evidence, and work lifecycle relate.
-2. **Software architecture doctrine** — how the software itself should be structured: runtime responsibilities, concurrency, state, boundaries, responsiveness, and other empirically earned architectural rules.
+1. **Development governance doctrine** — how the human, director, worker, repository, evidence, work lifecycle, criticality, and continuity contracts relate.
+2. **Software architecture doctrine** — how the software itself should be structured: runtime responsibilities, concurrency, state, boundaries, responsiveness, continuity, and other empirically earned architectural rules.
 3. **Principal implementation profiles** — strong current defaults such as Rust-first and Windows/Scoop policy.
 4. **Prompt artifacts** — durable, versioned invocation contracts under `prompts/` that point agents into the richer repository state.
 
@@ -21,6 +21,7 @@ The core governance doctrine is not tied to a particular programming language. T
       SEMANTIC CONTROL PLANE
       intent / taste / veto
       embodied observation / exceptional authority
+      private-use facts / continuity needs
             |
             v
     CHAT / AGENT SESSION
@@ -32,6 +33,7 @@ The core governance doctrine is not tied to a particular programming language. T
       philosophy / product scope / architecture
       priorities / roadmaps / macro-goals
       semantic review / integration
+      criticality / continuity / promotion gates
       canonical prompt artifacts
             |
             v
@@ -39,6 +41,7 @@ The core governance doctrine is not tied to a particular programming language. T
       CANONICAL STATE + COORDINATION PLANE
       context / transport / execution / retries
       evidence / monitoring / bookkeeping
+      stable/dev runtime contracts
             |
             v
     PROMPT INVOCATION
@@ -65,9 +68,9 @@ The core governance doctrine is not tied to a particular programming language. T
     FRESH WORKER SESSION S2
       same goal ID / continuing lineage
 
-The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for project state or prompt wording. Human attention is reserved for work that genuinely requires human authorship, judgment, embodiment, or authority.
+The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for project state or prompt wording. Human attention is reserved for work that genuinely requires human authorship, judgment, embodiment, or authority. The principal is, however, the primary source for otherwise-hidden facts about how much they privately depend on a tool; once that dependence becomes known, it must be externalized into repository state.
 
-## v1.7 doctrine
+## v1.8 doctrine
 
 1. **Persist cognition that matters.** Important project knowledge belongs in the repository, not only in chat.
 2. **Separate authority from execution.** The agent best suited to architecture should not spend its attention babysitting file edits; the filesystem-capable worker should not invent the project.
@@ -104,6 +107,12 @@ The human is deliberately neither the courier between agents nor the polling loo
 33. **Use the human as control plane, not data plane.** Human attention belongs on intent, taste, veto, embodied observation, and true authority boundaries; repository and agents carry context, state, transport, retries, monitoring, and bookkeeping.
 34. **Do not export machine-shaped work to the principal.** If an agent or deterministic repository mechanism can own a task without human judgment, keep it out of the human layer.
 35. **Escalate decision-ready.** When human input is genuinely required, present the smallest sufficient decision or observation with relevant evidence and tradeoffs already prepared, then externalize the answer into repository state.
+36. **Record operational criticality.** A project or capability can become privately load-bearing; once known, that dependency is first-class repository state.
+37. **Share discovery responsibility honestly.** The principal owns hidden facts about private use; the director should surface credible signs of dependence before risky work rather than assuming silence means non-criticality.
+38. **Preserve the continuity envelope.** Experimental work may regress outside the relied-upon surface, but it must not remove the principal's last verified path for capabilities already being consumed.
+39. **Separate consumption from experimentation.** For load-bearing software, use a stable runtime channel distinct from the development mutation surface when a regression could otherwise interrupt real activity.
+40. **Promote by evidence, not optimism.** A candidate advances into the load-bearing channel only after the exact candidate passes the required promotion gates, including real-runtime/human verification where that is the strongest evidence class.
+41. **Audit collision surfaces.** Separate branches, worktrees, installations, or profiles do not prove isolation; enumerate shared mutable resources and their coexistence, activation, cleanup, and failure costs.
 
 ## Reading tracks
 
@@ -129,12 +138,17 @@ The human is deliberately neither the courier between agents nor the polling loo
 18. docs/17-prompts-as-repository-artifacts.md
 19. docs/18-repository-state-closure.md
 20. docs/19-human-attention-budget.md
+21. docs/20-load-bearing-software-continuity.md
 
 ### Software architecture doctrine
 
 1. architecture/README.md
 2. architecture/principles/0001-interactive-thread-isolation.md
-3. architecture/patterns/work-queue-boundary.md
+3. architecture/principles/0002-load-bearing-runtime-continuity.md
+4. architecture/patterns/work-queue-boundary.md
+5. architecture/patterns/stable-development-runtime-split.md
+6. architecture/patterns/collision-surface-audit.md
+7. architecture/patterns/edge-extension-stable-dev-isolation.md
 
 ### Principal implementation profiles
 
@@ -155,6 +169,6 @@ The pre-v1 stack-centric philosophy is preserved under archive/v0.5/.
 
 ## Version
 
-Current doctrine: **1.7.0**.
+Current doctrine: **1.8.0**.
 
-v1.7 makes human cognitive load an explicit system constraint and optimization target: the principal is the semantic control plane, the repository and agents absorb machine-shaped coordination work, and human interruptions should be decision-ready and irreducible.
+v1.8 makes private load-bearing use and continuity first-class project concerns: capability-level criticality is recorded, stable consumption is isolated from experimental mutation, promotion requires exact-candidate evidence, and stable/dev coexistence is governed by explicit collision-surface audits. The Edge-extension pattern uses separate worktrees and Edge profiles while auditing page namespace, audio, Native Messaging, system registrations, and cleanup blast radius.
