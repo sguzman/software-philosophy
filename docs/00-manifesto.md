@@ -12,11 +12,25 @@ A third failure mode appears when the agents automate themselves but export cere
 
 That is not full delegation either. It is coordination debt displaced onto the principal.
 
+A fourth failure mode is subtler: every individual request to the human appears small, but together they force the principal to keep project state, agent state, dependency state, branch state, and unfinished decisions live in working memory. The system technically delegates execution while retaining the human as its fragile synchronization layer.
+
+That is also a design failure.
+
 ## The doctrine
 
 **The repository is the shared institutional mind.**
 
 Chat is useful for exploration. Agent context windows are useful for local reasoning. Neither is authoritative memory. Anything required for future work must be committed in a form another agent can recover without reconstructing a lost conversation.
+
+**Human cognition is a budget, not free infrastructure.**
+
+Human working memory is bounded, attention is largely serial, and context switching is expensive. The system must therefore treat avoidable human cognitive load as a cost to be engineered away.
+
+The principal is the **semantic control plane**, not the operational data plane.
+
+Human attention belongs on intent, taste, veto, embodied observation, and genuine authority decisions. Context transport, project-memory persistence, agent synchronization, retries, monitoring, dependency bookkeeping, prompt storage, and mechanical workflow state belong in the repository/agent layer whenever possible.
+
+If an agent or deterministic repository mechanism can do something without human judgment, exporting that work to the principal is a workflow defect.
 
 **Authority is asymmetric.**
 
@@ -49,7 +63,7 @@ Git is:
 
 A green suite can prove specific mechanical claims. It cannot decide whether the product should exist in that form, whether architecture remains coherent, whether a UI feels right, or whether a behavior violates intent.
 
-**The human should operate the system, not carry, watch, or assemble it.**
+**The human should operate the system, not carry, watch, assemble, or remember it.**
 
 The repository should be the human execution surface as well as the agent communication surface.
 
@@ -78,16 +92,19 @@ The target human loop is short:
 - disengage while ordinary authorized work continues;
 - receive a terminal completion or blocked notification;
 - perform real-machine observation when required;
+- make only the decision or judgment that actually requires the principal;
 - report taste or runtime facts;
 - veto when necessary.
 
-The human should not routinely ferry large prompts from director to worker, patches from worker to director, or repeated status queries into the worker.
+The human should not routinely ferry large prompts from director to worker, patches from worker to director, repeated status queries into the worker, or state/context that two agents could have recovered from the repository themselves.
+
+When a genuine escalation reaches the principal, it should be **decision-ready**: the smallest sufficient context, relevant evidence, meaningful tradeoff, and durable repository pointer should already be prepared. The human should not be handed raw history and asked to reconstruct the decision boundary.
 
 ## The optimization target
 
 The goal is not maximum agent activity.
 
-The goal is maximum **useful autonomous progress per unit of human coordination and attention** while preserving semantic control.
+The goal is maximum **useful autonomous progress per unit of human cognitive load** while preserving semantic control.
 
 That requires:
 - richer repository context;
@@ -101,8 +118,10 @@ That requires:
 - repo-native human execution;
 - explicit dependency materialization;
 - negative doctrine for known-bad workflow shapes;
-- latent options that preserve future possibilities without creating work pressure.
+- latent options that preserve future possibilities without creating work pressure;
+- cognitive offload of memory, synchronization, monitoring, and mechanical coordination;
+- decision-ready human escalation.
 
 The philosophy can be summarized in one sentence:
 
-> Humans define ends, directors govern meaning, repositories preserve state and execution contracts, workers perform bounded transformations, evidence constrains belief, completion signals route attention, dependencies are materialized from the repo, and Git makes every accepted change explicit and reversible.
+> Humans define ends and exercise irreducible judgment; directors govern meaning; repositories preserve state, context, and execution contracts; workers perform bounded transformations; agents and automation absorb machine-shaped coordination; evidence constrains belief; completion signals route attention; dependencies are materialized from the repo; and Git makes every accepted change explicit and reversible.
