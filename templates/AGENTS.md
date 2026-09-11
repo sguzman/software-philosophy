@@ -26,6 +26,25 @@ Before asking the human to act, ask whether the step genuinely requires human ju
 
 When escalation is necessary, make it decision-ready: provide the smallest sufficient context, collected evidence, important tradeoff, and a repository pointer. Externalize the answer afterward.
 
+## Operational criticality / load-bearing continuity
+
+A project or individual capability may become privately load-bearing when the principal begins relying on it for real activity outside development.
+
+Read the project operational-criticality declaration when present. `unknown` does not mean safe to break.
+
+If credible evidence suggests the principal actively depends on a capability and the repository does not record its criticality, surface that gap before invasive work with meaningful regression blast radius.
+
+For declared load-bearing capabilities:
+- preserve the documented continuity envelope;
+- do not use the principal's only verified runtime as the experimental mutation surface;
+- keep stable and development channels operationally separate;
+- do not promote a development candidate merely because tests pass or the worker reports DONE;
+- satisfy the project's exact promotion evidence, including real-runtime/human verification when required;
+- audit shared mutable collision surfaces between stable and development channels;
+- ensure dev install/reset/uninstall cannot destroy stable requirements.
+
+The target guarantee is: a development failure may break the development channel, but it must not remove the principal's last verified working path for the load-bearing capability.
+
 ## Read before changing code
 
 1. docs/project/philosophy.md
@@ -36,16 +55,18 @@ When escalation is necessary, make it decision-ready: provide the smallest suffi
 6. docs/project/roles-and-workflow.md
 7. docs/project/architecture-principles.md
 8. docs/project/language-profile.md
-9. the active roadmap
-10. the single authorized goal under docs/work/ready/ or docs/work/active/
-11. any director review/correction contract for that goal
-12. the canonical prompt artifact for the current invocation, when applicable
+9. docs/project/operational-criticality.md when present
+10. docs/project/collision-audit.md when stable/dev channels coexist
+11. the active roadmap
+12. the single authorized goal under docs/work/ready/ or docs/work/active/
+13. any director review/correction contract for that goal
+14. the canonical prompt artifact for the current invocation, when applicable
 
 ## Roles
 
-- Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, repository-state closure, human-attention-budget enforcement, and integration.
-- Implementation worker: owns bounded implementation attempts, directly related repair passes, validation, durable reporting, and completion-observer startup/re-arm when available.
-- Human maintainer: owns local operation and real-machine observations when requested. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, payload installer, project-memory store, or bookkeeping layer.
+- Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, repository-state closure, human-attention-budget enforcement, operational-criticality interpretation, continuity topology, and integration.
+- Implementation worker: owns bounded implementation attempts, directly related repair passes, validation, durable reporting, and completion-observer startup/re-arm when available. It must respect declared continuity and channel-isolation rules.
+- Human maintainer: owns local operation and real-machine observations when requested. The human is the primary source for otherwise-hidden facts about private dependence on the software. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, payload installer, project-memory store, or bookkeeping layer.
 
 ## Software architecture invariants
 
@@ -53,6 +74,8 @@ When escalation is necessary, make it decision-ready: provide the smallest suffi
 - GUI-triggered expensive work should cross a worker/work-queue boundary and return typed results asynchronously.
 - Do not use `async` syntax as proof that CPU-heavy work left the UI thread.
 - Prefer message passing to a UI thread waiting on background-held locks.
+- Experimental mutation must not remove the last verified runtime for a declared load-bearing continuity envelope.
+- Separate worktrees/installations/profiles do not prove full isolation; audit shared mutable collision surfaces.
 
 ## Language profile
 
@@ -77,17 +100,18 @@ Do not create the next numbered goal merely because an execution session ended.
 
 - Implement only the authorized macro-goal and current correction review.
 - Respect every non-goal.
-- Do not silently change architecture, product semantics, persistence contracts, or priority.
+- Do not silently change architecture, product semantics, persistence contracts, priority, criticality, or stable-channel promotion rules.
 - Do not weaken tests to obtain green.
 - Do not perform opportunistic broad rewrites.
 - Do not make future work depend on an uncommitted chat-only decision.
 - Do not interrupt the human for mechanical work that the repository/agent layer can complete.
+- Do not mutate a stable/consumption worktree during ordinary experimental development.
 
 ## Worker autonomy
 
 Continue through directly related diagnosis, implementation, repair, and retest loops already authorized by the goal/review.
 
-Stop only when the current attempt's acceptance gates pass, an explicit non-goal would be violated, or a true architectural ambiguity requires director input.
+Stop only when the current attempt's acceptance gates pass, an explicit non-goal would be violated, a declared continuity invariant would be endangered, or a true architectural ambiguity requires director input.
 
 ## Completion observability
 
@@ -110,6 +134,7 @@ Do not treat notification delivery as evidence or director acceptance.
 - Use the repository's current platform dependency policy; on the principal's Windows profile, ordinary CLI dependencies use Scoop/Scoopfile.
 - If dependencies changed, the director tells the principal when bootstrap needs to run/rerun.
 - Latent options such as Nix/mise do not authorize implementation.
+- For load-bearing projects, human QA should normally exercise a development candidate without replacing or contaminating the verified stable runtime first.
 
 ## Handoff
 

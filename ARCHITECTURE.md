@@ -1,6 +1,6 @@
 # Documentation Architecture
 
-This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authority is explicit, historical state is separated from current authority, reusable execution contracts are repository-native, and project continuation must not depend on vanished conversational state.
+This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authority is explicit, historical state is separated from current authority, reusable execution contracts are repository-native, project continuation must not depend on vanished conversational state, human cognitive load is treated as a constrained resource, and declared load-bearing software receives explicit continuity protection.
 
 ## Canonical layers
 
@@ -12,7 +12,7 @@ This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authori
 
 ### Doctrine
 
-docs/00-manifesto.md through docs/18-repository-state-closure.md are the canonical development-governance portion of the v1.6 theory.
+docs/00-manifesto.md through docs/20-load-bearing-software-continuity.md are the canonical development-governance portion of the v1.8 theory.
 
 They define:
 - ontology;
@@ -33,7 +33,9 @@ They define:
 - dependency declaration/materialization and the Windows Scoop profile;
 - future-option preservation without work authorization;
 - prompt artifacts as durable repository protocol distinct from transient prompt invocation;
-- repository-state closure and chat as a temporal projection of canonical project state.
+- repository-state closure and chat as a temporal projection of canonical project state;
+- the human-attention budget and semantic-control-plane model;
+- private load-bearing criticality, continuity envelopes, stable/development channel governance, and evidence-gated promotion.
 
 ### Software architecture doctrine
 
@@ -42,6 +44,8 @@ They define:
 Current contents:
 - `architecture/principles/` — durable invariants and prohibitions;
 - `architecture/patterns/` — reusable structural patterns that satisfy those invariants.
+
+Current hard architecture themes include interactive-thread isolation and load-bearing runtime continuity.
 
 Project-specific `ARCHITECTURE.md` files should specialize these rules, not casually contradict hard architecture prohibitions.
 
@@ -56,6 +60,8 @@ Profiles are current conventions, not universal metaphysical claims.
 ### Reusable protocol
 
 `templates/` contains files intended to be copied or adapted into other repositories.
+
+Project templates now include operational-criticality and stable/dev collision-audit artifacts so load-bearing continuity can be represented durably rather than left as conversational caution.
 
 `prompts/` contains canonical reusable **prompt artifacts**. These are first-class repository protocol files: durable, versioned, reviewable, and discoverable.
 
@@ -85,7 +91,7 @@ When material conflicts:
 2. current v1 doctrine, including hard prohibitions;
 3. software architecture hard invariants;
 4. current principal/platform/language profiles;
-5. repository-specific canonical architecture and project docs;
+5. repository-specific canonical architecture and project docs, including operational-criticality/continuity declarations;
 6. current goal/review contracts within their delegated scope;
 7. current-state evidence;
 8. canonical prompt artifacts as invocation protocol;
@@ -101,6 +107,8 @@ A completion signal is deliberately below evidence in this ordering. It can rout
 
 A worker session is deliberately below the repository goal in identity. Ending or resetting a session does not by itself create, close, or renumber durable work.
 
+A development branch is deliberately below an accepted load-bearing continuity contract: experimental progress does not gain authority to replace the verified consumption runtime without satisfying promotion gates.
+
 ## Change policy
 
 Changes to terminology should update all current doctrine and templates that depend on the term.
@@ -110,6 +118,8 @@ Changes to role authority, transaction semantics, or the principal veto are majo
 Changes to recurring invocation behavior should update the corresponding repository prompt artifact rather than living only as revised prose in chat.
 
 Any conversational decision that later work will depend on must be promoted into the appropriate repository artifact before it becomes a durable dependency.
+
+When the principal reports or the director reasonably discovers that a project/capability has become load-bearing, update operational-criticality/continuity state before future invasive work depends on the old assumption that the runtime is disposable.
 
 Implementation examples may evolve without changing doctrine when they preserve the same coordination and architecture semantics.
 
@@ -131,6 +141,8 @@ No issue, chat, prompt invocation, agent scratchpad, worker UI session, model me
 
 No transient interface should be the only canonical location of a reusable operational prompt.
 
+No human recollection should be the only location of a load-bearing continuity requirement, stable runtime identity, promotion rule, or known collision hazard.
+
 If it matters after the conversation ends, externalize it into the repository.
 
-The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, logs, reusable prompt definitions, accepted decisions, current state, and authorized work belong to the repo contract rather than ephemeral side channels.
+The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, logs, reusable prompt definitions, accepted decisions, current state, authorized work, operational criticality, and continuity/collision contracts belong to the repo rather than ephemeral side channels.

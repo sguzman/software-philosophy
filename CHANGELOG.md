@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.8.0] - 2026-09-11
+
+### Doctrine
+
+- Made **private load-bearing software** a first-class governance concept: a project or capability may become operationally relied upon outside development.
+- Added the **continuity envelope**: the subset of capabilities that must remain available while experimental work continues elsewhere.
+- Clarified discovery responsibility: the principal is the primary source for hidden private-use facts, while the director has a secondary duty to surface credible evidence of dependence before risky work.
+- Added the hard invariant that experimental mutation must not remove the last verified runtime for a declared load-bearing capability.
+- Added a reusable **stable/development runtime split** pattern, including separate worktrees/installations/profiles where appropriate.
+- Made promotion into the load-bearing channel evidence-gated: the exact candidate must satisfy the strongest relevant evidence class, including real-runtime/human verification when required.
+- Added a general **collision surface audit** covering source paths, runtime identity, persistent state, DOM/global namespaces, IPC, devices/audio, native/OS registrations, external services, and destructive cleanup.
+- Distinguished coexistence cost, activation cost, data-integrity cost, continuity cost, cleanup cost, operator-confusion cost, and recovery cost rather than treating collisions as binary.
+- Added an Edge-extension-specific pattern: stable and dev worktrees plus separate Edge profiles, with explicit audit of extension identity, same-page DOM/CSS identifiers, audio ownership, Native Messaging hosts, shared system adapters, reload behavior, and uninstall blast radius.
+- Added `OPERATIONAL_CRITICALITY.md` and `COLLISION_AUDIT.md` project templates and propagated load-bearing continuity rules into the reusable agent guide.
+
 ## [1.7.0] - 2026-09-10
 
 ### Doctrine
