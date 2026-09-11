@@ -1,4 +1,4 @@
-# Adopting v1.5 in a Repository
+# Adopting v1.8 in a Repository
 
 The philosophy is technology-independent. Use only the structure your project earns.
 
@@ -17,6 +17,8 @@ The philosophy is technology-independent. Use only the structure your project ea
         negative-doctrine.md
         architecture-principles.md
         language-profile.md
+        operational-criticality.md    # when known/relevant
+        collision-audit.md             # when stable/dev channels coexist
 
       roadmaps/
         master-roadmap.md
@@ -194,9 +196,61 @@ For GUI projects:
 - use non-blocking result delivery back to the UI;
 - add stale-result/cancellation/backpressure handling where needed.
 
+Also ask whether any project capability has become load-bearing for the principal's real activity.
+
+If so, adopt:
+
+> Experimental mutation must not remove the last verified runtime for the load-bearing continuity envelope.
+
 Record project-specific architecture principles in `docs/project/architecture-principles.md`.
 
-## Step 13 — adopt the principal language profile
+## Step 13 — record operational criticality
+
+Do not assume every project is load-bearing, but do not assume silence means it is safe to break either.
+
+Use `templates/project/OPERATIONAL_CRITICALITY.md` or an equivalent artifact when dependence is known or credibly suspected.
+
+Record:
+- project/capability criticality;
+- continuity envelope;
+- experimental surfaces;
+- stable/consumption runtime identity;
+- development runtime identity;
+- promotion gates;
+- immediate recovery path after dev failure.
+
+The principal is the primary source for hidden private-use facts. The director should surface credible evidence of dependence before risky structural work.
+
+## Step 14 — separate stable consumption from experimental development when needed
+
+If a load-bearing capability executes from mutable development files or would otherwise be exposed to regression, create a stable/development channel split.
+
+For software that runs directly from checkout files, separate Git worktrees are a strong default.
+
+For installed/services/plugin systems, use equivalent separate runtime identities.
+
+The key property is not the branch name. It is that development can fail without taking away the verified consumption channel.
+
+## Step 15 — audit collision surfaces
+
+A separate worktree, installation, process, or profile does not prove isolation.
+
+Use `templates/project/COLLISION_AUDIT.md` or an equivalent artifact to inspect:
+- source/runtime paths;
+- application/extension/plugin identity;
+- persistent state;
+- runtime namespaces/DOM/globals;
+- audio/devices/global resources;
+- IPC/ports/sockets;
+- native/OS registrations;
+- external service/cloud state;
+- uninstall/reset/cleanup behavior.
+
+Classify unknowns honestly. Distinguish harmless sharing from interference, corruption, continuity loss, and destructive cleanup.
+
+For Edge extensions, prefer separate stable/dev worktrees and separate Edge profiles, then audit same-page DOM/CSS identifiers, audio ownership, Native Messaging host registrations, shared system adapters, and extension lifecycle.
+
+## Step 16 — adopt the principal language profile
 
 Unless a project has a contrary constraint, product code should start from the Rust-first profile.
 
@@ -204,7 +258,7 @@ Record intentional deviations rather than silently drifting into a polyglot prod
 
 Normal exceptions such as PowerShell bootstrap, TOML/JSON configuration, package-manager metadata, and platform-required glue do not violate Rust-first.
 
-## Step 14 — evolve from observed friction
+## Step 17 — evolve from observed friction
 
 The repo protocol itself is software.
 
@@ -224,6 +278,10 @@ If the director repeatedly rediscovers project history, improve current-state do
 
 If tests claim too much, separate evidence classes.
 
+If a project has quietly become part of the principal's real workflow, record its criticality and protect its continuity before further invasive development.
+
+If stable/dev coexistence relies on "they probably won't interfere," perform a collision-surface audit.
+
 ## Optional machinery
 
 As the workflow stabilizes, automate deterministic steps:
@@ -235,12 +293,16 @@ As the workflow stabilizes, automate deterministic steps:
 - CI;
 - candidate artifact builds;
 - terminal completion signaling;
-- prompt rendering/invocation from canonical repository prompt artifacts.
+- prompt rendering/invocation from canonical repository prompt artifacts;
+- stable-candidate promotion checks;
+- channel-specific install/uninstall validation.
 
 Automation should support the authority model, not erase it.
 
 ## What not to standardize globally
 
-v1.5 core governance does not universally require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, or a particular worker-session UI.
+v1.8 core governance does not universally require Rust, TOML, Docker, a particular CI provider, a particular AI vendor, a particular GUI framework, a particular branching model, Windows, PowerShell, a specific desktop-notification API, a particular worker-session UI, or a universal stable branch for every repository.
 
-The core governance doctrine standardizes coordination semantics, including the requirement that recurring prompts are durable repository artifacts. Architecture doctrine adds reusable structural invariants. Principal profiles additionally standardize current implementation choices: Rust-first for product code and Scoop for ordinary Windows CLI dependency materialization. These remain explicit current conventions rather than eternal axioms.
+The stable/development split is required only when continuity demands it; the exact implementation depends on the runtime. Edge profiles are an Edge-extension pattern, not a universal software rule.
+
+The core governance doctrine standardizes coordination semantics, repository-state closure, human-attention protection, and load-bearing continuity. Architecture doctrine adds reusable structural invariants and patterns. Principal profiles additionally standardize current implementation choices such as Rust-first and Scoop for ordinary Windows CLI dependency materialization. These remain explicit current conventions rather than eternal axioms.
