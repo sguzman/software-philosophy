@@ -31,6 +31,8 @@ Implementation agents may not silently:
 - continue future work based on a durable chat-derived decision that has not been externalized into the repository;
 - keep a reusable operational prompt only in chat or another transient agent UI;
 - regenerate canonical prompt wording from memory when a repository prompt artifact exists;
+- use the principal as an agent-to-agent courier, project-memory store, status poller, retry loop, dependency tracker, or bookkeeping layer when repository/agent machinery can own the work;
+- impose avoidable context reconstruction or synchronization work on the principal;
 - grant implementation workers open-ended architectural authority;
 - instruct the human principal to download/unpack/run generated CI or agent-produced payloads for ordinary development or manual QA;
 - treat a latent option as authorized work, roadmap priority, or current architecture;
@@ -41,7 +43,7 @@ Implementation agents may not silently:
 
 ## Canonical reading order
 
-Read README.md, docs/00-manifesto.md through docs/18-repository-state-closure.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
+Read README.md, docs/00-manifesto.md through docs/19-human-attention-budget.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
 
 ## Repository-state closure
 
@@ -52,6 +54,25 @@ A capable new director/worker at a known commit must be able to continue the pro
 When something discovered or decided in chat becomes relevant to future work, externalize it into the appropriate repository artifact before later work depends on it.
 
 If project continuation requires reconstructing a lost conversation, repository-state closure has failed.
+
+## Human attention budget
+
+Human cognition is the scarce, serial, context-switch-sensitive resource in the system.
+
+Treat the principal as the semantic control plane, not the operational data plane.
+
+Reserve human attention for:
+- intent and desired ends;
+- taste and value judgment;
+- final veto;
+- embodied/local observation unavailable to agents;
+- genuine authority boundaries and materially ambiguous choices.
+
+Keep context transport, state synchronization, retries, status tracking, dependency bookkeeping, prompt storage, evidence collection, and ordinary coordination in the repository/agent layer whenever possible.
+
+Before asking the principal to do something, ask whether the task genuinely requires human intent, taste, embodied observation, or authority. If not, redesign the workflow so the repository or agents own it.
+
+When human input is required, make the escalation decision-ready: smallest sufficient context, relevant evidence, clear tradeoff, and a durable repository pointer. Externalize the human answer afterward so they are not asked to remember it later.
 
 ## Prompt artifact rule
 

@@ -1,10 +1,10 @@
-# Software Philosophy v1.6
+# Software Philosophy v1.7
 
 A repository-mediated operating system for agentic software development.
 
 The core idea:
 
-> The repository is the canonical project state and durable shared mind. Chat is a temporal projection used to inspect, discuss, and transform that state; it is never a required store of project reality. The human supplies intent and taste. The director converts intent into doctrine, architecture, roadmaps, goals, review, and reusable prompt artifacts. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native: the repository declares and materializes its environment, exposes stable local entrypoints, and does not outsource routine testing, canonical prompts, or required project context to transient side channels.
+> The repository is the canonical project state and durable shared mind. Chat is a temporal projection used to inspect, discuss, and transform that state; it is never a required store of project reality. The human is the semantic control plane: intent, taste, veto, embodied observation, and exceptional authorization. The repository and agents carry state, context, transport, execution, retries, evidence, monitoring, and bookkeeping. Human cognition is the scarce, serial, context-switch-sensitive resource, so the system should minimize avoidable human cognitive load while preserving human semantic control. The director converts intent into doctrine, architecture, roadmaps, goals, review, and reusable prompt artifacts. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native: the repository declares and materializes its environment, exposes stable local entrypoints, and does not outsource routine testing, canonical prompts, required project context, or machine-shaped coordination work to the principal.
 
 The repository has three related but distinct substantive layers plus a repository-native invocation layer:
 
@@ -18,7 +18,9 @@ The core governance doctrine is not tied to a particular programming language. T
 ## Operating topology
 
     HUMAN PRINCIPAL
+      SEMANTIC CONTROL PLANE
       intent / taste / veto
+      embodied observation / exceptional authority
             |
             v
     CHAT / AGENT SESSION
@@ -33,10 +35,10 @@ The core governance doctrine is not tied to a particular programming language. T
       canonical prompt artifacts
             |
             v
-    REPOSITORY
-      CANONICAL PROJECT STATE
-      doctrine / architecture / goals / reviews
-      evidence / current state / prompts / workflow
+    REPOSITORY + AGENTS
+      CANONICAL STATE + COORDINATION PLANE
+      context / transport / execution / retries
+      evidence / monitoring / bookkeeping
             |
             v
     PROMPT INVOCATION
@@ -63,9 +65,9 @@ The core governance doctrine is not tied to a particular programming language. T
     FRESH WORKER SESSION S2
       same goal ID / continuing lineage
 
-The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for project state or prompt wording.
+The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for project state or prompt wording. Human attention is reserved for work that genuinely requires human authorship, judgment, embodiment, or authority.
 
-## v1.6 doctrine
+## v1.7 doctrine
 
 1. **Persist cognition that matters.** Important project knowledge belongs in the repository, not only in chat.
 2. **Separate authority from execution.** The agent best suited to architecture should not spend its attention babysitting file edits; the filesystem-capable worker should not invent the project.
@@ -98,6 +100,10 @@ The human is deliberately neither the courier between agents nor the polling loo
 29. **Enforce repository-state closure.** Everything required to understand, continue, execute, review, or coordinate durable project work must exist in the repository or be explicitly declared there as an external prerequisite.
 30. **Treat chat as a temporal projection, not project state.** Conversations may explore or propose the next state, but project reality is the committed repository state.
 31. **Externalize before dependency.** Once a chat-derived fact or decision matters to later work, commit it to the appropriate repository artifact before another human or agent is expected to rely on it.
+32. **Budget human cognition.** Treat human attention and working memory as the scarce, serial, context-switch-sensitive resource in the system.
+33. **Use the human as control plane, not data plane.** Human attention belongs on intent, taste, veto, embodied observation, and true authority boundaries; repository and agents carry context, state, transport, retries, monitoring, and bookkeeping.
+34. **Do not export machine-shaped work to the principal.** If an agent or deterministic repository mechanism can own a task without human judgment, keep it out of the human layer.
+35. **Escalate decision-ready.** When human input is genuinely required, present the smallest sufficient decision or observation with relevant evidence and tradeoffs already prepared, then externalize the answer into repository state.
 
 ## Reading tracks
 
@@ -122,6 +128,7 @@ The human is deliberately neither the courier between agents nor the polling loo
 17. docs/16-latent-options.md
 18. docs/17-prompts-as-repository-artifacts.md
 19. docs/18-repository-state-closure.md
+20. docs/19-human-attention-budget.md
 
 ### Software architecture doctrine
 
@@ -148,6 +155,6 @@ The pre-v1 stack-centric philosophy is preserved under archive/v0.5/.
 
 ## Version
 
-Current doctrine: **1.6.0**.
+Current doctrine: **1.7.0**.
 
-v1.6 makes repository-state closure a hard invariant: the repository is canonical project reality, chat is a temporal projection, and durable chat-derived state must be externalized before later work depends on it.
+v1.7 makes human cognitive load an explicit system constraint and optimization target: the principal is the semantic control plane, the repository and agents absorb machine-shaped coordination work, and human interruptions should be decision-ready and irreducible.

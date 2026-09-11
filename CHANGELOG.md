@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0] - 2026-09-10
+
+### Doctrine
+
+- Made **human cognitive load** an explicit system constraint and optimization target.
+- Defined the human principal as the **semantic control plane**, not the normal data/coordination plane.
+- Reserved human attention for intent, taste, veto, embodied observation, and genuine authority boundaries.
+- Required repository/agent machinery to absorb context transport, state synchronization, retries, monitoring, dependency bookkeeping, prompt storage, and other machine-shaped coordination work.
+- Added the hard default: if an agent or deterministic repository mechanism can perform a task without human judgment, do not export it to the principal.
+- Added **context-reconstruction tax** and **synchronization tax** alongside prompt, vigilance, and ceremony tax under the umbrella of human cognitive load.
+- Added **cognitive offload** as the transfer of memory/coordination burdens from human working memory into durable repository state and agent-owned automation.
+- Added **decision-ready escalation**: when human input is required, prepare the smallest sufficient context, evidence, tradeoff, and repository pointer before interrupting the principal.
+- Updated the reusable AGENTS template so adopted repositories inherit the human-attention budget.
+
 ## [1.6.0] - 2026-09-10
 
 ### Doctrine

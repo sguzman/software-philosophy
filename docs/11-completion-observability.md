@@ -159,9 +159,20 @@ Prompt tax makes the human repeatedly **push** work forward.
 
 Vigilance tax makes the human repeatedly **pull** status back.
 
-Session/goal conflation creates a third avoidable burden: the human has to reason about tool lifecycle as if it were project lifecycle.
+Session/goal conflation creates another avoidable burden: the human has to reason about tool lifecycle as if it were project lifecycle.
 
-A well-designed repository removes all three:
+These are all special cases of the broader **human attention budget** described in `docs/19-human-attention-budget.md`.
+
+Human cognition is the scarce, serial, context-switch-sensitive resource in the system. The repository and agents should absorb machine-shaped coordination work so the principal can reserve attention for intent, taste, veto, embodied observation, and true authority decisions.
+
+In that broader model:
+- prompt tax = repeated forward coordination;
+- vigilance tax = repeated status retrieval;
+- ceremony tax = mechanical setup/transport/provenance work;
+- context-reconstruction tax = reloading or re-explaining state that should be durable;
+- synchronization tax = resolving which agent/session/branch/report/state is authoritative.
+
+A well-designed repository drives all of these toward zero.
 
     one durable goal identity
       -> attempt A1 in session S1
@@ -172,3 +183,5 @@ A well-designed repository removes all three:
       -> director acceptance
 
 The tool session can be disposable because the repository lineage is not.
+
+The human should be interrupted only when the system reaches an irreducibly human decision, observation, or authority boundary.

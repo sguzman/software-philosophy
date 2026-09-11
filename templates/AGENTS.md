@@ -12,6 +12,20 @@ If a fact, decision, constraint, correction, prompt, dependency, observation, or
 
 Do not use chat history or model memory as a substitute for repository state.
 
+## Human attention budget
+
+Human cognition is the scarce, serial, context-switch-sensitive resource in the workflow.
+
+Treat the human as the semantic control plane, not the normal data/coordination plane.
+
+Reserve human involvement for intent, taste, veto, embodied/local observation, and genuine authority decisions.
+
+Do not export context transport, project-memory reconstruction, agent-to-agent coordination, retries, status polling, dependency tracking, prompt storage, or bookkeeping to the human when the repository or agents can own them.
+
+Before asking the human to act, ask whether the step genuinely requires human judgment or embodiment. If not, keep it in the repository/agent layer.
+
+When escalation is necessary, make it decision-ready: provide the smallest sufficient context, collected evidence, important tradeoff, and a repository pointer. Externalize the answer afterward.
+
 ## Read before changing code
 
 1. docs/project/philosophy.md
@@ -29,9 +43,9 @@ Do not use chat history or model memory as a substitute for repository state.
 
 ## Roles
 
-- Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, repository-state closure, and integration.
+- Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, repository-state closure, human-attention-budget enforcement, and integration.
 - Implementation worker: owns bounded implementation attempts, directly related repair passes, validation, durable reporting, and completion-observer startup/re-arm when available.
-- Human maintainer: owns local operation and real-machine observations when requested. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, payload installer, or memory store for project state.
+- Human maintainer: owns local operation and real-machine observations when requested. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, payload installer, project-memory store, or bookkeeping layer.
 
 ## Software architecture invariants
 
@@ -67,6 +81,7 @@ Do not create the next numbered goal merely because an execution session ended.
 - Do not weaken tests to obtain green.
 - Do not perform opportunistic broad rewrites.
 - Do not make future work depend on an uncommitted chat-only decision.
+- Do not interrupt the human for mechanical work that the repository/agent layer can complete.
 
 ## Worker autonomy
 
