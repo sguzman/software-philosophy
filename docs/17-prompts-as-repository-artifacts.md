@@ -78,11 +78,20 @@ If a prompt artifact conflicts with those sources, the higher-authority reposito
 
 ## Director responsibility
 
-The director owns canonical operational prompt definitions.
+The director owns canonical operational prompt definitions **and human-facing prompt lifecycle clarity**.
 
 When a recurring invocation changes, the director should update the repository prompt artifact rather than merely giving the human a new prose snippet in chat.
 
 If a one-off invocation contains a generally reusable lifecycle rule, that rule should be promoted into the relevant prompt artifact and protocol documentation.
+
+Once the director emits an actionable prompt for human submission, that human-facing prompt freezes by default. Later discussion does not mutate it unless the director explicitly declares a typed transition such as:
+
+- `START A NEW CODEX GOAL`;
+- `CONTINUE THE CURRENT CODEX GOAL`;
+- `REPLACE THE PREVIOUS CODEX PROMPT`;
+- `COMMENTARY ONLY — NO PROMPT CHANGE`.
+
+See `docs/21-prompt-lifecycle-discipline.md`.
 
 ## Human responsibility
 
@@ -94,7 +103,9 @@ The human should not have to:
 - preserve the latest version in notes;
 - reconstruct it from an old conversation;
 - reconcile two competing chat variants;
-- act as the canonical storage location for agent instructions.
+- infer whether a later block replaces, appends to, or merely comments on an earlier prompt;
+- diff two long prompt variants to discover what changed;
+- act as the canonical storage location or version-control mechanism for agent instructions.
 
 ## Worker responsibility
 
@@ -102,19 +113,39 @@ When instructed by a repository prompt artifact, the worker should treat the pro
 
 The worker should not infer that the shortness of the prompt implies broad discretion.
 
+The worker follows the invocation it actually received plus canonical repository state; it is not expected to know about later chat commentary that was never sent or promoted.
+
 ## Thinness and durability are compatible
 
-These two principles reinforce each other:
+These principles reinforce each other:
 
     durable prompt artifact
       + thin prompt content
+      + explicit invocation lifecycle
       + rich repository contracts
       = low prompt tax without hidden state
 
 The prompt is durable **as protocol** while remaining intentionally poor **as project memory**.
 
-## Hard rule
+## Prompt freeze boundary
+
+Prompt durability and prompt freeze are different but complementary concepts.
+
+- repository artifact durability answers: **where does the reusable prompt live?**
+- prompt lifecycle discipline answers: **which human-facing invocation currently governs, and how may it change?**
+
+An actionable prompt creates a freeze boundary. Clarifying discussion does not implicitly cross it.
+
+Before submission, a material correction should normally supersede the old prompt with one complete replacement rather than asking the human to merge fragments.
+
+After submission, new instruction is a continuation/correction of work already invoked, not a retroactive rewrite of the original invocation.
+
+## Hard rules
 
 > **Do not make chat the only canonical location of a reusable prompt.**
 
+> **Do not implicitly mutate an actionable prompt after issuance.**
+
 If the same prompt is expected to be used again, by another session, another agent, or after the current conversation disappears, commit it to the repository.
+
+If an already-issued prompt must change, type the transition explicitly so the human never has to infer prompt lineage.
