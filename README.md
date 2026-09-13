@@ -1,17 +1,17 @@
-# Software Philosophy v1.8
+# Software Philosophy v1.9
 
 A repository-mediated operating system for agentic software development.
 
 The core idea:
 
-> The repository is the canonical project state and durable shared mind. Chat is a temporal projection used to inspect, discuss, and transform that state; it is never a required store of project reality. The human is the semantic control plane: intent, taste, veto, embodied observation, and exceptional authorization. The repository and agents carry state, context, transport, execution, retries, evidence, monitoring, and bookkeeping. Human cognition is the scarce, serial, context-switch-sensitive resource, so the system should minimize avoidable human cognitive load while preserving human semantic control. When a project or capability becomes load-bearing for the principal's real activity, the repository must also preserve continuity: experimental development may regress, but it must not remove the last verified working runtime for the relied-upon capability. The director converts intent into doctrine, architecture, roadmaps, goals, review, continuity contracts, and reusable prompt artifacts. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native and machine-shaped coordination work stays below the human layer.
+> The repository is the canonical project state and durable shared mind. Chat is a temporal projection used to inspect, discuss, and transform that state; it is never a required store of project reality. The human is the semantic control plane: intent, taste, veto, embodied observation, and exceptional authorization. The repository and agents carry state, context, transport, execution, retries, evidence, monitoring, bookkeeping, and prompt versioning. Human cognition is the scarce, serial, context-switch-sensitive resource, so the system should minimize avoidable human cognitive load while preserving human semantic control. When a project or capability becomes load-bearing for the principal's real activity, experimental development may regress but must not remove the last verified working runtime for the relied-upon capability. When the director issues an actionable prompt, that prompt freezes by default: later discussion does not silently replace it, append to it, or change its invocation semantics. The director converts intent into doctrine, architecture, roadmaps, goals, review, continuity contracts, prompt artifacts, and explicit prompt lifecycle transitions. The implementation worker performs bounded transformations. Tests produce mechanical evidence. Git transports, records, and reverses state. Completion observers return attention at terminal execution states. Repository macro-goals persist across disposable worker sessions until the director accepts, abandons, or supersedes them. Human-facing development stays repo-native and machine-shaped coordination work stays below the human layer.
 
 The repository has three related but distinct substantive layers plus a repository-native invocation layer:
 
-1. **Development governance doctrine** — how the human, director, worker, repository, evidence, work lifecycle, criticality, and continuity contracts relate.
+1. **Development governance doctrine** — how the human, director, worker, repository, evidence, work lifecycle, criticality, continuity, and prompt lifecycle contracts relate.
 2. **Software architecture doctrine** — how the software itself should be structured: runtime responsibilities, concurrency, state, boundaries, responsiveness, continuity, and other empirically earned architectural rules.
 3. **Principal implementation profiles** — strong current defaults such as Rust-first and Windows/Scoop policy.
-4. **Prompt artifacts** — durable, versioned invocation contracts under `prompts/` that point agents into the richer repository state.
+4. **Prompt artifacts** — durable, versioned invocation contracts under `prompts/` that point agents into the richer repository state and are invoked through explicit lifecycle semantics.
 
 The core governance doctrine is not tied to a particular programming language. The principal profiles are intentionally not language-neutral: in practice, product implementation is Rust by default.
 
@@ -35,6 +35,7 @@ The core governance doctrine is not tied to a particular programming language. T
       semantic review / integration
       criticality / continuity / promotion gates
       canonical prompt artifacts
+      prompt lifecycle / freeze / supersession
             |
             v
     REPOSITORY + AGENTS
@@ -42,10 +43,12 @@ The core governance doctrine is not tied to a particular programming language. T
       context / transport / execution / retries
       evidence / monitoring / bookkeeping
       stable/dev runtime contracts
+      reusable prompt protocol
             |
             v
     PROMPT INVOCATION
-      thin transient delivery into worker UI
+      explicitly typed transient delivery
+      start / continue / replace / commentary
             |
             v
     WORKER SESSION S1
@@ -68,9 +71,9 @@ The core governance doctrine is not tied to a particular programming language. T
     FRESH WORKER SESSION S2
       same goal ID / continuing lineage
 
-The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for project state or prompt wording. Human attention is reserved for work that genuinely requires human authorship, judgment, embodiment, or authority. The principal is, however, the primary source for otherwise-hidden facts about how much they privately depend on a tool; once that dependence becomes known, it must be externalized into repository state.
+The human is deliberately neither the courier between agents nor the polling loop around them. The human is also not the canonical storage medium for project state, prompt wording, or prompt version lineage. Human attention is reserved for work that genuinely requires human authorship, judgment, embodiment, or authority. The principal is, however, the primary source for otherwise-hidden facts about how much they privately depend on a tool; once that dependence becomes known, it must be externalized into repository state.
 
-## v1.8 doctrine
+## v1.9 doctrine
 
 1. **Persist cognition that matters.** Important project knowledge belongs in the repository, not only in chat.
 2. **Separate authority from execution.** The agent best suited to architecture should not spend its attention babysitting file edits; the filesystem-capable worker should not invent the project.
@@ -113,6 +116,12 @@ The human is deliberately neither the courier between agents nor the polling loo
 39. **Separate consumption from experimentation.** For load-bearing software, use a stable runtime channel distinct from the development mutation surface when a regression could otherwise interrupt real activity.
 40. **Promote by evidence, not optimism.** A candidate advances into the load-bearing channel only after the exact candidate passes the required promotion gates, including real-runtime/human verification where that is the strongest evidence class.
 41. **Audit collision surfaces.** Separate branches, worktrees, installations, or profiles do not prove isolation; enumerate shared mutable resources and their coexistence, activation, cleanup, and failure costs.
+42. **Freeze actionable prompts at issuance.** Once the director says a prompt is ready to submit, later discussion leaves it unchanged unless an explicit lifecycle transition occurs.
+43. **Type every prompt transition.** Distinguish starting a new Goal, continuing current work, replacing an unsubmitted prompt, and commentary/planning that changes nothing.
+44. **Make silence mean no prompt change.** Clarifying discussion does not implicitly alter the frozen prompt.
+45. **Replace cleanly before submission.** If a material pre-submission correction is necessary, supersede the old prompt explicitly and provide one complete replacement; do not make the principal merge variants.
+46. **Continue/correct after submission.** Once work was invoked, additional instruction is a continuation/correction of that work, not a retroactive rewrite of the original prompt.
+47. **Keep prompt version control below the human layer.** The principal must never be required to infer which prompt is authoritative, whether to append, or what changed between long variants.
 
 ## Reading tracks
 
@@ -139,6 +148,7 @@ The human is deliberately neither the courier between agents nor the polling loo
 19. docs/18-repository-state-closure.md
 20. docs/19-human-attention-budget.md
 21. docs/20-load-bearing-software-continuity.md
+22. docs/21-prompt-lifecycle-discipline.md
 
 ### Software architecture doctrine
 
@@ -169,6 +179,6 @@ The pre-v1 stack-centric philosophy is preserved under archive/v0.5/.
 
 ## Version
 
-Current doctrine: **1.8.0**.
+Current doctrine: **1.9.0**.
 
-v1.8 makes private load-bearing use and continuity first-class project concerns: capability-level criticality is recorded, stable consumption is isolated from experimental mutation, promotion requires exact-candidate evidence, and stable/dev coexistence is governed by explicit collision-surface audits. The Edge-extension pattern uses separate worktrees and Edge profiles while auditing page namespace, audio, Native Messaging, system registrations, and cleanup blast radius.
+v1.9 makes prompt lifecycle state explicit: actionable prompts freeze at issuance, later discussion is non-mutating by default, prompt transitions are typed, pre-submission changes use explicit full replacement, post-submission changes use continuation/correction, and the human is never required to act as the prompt diff/merge/version-control layer.
