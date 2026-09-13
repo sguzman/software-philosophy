@@ -1,6 +1,6 @@
 # Documentation Architecture
 
-This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authority is explicit, historical state is separated from current authority, reusable execution contracts are repository-native, project continuation must not depend on vanished conversational state, human cognitive load is treated as a constrained resource, and declared load-bearing software receives explicit continuity protection.
+This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authority is explicit, historical state is separated from current authority, reusable execution contracts are repository-native, project continuation must not depend on vanished conversational state, human cognitive load is treated as a constrained resource, declared load-bearing software receives explicit continuity protection, and human-facing prompt state has explicit freeze/supersession semantics.
 
 ## Canonical layers
 
@@ -12,7 +12,7 @@ This repository dogfoods the v1 doctrine: durable doctrine lives in Git, authori
 
 ### Doctrine
 
-docs/00-manifesto.md through docs/20-load-bearing-software-continuity.md are the canonical development-governance portion of the v1.8 theory.
+docs/00-manifesto.md through docs/21-prompt-lifecycle-discipline.md are the canonical development-governance portion of the v1.9 theory.
 
 They define:
 - ontology;
@@ -35,7 +35,8 @@ They define:
 - prompt artifacts as durable repository protocol distinct from transient prompt invocation;
 - repository-state closure and chat as a temporal projection of canonical project state;
 - the human-attention budget and semantic-control-plane model;
-- private load-bearing criticality, continuity envelopes, stable/development channel governance, and evidence-gated promotion.
+- private load-bearing criticality, continuity envelopes, stable/development channel governance, and evidence-gated promotion;
+- prompt freeze boundaries, typed invocation relations, replacement/continuation semantics, and the prohibition on human prompt reconciliation.
 
 ### Software architecture doctrine
 
@@ -61,7 +62,7 @@ Profiles are current conventions, not universal metaphysical claims.
 
 `templates/` contains files intended to be copied or adapted into other repositories.
 
-Project templates now include operational-criticality and stable/dev collision-audit artifacts so load-bearing continuity can be represented durably rather than left as conversational caution.
+Project templates include operational-criticality and stable/dev collision-audit artifacts so load-bearing continuity can be represented durably rather than left as conversational caution.
 
 `prompts/` contains canonical reusable **prompt artifacts**. These are first-class repository protocol files: durable, versioned, reviewable, and discoverable.
 
@@ -69,7 +70,9 @@ The prompt artifact is not the same thing as the prompt invocation. A Codex Goal
 
 Prompt artifacts should remain deliberately thin: they point agents at repository contracts rather than carrying project knowledge themselves.
 
-`prompts/README.md` defines the prompt-artifact contract.
+Human-facing invocation additionally follows the lifecycle semantics in `docs/21-prompt-lifecycle-discipline.md`: actionable prompts freeze by default and may change only through explicit typed transitions.
+
+`prompts/README.md` defines the prompt-artifact and invocation-lifecycle contract.
 
 ### Latent option register
 
@@ -95,13 +98,16 @@ When material conflicts:
 6. current goal/review contracts within their delegated scope;
 7. current-state evidence;
 8. canonical prompt artifacts as invocation protocol;
-9. latent options;
-10. workflow notification state;
-11. historical docs and examples.
+9. explicit current human-facing prompt lifecycle state for transient invocation delivery;
+10. latent options;
+11. workflow notification state;
+12. historical docs and examples.
 
 A lower layer cannot silently overrule a higher layer.
 
 A prompt artifact is protocol, not independent semantic authority. If it conflicts with the goal, review, doctrine, or architecture it points to, correct the prompt artifact.
+
+A frozen human-facing prompt controls what the principal is currently being asked to submit, but it cannot overrule higher-authority repository contracts. If it must change before submission, explicitly supersede it. If it was already submitted, use continuation/correction semantics.
 
 A completion signal is deliberately below evidence in this ordering. It can route attention but cannot establish truth.
 
@@ -116,6 +122,8 @@ Changes to terminology should update all current doctrine and templates that dep
 Changes to role authority, transaction semantics, or the principal veto are major-version changes.
 
 Changes to recurring invocation behavior should update the corresponding repository prompt artifact rather than living only as revised prose in chat.
+
+Changes to an already-issued actionable prompt must use explicit lifecycle transitions; ordinary follow-up discussion does not mutate it.
 
 Any conversational decision that later work will depend on must be promoted into the appropriate repository artifact before it becomes a durable dependency.
 
@@ -141,8 +149,8 @@ No issue, chat, prompt invocation, agent scratchpad, worker UI session, model me
 
 No transient interface should be the only canonical location of a reusable operational prompt.
 
-No human recollection should be the only location of a load-bearing continuity requirement, stable runtime identity, promotion rule, or known collision hazard.
+No human recollection should be the only location of a load-bearing continuity requirement, stable runtime identity, promotion rule, known collision hazard, or prompt supersession/version decision.
 
 If it matters after the conversation ends, externalize it into the repository.
 
-The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, logs, reusable prompt definitions, accepted decisions, current state, authorized work, operational criticality, and continuity/collision contracts belong to the repo rather than ephemeral side channels.
+The same rule applies to human execution: normal development/QA commands, dependency declarations, fixtures, logs, reusable prompt definitions, accepted decisions, current state, authorized work, operational criticality, continuity/collision contracts, and recurring prompt lifecycle behavior belong to the repo rather than ephemeral side channels.

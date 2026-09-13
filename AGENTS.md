@@ -10,6 +10,7 @@ ChatGPT in the director role owns:
 - the philosophy and ontology;
 - document structure and canonical terminology;
 - canonical reusable operational prompt artifacts;
+- human-facing prompt lifecycle, freeze, and supersession clarity;
 - version boundaries;
 - acceptance or rejection of proposed doctrinal changes;
 - integration of accepted doctrine.
@@ -31,7 +32,11 @@ Implementation agents may not silently:
 - continue future work based on a durable chat-derived decision that has not been externalized into the repository;
 - keep a reusable operational prompt only in chat or another transient agent UI;
 - regenerate canonical prompt wording from memory when a repository prompt artifact exists;
-- use the principal as an agent-to-agent courier, project-memory store, status poller, retry loop, dependency tracker, or bookkeeping layer when repository/agent machinery can own the work;
+- implicitly mutate an actionable human-facing prompt after issuance;
+- emit a second prompt-shaped block without declaring whether it replaces, continues, or leaves unchanged the prior prompt;
+- require the principal to diff or merge prompt variants to discover the authoritative invocation;
+- use `append this` as the normal repair mechanism for an unsubmitted prompt when a complete replacement can be supplied;
+- use the principal as an agent-to-agent courier, project-memory store, status poller, retry loop, dependency tracker, prompt-version controller, or bookkeeping layer when repository/agent machinery can own the work;
 - impose avoidable context reconstruction or synchronization work on the principal;
 - grant implementation workers open-ended architectural authority;
 - instruct the human principal to download/unpack/run generated CI or agent-produced payloads for ordinary development or manual QA;
@@ -45,7 +50,7 @@ Implementation agents may not silently:
 
 ## Canonical reading order
 
-Read README.md, docs/00-manifesto.md through docs/20-load-bearing-software-continuity.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
+Read README.md, docs/00-manifesto.md through docs/21-prompt-lifecycle-discipline.md, `prompts/README.md`, `architecture/README.md`, the current architecture principles/patterns, and relevant files under `profiles/` before making doctrinal changes.
 
 ## Repository-state closure
 
@@ -70,7 +75,7 @@ Reserve human attention for:
 - embodied/local observation unavailable to agents;
 - genuine authority boundaries and materially ambiguous choices.
 
-Keep context transport, state synchronization, retries, status tracking, dependency bookkeeping, prompt storage, evidence collection, and ordinary coordination in the repository/agent layer whenever possible.
+Keep context transport, state synchronization, retries, status tracking, dependency bookkeeping, prompt storage/versioning, evidence collection, and ordinary coordination in the repository/agent layer whenever possible.
 
 Before asking the principal to do something, ask whether the task genuinely requires human intent, taste, embodied observation, or authority. If not, redesign the workflow so the repository or agents own it.
 
@@ -106,6 +111,30 @@ Distinguish:
 Prompt artifacts should remain thin. They point agents to richer repository contracts rather than duplicating architecture, roadmap, goal, review, evidence, or current-state knowledge.
 
 Do not make chat the only canonical location of a reusable prompt. When recurring invocation behavior changes, update the repository prompt artifact.
+
+## Prompt lifecycle discipline
+
+Actionable human-facing prompts freeze at issuance.
+
+Later discussion is non-mutating by default.
+
+When prompt state or invocation relation changes, use an explicit label:
+
+- **START A NEW CODEX GOAL** — following prompt is the complete invocation for a fresh Goal/session;
+- **CONTINUE THE CURRENT CODEX GOAL** — following text continues already-invoked work; it does not create a new semantic repository goal merely because another message is needed;
+- **REPLACE THE PREVIOUS CODEX PROMPT** — previous unsubmitted prompt is superseded; discard it; following block is the complete replacement;
+- **COMMENTARY ONLY — NO PROMPT CHANGE** — explanation/planning only; current frozen prompt remains authoritative;
+- **DO NOT START CODEX — PLANNING ONLY** — no actionable invocation.
+
+A heading such as `Goal:` by itself is not sufficient lifecycle signaling.
+
+Before submission, material prompt changes should normally use a complete replacement rather than asking the principal to append/merge fragments.
+
+After submission, the invocation already happened. New instruction is a continuation/correction, not a retroactive rewrite of the old prompt.
+
+The director owns prompt version control. The principal must never be required to decide which of two prompt variants is authoritative, to infer whether one should be appended, or to compare long prompt blocks to discover a delta.
+
+See `docs/21-prompt-lifecycle-discipline.md`.
 
 ## Archive rule
 

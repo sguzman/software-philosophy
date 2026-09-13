@@ -20,11 +20,33 @@ Treat the human as the semantic control plane, not the normal data/coordination 
 
 Reserve human involvement for intent, taste, veto, embodied/local observation, and genuine authority decisions.
 
-Do not export context transport, project-memory reconstruction, agent-to-agent coordination, retries, status polling, dependency tracking, prompt storage, or bookkeeping to the human when the repository or agents can own them.
+Do not export context transport, project-memory reconstruction, agent-to-agent coordination, retries, status polling, dependency tracking, prompt storage/versioning, or bookkeeping to the human when the repository or agents can own them.
 
 Before asking the human to act, ask whether the step genuinely requires human judgment or embodiment. If not, keep it in the repository/agent layer.
 
 When escalation is necessary, make it decision-ready: provide the smallest sufficient context, collected evidence, important tradeoff, and a repository pointer. Externalize the answer afterward.
+
+## Prompt lifecycle discipline
+
+Actionable human-facing prompts freeze when issued.
+
+Later discussion does not implicitly modify them.
+
+Use explicit lifecycle labels:
+
+- **START A NEW CODEX GOAL** — following prompt is the complete invocation for a fresh Goal/session;
+- **CONTINUE THE CURRENT CODEX GOAL** — following text continues already-submitted work;
+- **REPLACE THE PREVIOUS CODEX PROMPT** — previous unsubmitted prompt is superseded and should be discarded; following text is the complete replacement;
+- **COMMENTARY ONLY — NO PROMPT CHANGE** — explanation/planning only; current prompt remains unchanged;
+- **DO NOT START CODEX — PLANNING ONLY** — no actionable prompt has been issued.
+
+Do not make the human infer whether a later prompt-shaped block replaces, appends to, or merely comments on an earlier prompt.
+
+Before submission, material changes should normally produce one full replacement rather than an `append this` fragment.
+
+After submission, new instruction is a continuation/correction of already-invoked work, not a retroactive rewrite of the original prompt.
+
+The director owns prompt version control. The human is not the prompt diff/merge engine.
 
 ## Operational criticality / load-bearing continuity
 
@@ -64,9 +86,9 @@ The target guarantee is: a development failure may break the development channel
 
 ## Roles
 
-- Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, repository-state closure, human-attention-budget enforcement, operational-criticality interpretation, continuity topology, and integration.
+- Director / architect / integrator: owns philosophy, product scope, priorities, architecture, roadmap ordering, goal definitions, semantic review, correction contracts, repository-state closure, human-attention-budget enforcement, prompt lifecycle/version clarity, operational-criticality interpretation, continuity topology, and integration.
 - Implementation worker: owns bounded implementation attempts, directly related repair passes, validation, durable reporting, and completion-observer startup/re-arm when available. It must respect declared continuity and channel-isolation rules.
-- Human maintainer: owns local operation and real-machine observations when requested. The human is the primary source for otherwise-hidden facts about private dependence on the software. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, payload installer, project-memory store, or bookkeeping layer.
+- Human maintainer: owns local operation and real-machine observations when requested. The human is the primary source for otherwise-hidden facts about private dependence on the software. The human is not the normal communication courier, completion poller, goal-renumbering mechanism, dependency detective, payload installer, project-memory store, prompt-version controller, or bookkeeping layer.
 
 ## Software architecture invariants
 

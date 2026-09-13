@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.9.0] - 2026-09-13
+
+### Doctrine
+
+- Added **prompt lifecycle discipline** as a hard human-attention safety rule.
+- Established the **prompt freeze boundary**: once an actionable human-facing prompt is issued, later discussion does not implicitly modify it.
+- Added explicit invocation labels: `START A NEW CODEX GOAL`, `CONTINUE THE CURRENT CODEX GOAL`, `REPLACE THE PREVIOUS CODEX PROMPT`, `COMMENTARY ONLY — NO PROMPT CHANGE`, and `DO NOT START CODEX — PLANNING ONLY`.
+- Made the director responsible for prompt version control and prohibited exporting prompt diff/merge/reconciliation work to the principal.
+- Clarified that a `Goal:` heading by itself is not an instruction to launch a Goal.
+- Made full replacement the normal response to material **pre-submission** prompt changes; the old prompt is discarded without human comparison or merging.
+- Clarified that **post-submission** changes are continuation/correction of already-invoked work, not retroactive rewrites of the original prompt.
+- Made `append this` exceptional rather than the default prompt-repair mechanism.
+- Added **prompt synchronization tax**, **merge tax**, **invocation ambiguity tax**, and **version-comparison tax** as avoidable human cognitive-load failures.
+- Propagated prompt lifecycle rules into the reusable AGENTS template and repository prompt protocol.
+
 ## [1.8.0] - 2026-09-11
 
 ### Doctrine
